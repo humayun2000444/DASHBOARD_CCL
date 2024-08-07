@@ -1,0 +1,41 @@
+@import "../core/variables/variables";
+
+.analyticsDashboard {
+  h4 {
+    font-size: 21px;
+    margin-bottom: 0;
+    padding-bottom: 21px;
+  }
+  .analyticsTables {
+    h5 {
+      font-size: 14px;
+      background: #8f8e9c;
+      color: #fff;
+      padding: 10px 16px;
+      margin: 16px 0;
+    }
+    .singleTable {
+      margin-bottom: 24px;
+      .table_cell {
+        background-color: $primary;
+      }
+      .table__pagination {
+        color: $primary;
+      }
+      h6 {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .usageData {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    & > div {
+      display: flex;
+      gap: 5px;
+    }
+  }
+}
