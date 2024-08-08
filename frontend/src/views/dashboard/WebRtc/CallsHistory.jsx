@@ -30,8 +30,18 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
     setCallHistory(mappedArray);
   };
 
+  const handleMouseLeave = () => {
+    const mappedArray = callHistory.map((call) => {
+      return {
+        ...call,
+        isHovered: false,
+      };
+    });
+    setCallHistory(mappedArray);
+  };
+
   return (
-    <div className="calls__history">
+    <div className="calls__history" onMouseLeave={handleMouseLeave}>
       {callHistory.map((singleCall, i) => (
         <div
           key={singleCall.id}
@@ -78,7 +88,9 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
           </div>
           <div className="calls__history--time">
             {singleCall.isHovered ? (
-              <i class="fa-solid fa-phone-flip"></i>
+              <button>
+                <i class="fa-solid fa-phone"></i>
+              </button>
             ) : (
               <p style={singleCall.duration === "0s" ? redColor : null}>
                 {singleCall.time}
