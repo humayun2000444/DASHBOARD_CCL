@@ -1,0 +1,141 @@
+.calls__container {
+  display: flex;
+  gap: 2rem;
+  max-height: 85vh;
+  .dialpad {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-self: flex-end;
+    flex-basis: 20%;
+    input {
+      border: none;
+      width: 100%;
+      background-color: #ffffdd;
+      border-radius: 10px;
+      outline: none;
+      font-weight: 500;
+      font-size: 1.5rem;
+      overflow-x: scroll;
+      padding-block: 0.6rem 1.1rem;
+      padding-inline: 0.8rem;
+    }
+    input::placeholder {
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    .dialpad__numbers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      button {
+        border: none;
+        outline: none;
+        background-color: #f0f3ff;
+        padding-block: 1.5rem;
+        border-radius: 10px;
+      }
+    }
+    .dialpad__icons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      button {
+        border: none;
+        background: transparent;
+        outline: none;
+        color: #fff;
+        padding: 8px 2rem;
+        border-radius: 32px;
+      }
+      button:nth-child(1) {
+        background-color: #164677;
+      }
+      button:nth-child(2) {
+        background-color: green;
+      }
+    }
+  }
+  .calls__history {
+    overflow-y: auto;
+    flex-basis: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    & > div {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem;
+      border-radius: 10px;
+      transition: 0.3s all ease;
+    }
+    & > div:hover {
+      background-color: #fff;
+    }
+    &--users {
+      flex-basis: 40%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      p {
+        margin: 0;
+      }
+      div:nth-child(1) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        width: 2.8rem;
+        font-size: 1.2rem;
+        color: #fff;
+        border-radius: 50%;
+      }
+      div:nth-child(2) {
+        p:nth-child(1) {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+    }
+    &--status {
+      flex-basis: 20%;
+      display: flex;
+      gap: 0.5rem;
+      text-align: left;
+      width: 100px;
+      position: relative;
+      .fa-phone-slash,
+      .fa-phone {
+        font-size: 1.2rem;
+      }
+      .fa-arrow-right {
+        position: absolute;
+        top: -3px;
+        left: 8px;
+        font-size: 14px;
+      }
+    }
+    &--time {
+      flex-basis: 30%;
+      text-align: right;
+      button {
+        border: none;
+        background: transparent;
+        outline: none;
+        color: #fff;
+        padding: 8px 2rem;
+        border-radius: 32px;
+        background-color: green;
+        .fa-phone {
+          font-size: 1.2rem;
+          cursor: pointer;
+        }
+      }
+      p {
+        font-weight: 500;
+      }
+    }
+  }
+}
