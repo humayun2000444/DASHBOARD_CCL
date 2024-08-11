@@ -19,6 +19,7 @@ import AdmissionOfficer from "../../services/Dashboard/Pages/AdmissionOfficer/In
 import NewDashboard from "../../services/Dashboard/Pages/NewDashboard/NewDashboard";
 import StudentDashboard from "../../services/Dashboard/Pages/StudentNew/StudentDashboard";
 import Users from "../../services/Users/Users";
+import UserDashBoard from "../../services/Dashboard/Pages/UserDashBoard/UserDashBoard.jsx";
 
 const AnalyticsDashboard = () => {
   const currentUser = JSON?.parse(localStorage.getItem("current_user"));
@@ -34,9 +35,11 @@ const AnalyticsDashboard = () => {
 
   return (
     <>
-      {userRole.name === "ROLE_ADMIN" ? <BtrcPortal /> : <SuperAdmin />}
-      {/* <BtrcAdmin /> <SuperAdmin /> */}
-      {/* <Users /> */}
+      {/* working User Dashboard */}
+      {userRole.name === "ROLE_ADMIN" ? <BtrcPortal /> : <UserDashBoard />}
+
+      {/* {userRole.name === "ROLE_ADMIN" ? <BtrcPortal /> : <SuperAdmin />} */}
+      {/* {userRole.name === "ROLE_USER" && UserDashBoard} */}
     </>
 
     // <div>

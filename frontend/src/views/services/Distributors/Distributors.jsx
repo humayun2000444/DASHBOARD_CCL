@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import permissionServices from "../../../apiServices/PermissionServices/PermissionServices";
-
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import DistributorsModal from "./DistributorsModal";
 
 const Distributors = () => {
@@ -130,7 +130,11 @@ const Distributors = () => {
       console.error("Error removing permission:", error);
     }
   };
+  const [type, setType] = useState("All");
 
+  const handleChangeType = (event) => {
+    setType(event.target.value);
+  };
   const data = [
     {
       id: 1,
@@ -284,8 +288,33 @@ const Distributors = () => {
                   </Button>
                 </Form>
               </div>
+              <div className="col-md-2">
+                {/* <h6>Type:</h6>
+                <Form style={{ display: "flex", alignItems: "center" }}>
+                  <Form.Control
+                    placeholder="Search..."
+                    style={{ marginRight: "10px" }}
+                  />
+                  <Button style={{ padding: "7px 30px" }} type="submit">
+                    Find
+                  </Button>
+                </Form> */}
+                {/* <FormControl fullWidth>
+                  <Select
+                    labelId="type-select-label"
+                    id="type-select"
+                    value={type}
+                    label="Type"
+                    onChange={handleChangeType}
+                  >
+                    <MenuItem value="All">All</MenuItem>
+                    <MenuItem value="ANS">ANS</MenuItem>
+                    <MenuItem value="IOS">IOS</MenuItem>
+                  </Select>
+                </FormControl> */}
+              </div>
               <div
-                className="col-md-8 d-flex justify-content-end"
+                className="col-md-6 d-flex justify-content-end"
                 style={{ marginTop: "23px" }}
               >
                 <Button
@@ -311,6 +340,7 @@ const Distributors = () => {
                   <th align="right">Account Name</th>
                   <th align="right">Amount</th>
                   <th align="right">UOM</th>
+                  <th align="right">Action</th>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -321,7 +351,7 @@ const Distributors = () => {
                     <TableCell>{row.priority}</TableCell>
                     <TableCell>{row.balanceShare}</TableCell>
                     <TableCell>{row.routeType}</TableCell>
-
+                    <TableCell>{row.routeType}</TableCell>
                     <TableCell>
                       {/* <IconButton
                         aria-label="edit"
