@@ -52,9 +52,7 @@ const analyticsDashboard = lazy(() =>
 //   import("./views/services/Dashboard/Pages/ProviderAdmin/Index")
 // )
 // trial dashboard end
-const CallWebrtc = lazy(() =>
-  import("./views/dashboard/WebRtc/Calls")
-);
+const CallWebrtc = lazy(() => import("./views/dashboard/WebRtc/Calls"));
 
 const ContactsWebrtc = lazy(() => import("./views/dashboard/WebRtc/Contacts"));
 
@@ -1029,6 +1027,10 @@ const CallShopClients = lazy(() =>
   import("./views/services/CallShopClients/CallShopClients.jsx")
 );
 
+const Distributors = lazy(() =>
+  import("./views/services/Distributors/Distributors.jsx")
+);
+
 const BtrcPortal = lazy(() =>
   import("./views/services/Dashboard/Pages/BtrcAdmin/BtrcPortal.jsx")
 );
@@ -1143,6 +1145,9 @@ class AppRouter extends React.Component {
                       path="/callshopClients"
                       component={CallShopClients}
                     />
+                  )}
+                  {adminChecking && (
+                    <AppRoute path="/distributors" component={Distributors} />
                   )}
                   <AppRoute
                     exact

@@ -11,9 +11,10 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import permissionServices from "../../../apiServices/PermissionServices/PermissionServices";
-import RoutingModal from "./RoutingModal";
 
-const RoutingPlan = () => {
+import DistributorsModal from "./DistributorsModal";
+
+const Distributors = () => {
   const [permissions, setRoutings] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -63,10 +64,21 @@ const RoutingPlan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      prefix: formData.prefix,
-      profileName: formData.profileName,
-      ipAddress: formData.ipAddress,
-      context: formData.context,
+      partnerName: formData.partnerName,
+      telephone: formData.telephone,
+      email: formData.email,
+      address1: formData.address1,
+      address2: formData.address2,
+      city: formData.city,
+      state: formData.state,
+      postalCode: formData.postalCode,
+      country: formData.country,
+      alternateNameInvoice: formData.alternateNameInvoice,
+      alternateNameOther: formData.alternateNameOther,
+      vatRegistrationNo: formData.vatRegistrationNo,
+      invoiceAddress: formData.invoiceAddress,
+      prePostPaid: formData.prePostPaid,
+      partnerType: formData.partnerType,
     };
     try {
       if (selectedPermissionId) {
@@ -89,10 +101,21 @@ const RoutingPlan = () => {
         userInfo.token
       );
       setFormData({
-        prefix: data.prefix || "",
-        profileName: data.profileName || "",
-        ipAddress: data.ipAddress || "",
-        context: data.context || "",
+        partnerName: data.partnerName || "",
+        telephone: data.telephone || "",
+        email: data.email || "",
+        address1: data.address1 || "",
+        address2: data.address2 || "",
+        city: data.city || "",
+        state: data.state || "",
+        postalCode: data.postalCode || "",
+        country: data.country || "",
+        alternateNameInvoice: data.alternateNameInvoice || "",
+        alternateNameOther: data.alternateNameOther || "",
+        vatRegistrationNo: data.vatRegistrationNo || "",
+        invoiceAddress: data.invoiceAddress || "",
+        prePostPaid: data.prePostPaid || "",
+        partnerType: data.partnerType || "",
       });
     } catch (error) {
       console.error("Error fetching permission data:", error);
@@ -230,28 +253,27 @@ const RoutingPlan = () => {
       status: "Inactive",
     },
   ];
-
   return (
     <div>
-      <RoutingModal
+      <DistributorsModal
         open={modalOpen}
         handleClose={handleCloseModal}
         handleSubmit={handleSubmit}
         formData={formData}
         handleChange={handleChange}
-        title={selectedPermissionId ? "Update Route" : "Add Route"}
-        buttonText={selectedPermissionId ? "Update" : "Add Route"}
+        title={selectedPermissionId ? "Update partner" : "Add Partner"}
+        buttonText={selectedPermissionId ? "Update" : "Save"}
       />
 
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">
-            <h4 className="pb-3">Routing Plan</h4>
+            <h4 className="pb-3">Partner</h4>
           </div>
           <div className="mt-4 container-fluid">
             <div className="row mb-3">
               <div className="col-md-4">
-                <h6>Find Route:</h6>
+                <h6>Find Partner:</h6>
                 <Form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."
@@ -283,17 +305,12 @@ const RoutingPlan = () => {
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>
-                  <th>ID</th>
-                  <th align="right">Prefix</th>
-                  <th align="right">Priority</th>
-                  <th align="right">Share</th>
-                  <th align="right">Route Type</th>
-                  <th align="right">Route</th>
-                  <th align="right">Tech Prefix</th>
-                  <th align="right">Calls Limits</th>
-                  <th align="right">LCR</th>
-                  <th align="right">Status</th>
-                  <th align="right">Action</th>
+                  <th>ID Partner</th>
+                  <th align="right">Partner Name</th>
+                  <th align="right">Partner Type</th>
+                  <th align="right">Account Name</th>
+                  <th align="right">Amount</th>
+                  <th align="right">UOM</th>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -304,11 +321,7 @@ const RoutingPlan = () => {
                     <TableCell>{row.priority}</TableCell>
                     <TableCell>{row.balanceShare}</TableCell>
                     <TableCell>{row.routeType}</TableCell>
-                    <TableCell>{row.route}</TableCell>
-                    <TableCell>{row.techPrefix}</TableCell>
-                    <TableCell>{row.callsLimits}</TableCell>
-                    <TableCell>{row.lcr ? "Yes" : "No"}</TableCell>
-                    <TableCell>{row.status}</TableCell>
+
                     <TableCell>
                       {/* <IconButton
                         aria-label="edit"
@@ -345,4 +358,4 @@ const RoutingPlan = () => {
   );
 };
 
-export default RoutingPlan;
+export default Distributors;

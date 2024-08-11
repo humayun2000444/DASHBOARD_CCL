@@ -15,20 +15,19 @@ const Footer = () => {
     >
       {/* <div className="row">
         <div className="col-sm-4 text-sm-center footer-text">
-        <span className="text-md-left d-block d-md-inline-block mt-25">
-        <a href="/">UAPP</a>
-        © services Higher Education Group.
-        </span>
-            </div>
-        <div className="col-sm-4 text-center footer-text"> 
-        <span className="text-center">For support : support@uapp.uk</span>
-         </div>
-        <div className="col-sm-4 text-sm-center footer-text"> 
-        <span className="text-md-right ">
-          <span className="align-middle">Powered by </span>{" "}
-          <a href="#">Jpro UK ltd.</a>
-        </span>
-         </div>
+          <span className="text-md-left d-block d-md-inline-block mt-25">
+            <a href="/">UAPP</a>© services Higher Education Group.
+          </span>
+        </div>
+        <div className="col-sm-4 text-center footer-text">
+          <span className="text-center">For support : support@uapp.uk</span>
+        </div>
+        <div className="col-sm-4 text-sm-center footer-text">
+          <span className="text-md-right ">
+            <span className="align-middle">Powered by </span>{" "}
+            <a href="#">Jpro UK ltd.</a>
+          </span>
+        </div>
       </div> */}
 
       <div className="uapp-footer ">

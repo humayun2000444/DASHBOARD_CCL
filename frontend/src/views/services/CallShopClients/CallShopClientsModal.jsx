@@ -22,6 +22,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const CallShopClientsModal = ({
@@ -58,7 +59,6 @@ const CallShopClientsModal = ({
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -75,9 +75,28 @@ const CallShopClientsModal = ({
             p: 4,
           }}
         >
-          <Typography variant="h6" component="h2">
-            {title}
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6" component="h2">
+              {title}
+            </Typography>
+            <IconButton
+              onClick={handleClose}
+              style={{
+                transition: "color 0.3s ease",
+                color: "inherit",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = "red")}
+              onMouseOut={(e) => (e.currentTarget.style.color = "inherit")}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Box sx={{ bgcolor: "background.paper", width: "100%", mt: 2 }}>
             <AppBar position="static" sx={{ bgcolor: "white", color: "black" }}>
               <Tabs

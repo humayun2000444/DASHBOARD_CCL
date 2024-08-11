@@ -1,9 +1,0 @@
-.MuiTableCell-alignRight {
-     text-align: left !important; 
-     flex-direction: row !important; 
-}
-
-[dir] p {
-    margin-top: 9px !important;
-    margin-bottom: 1rem;
-}
