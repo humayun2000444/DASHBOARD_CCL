@@ -124,7 +124,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "react-scripts --max-old-space-size=4096 start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
