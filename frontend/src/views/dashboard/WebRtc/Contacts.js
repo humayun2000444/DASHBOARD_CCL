@@ -93,6 +93,16 @@ const Contacts = () => {
 
   const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
 
+  const handleMouseLeave = () => {
+    const mappedArray = contacts.map((contact) => {
+      return {
+        ...contact,
+        isHovered: false,
+      };
+    });
+    setContacts(mappedArray);
+  };
+
   return (
     <div className="contacts">
       <div className="contacts__sidebar">
@@ -121,7 +131,7 @@ const Contacts = () => {
           <h3>{selectedCategory}</h3>
           <span>{showContacts.length} Contacts</span>
         </div>
-        <ul>
+        <ul onMouseLeave={handleMouseLeave}>
           {showContacts.map((contact, i) => (
             <ContactsUser
               key={contact.id}

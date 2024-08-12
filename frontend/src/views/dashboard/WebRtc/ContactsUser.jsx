@@ -27,7 +27,10 @@ const ContactsUser = ({
     setContacts(mappedArray);
   };
   return (
-    <li className="contacts__list--users" onMouseOver={() => handleMouseHover(contact.id)}>
+    <li
+      className="contacts__list--users"
+      onMouseOver={() => handleMouseHover(contact.id)}
+    >
       <div>
         <div style={{ backgroundColor: bgColor }}>{contact.name.charAt(0)}</div>
         <div>
@@ -36,14 +39,18 @@ const ContactsUser = ({
         </div>
       </div>
       <div>
-        <button>
-          <i className="fas fa-phone"></i>
-        </button>
-        <ContactModal
-          handleEditContact={handleEditContact}
-          handleDeleteContact={handleDeleteContact}
-          contact={contact}
-        />
+        {contact.isHovered && (
+          <button>
+            <i className="fas fa-phone"></i>
+          </button>
+        )}
+        {contact.isHovered && (
+          <ContactModal
+            handleEditContact={handleEditContact}
+            handleDeleteContact={handleDeleteContact}
+            contact={contact}
+          />
+        )}
 
         {contact.isFavourite && (
           <button onClick={() => handleFavourite(contact.id)}>
