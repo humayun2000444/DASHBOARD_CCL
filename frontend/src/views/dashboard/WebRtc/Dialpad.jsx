@@ -30,7 +30,9 @@ const Dialpad = ({
             <i className="fas fa-phone"></i>
           </button>
         ) : (
-          <button onClick={handleHangup}>
+          <button onClick={handleHangup}
+                  className="dial-action-button hangup-button"
+          >
             <i className="fas fa-phone-slash"></i>
           </button>
         )}
