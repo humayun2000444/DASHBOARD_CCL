@@ -1,4 +1,8 @@
+import JanusEvent from "./Responses";
+import CallState from "./CallState";
+
 class WebSocketClient {
+
   constructor(url, onMessage, protocol = null) {
     this.url = url;
     this.onMessage = onMessage;
@@ -9,7 +13,8 @@ class WebSocketClient {
     this.attached = false;
     this.username = null;
     this.password = null;
-    this.transactions = {}; // Add transactions definition here
+    this.transactions = {};
+    this.pluginHandles = {};
   }
 
   connect(username, password) {
@@ -27,7 +32,7 @@ class WebSocketClient {
     };
 
     this.socket.onmessage = (event) => {
-      console.log(event);
+      console.log(event.data.toString());
       this.handleEvent(JSON.parse(event.data));
     };
 
@@ -43,11 +48,12 @@ class WebSocketClient {
       if (this.sessionId) {
         this.sendKeepalive();
       }
-    }, 10000);
+    }, 15000);
   }
 
   sendMessage(message) {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      console.log(message.toString());
       this.socket.send(message);
     }
   }
@@ -63,9 +69,9 @@ class WebSocketClient {
   }
 
   handleEvent(json) {
-    if (json.janus === "keepalive") {
-      return;
-    } else if (json.janus === "server_info") {
+    const callState = CallState; // Access singleton instance
+    const peerConnection = callState.getPeerConnection();
+    if (json.janus === "server_info") {
       const transaction = json.transaction;
       if (transaction) {
         const reportSuccess = this.transactions[transaction]; // Use this.transactions
@@ -73,14 +79,35 @@ class WebSocketClient {
         delete this.transactions[transaction]; // Use this.transactions
       }
       return;
-    } else if (json.janus === "ack") {
+    }
+    else if (json.janus === "ack") {
       return;
-    } else if (json.janus === "success") {
-      if (!this.sessionId) {
+    }
+    else if (json.janus === "success") {
+      if (!json.session_id) {
         this.sessionId = json.data.id;
       }
-      if (json.data && json.data.id) {
+     else {
         this.handleId = json.data.id;
+        if (this.sessionId && this.handleId) {
+          this.sendMessage(JSON.stringify({
+            janus: "message",
+            body: {
+              request: "register",
+              username: `sip:${this.username}@103.95.96.100`,
+              authuser: this.username,
+              // display_name: "Humayun",
+              secret: this.password,
+              proxy: "sip:103.95.96.100:5060"
+            },
+            transaction: WebSocketClient.randomString(12),
+            session_id: this.sessionId,
+            handle_id: this.handleId
+          }));
+        } else {
+          console.error("sessionId or handleId is not set");
+        }
+        return;
       }
       if (!this.attached) {
         this.sendMessage(JSON.stringify({
@@ -92,26 +119,45 @@ class WebSocketClient {
         }));
         this.attached = true;
       }
-      if (this.sessionId && this.handleId) {
-        this.sendMessage(JSON.stringify({
-          janus: "message",
-          body: {
-            request: "register",
-            username: `sip:${this.username}@103.95.96.100`,
-            authuser: this.username,
-            display_name: "Humayun",
-            secret: this.password,
-            proxy: "sip:103.95.96.100:5060"
-          },
-          transaction: WebSocketClient.randomString(12),
-          session_id: this.sessionId,
-          handle_id: this.handleId
-        }));
-      } else {
-        console.error("sessionId or handleId is not set");
+
+    }
+    else if(json.janus === "hangup") {
+      CallState.setCallStatus("idle");
+      this.sendHangupRequest();
+    }
+    else if (json.janus === "event")
+    {
+      const janusEvent = new JanusEvent(json);
+      const event = janusEvent.getEvent();
+      if (event === "accepted") {
+        callState.setCallStatus("connected");
+      } else if (event === "hangup") {
+        callState.setCallStatus("idle");
       }
-      return;
-    } else {
+      else if (janusEvent.getPlugin() === "janus.plugin.sip") {
+        const jsep = janusEvent.getJsep();
+        if (jsep && janusEvent.getJsepType() === "answer") {
+          peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
+            .then(() => console.log('Remote description set with SDP answer'))
+            .catch(error => console.error('Error setting remote description:', error));
+          if (event === "progress") {
+            console.log(`Call is in progress with ${janusEvent.getUsername()}`);
+          }
+          callState.setCallStatus("in_call");
+          callState.setPeerConnection(peerConnection);
+        }
+      }
+    }
+    else if(json.janus === "media")
+    {
+      console.log("media received");
+    }
+    else if(json.janus === "webrtcup")
+    {
+      console.log("webrtcup");
+    }
+    else {
+      console.log(json);
       console.warn(`Unknown message/event '${json.janus}' on session ${this.sessionId}`);
       console.debug(json);
     }
@@ -133,6 +179,7 @@ class WebSocketClient {
       session_id: this.sessionId,
       handle_id: this.handleId
     }));
+
   }
 
   sendHangupRequest() {

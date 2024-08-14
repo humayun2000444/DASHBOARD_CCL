@@ -1,0 +1,135 @@
+body {
+  overflow-y: scroll;
+}
+.contacts {
+  display: flex;
+  gap: 2rem;
+  &__sidebar {
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    &--search {
+      position: relative;
+      input {
+        font-weight: 600;
+        width: 100%;
+        outline: none;
+        padding: 0.7rem 0 0.7rem 2.2rem;
+        border-radius: 0.5rem;
+        border: 1px solid #eeeeee;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+          rgba(0, 0, 0, 0.23) 0px 3px 6px;
+      }
+      .fa-magnifying-glass {
+        font-size: 1.2rem;
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    &--list {
+      list-style: none;
+      padding: 0;
+      li {
+        margin-bottom: 0.5rem;
+        padding: 1rem 0.8rem;
+        font-weight: 600;
+        border-radius: 0.7rem;
+        cursor: pointer;
+        transition: 0.2s all ease;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        text-align: left;
+
+        &:hover {
+          background-color: #164677;
+          color: #fff;
+        }
+        p {
+          margin-bottom: 0;
+        }
+        span {
+          width: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+  &__list {
+    overflow-y: auto;
+    box-sizing: content-box;
+    height: 100%;
+    flex-basis: 80%;
+    padding: 0 1rem;
+    & > div {
+      span {
+        font-size: 16px;
+      }
+    }
+    ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+    &--users {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.7rem;
+      padding: 1rem;
+      cursor: pointer;
+      transition: 0.2s all ease-in;
+
+      button {
+        border: none;
+        outline: none;
+        background-color: transparent;
+      }
+      &:hover {
+        background-color: #fff;
+      }
+      p {
+        margin: 0;
+      }
+      & > div:nth-child(1) {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        div:nth-child(1) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 2.8rem;
+          width: 2.8rem;
+          font-size: 1.2rem;
+          background-color: #000;
+          font-weight: 600;
+          color: #fff;
+          border-radius: 50%;
+        }
+        div:nth-child(2) {
+          p:nth-child(1) {
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+      }
+      & > div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        i {
+          font-size: 1.2rem;
+        }
+        & > button:nth-child(1) {
+          color: green;
+        }
+      }
+    }
+  }
+}

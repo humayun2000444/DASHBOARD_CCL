@@ -1,113 +1,148 @@
-import React, { useState } from "react";
-import "./Contacts.css"; 
+import React, { useEffect, useState } from "react";
+import "../../../assets/scss/pages/Contacts.scss";
+import ContactsCategory from "./ContactsCategory";
+import ContactsUser from "./ContactsUser";
 
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All Contacts");
 
-  const contacts = [
-    {
-      id: 1000,
-      name: "1000",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5001,
-      name: "5001",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5002,
-      name: "5002",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5003,
-      name: "5003",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5004,
-      name: "5004",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5005,
-      name: "5005",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5006,
-      name: "5006",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 5007,
-      name: "5007",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
-    {
-      id: 4008,
-      name: "4008",
-      category: "Enterprise Contacts",
-      status: "online",
-    },
+  const initialContacts = [
+    { id: 1000, name: "1000", isHovered: false, isFavourite: true },
+    { id: 5001, name: "5001", isHovered: false, isFavourite: false },
+    { id: 5002, name: "5002", isHovered: false, isFavourite: false },
+    { id: 5003, name: "5003", isHovered: false, isFavourite: false },
+    { id: 5004, name: "5004", isHovered: false, isFavourite: true },
+    { id: 5005, name: "5005", isHovered: false, isFavourite: false },
+    { id: 5006, name: "5006", isHovered: false, isFavourite: false },
+    { id: 5007, name: "5007", isHovered: false, isFavourite: false },
+    { id: 4008, name: "4008", isHovered: false, isFavourite: false },
   ];
 
-  const categories = ["All", "Favorites", "Enterprise Contacts"];
+  const [contacts, setContacts] = useState(initialContacts);
+  const [showContacts, setShowContacts] = useState(initialContacts);
 
-  const filteredContacts = contacts.filter((contact) => {
-    return (
-      (selectedCategory === "All" || contact.category === selectedCategory) &&
-      contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const contactCategories = ["All Contacts", "Favourites"];
+
+  const handleFavourite = (id) => {
+    setContacts((prev) => {
+      return prev.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            isFavourite: !item.isFavourite,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  const handleChangeCategory = (category) => {
+    setSelectedCategory(category);
+    setSearchTerm(""); // Optionally clear search when changing category
+  };
+
+  const handleEditContact = (id, formData) => {
+    setContacts((prev) => {
+      return prev.map((item) => {
+        if (item.id === id) {
+          return {
+            ...formData,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  const handleDeleteContact = (id) => {
+    setContacts((prev) => {
+      return prev.filter((item) => item.id !== id);
+    });
+  };
+
+  const handleSearch = (searchText) => {
+    setSearchTerm(searchText);
+    const value = searchText.toLowerCase();
+
+    let filteredContacts = [...contacts];
+
+    // Filter by category
+    if (selectedCategory === "Favourites") {
+      filteredContacts = filteredContacts.filter(
+        (contact) => contact.isFavourite
+      );
+    }
+
+    // Apply search filter
+    const results = filteredContacts.filter((contact) =>
+      contact.name.toLowerCase().includes(value)
     );
-  });
+
+    setShowContacts(results);
+  };
+
+  useEffect(() => {
+    if (selectedCategory === "Favourites") {
+      setShowContacts(contacts.filter((item) => item.isFavourite));
+    } else {
+      setShowContacts([...contacts]);
+    }
+  }, [contacts, selectedCategory]);
+
+  const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
+
+  const handleMouseLeave = () => {
+    const mappedArray = contacts.map((contact) => {
+      return {
+        ...contact,
+        isHovered: false,
+      };
+    });
+    setContacts(mappedArray);
+  };
 
   return (
-    <div className="contacts-container">
-      <div className="sidebar">
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-        <ul className="category-list">
-          {categories.map((category) => (
-            <li
+    <div className="contacts">
+      <div className="contacts__sidebar">
+        <div className="contacts__sidebar--search">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
+        <ul className="contacts__sidebar--list">
+          {contactCategories.map((category) => (
+            <ContactsCategory
               key={category}
-              className={selectedCategory === category ? "active" : ""}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </li>
+              selectedCategory={selectedCategory}
+              handleChangeCategory={handleChangeCategory}
+              category={category}
+            />
           ))}
         </ul>
       </div>
-      <div className="contact-list">
-        <div className="contact-list-header">
+      <div className="contacts__list">
+        <div>
           <h3>{selectedCategory}</h3>
-          <span>{filteredContacts.length} Contacts</span>
+          <span>{showContacts.length} Contacts</span>
         </div>
-        <ul>
-          {filteredContacts.map((contact) => (
-            <li key={contact.id} className="contact-item">
-              <div className="contact-avatar">{contact.name.charAt(0)}</div>
-              <div className="contact-info">
-                <div className="contact-name">{contact.name}</div>
-                <div className="contact-category">{contact.category}</div>
-              </div>
-              <div className={`contact-status ${contact.status}`}></div>
-            </li>
+        <ul onMouseLeave={handleMouseLeave}>
+          {showContacts.map((contact, i) => (
+            <ContactsUser
+              key={contact.id}
+              contact={contact}
+              contacts={contacts}
+              setContacts={setContacts}
+              handleFavourite={handleFavourite}
+              handleEditContact={handleEditContact}
+              handleDeleteContact={handleDeleteContact}
+              bgColor={colors[i % colors.length]}
+            />
           ))}
         </ul>
       </div>

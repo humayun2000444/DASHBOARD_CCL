@@ -6,7 +6,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { rootUrl } from "../../../../constants/constants";
 import { history } from "../../../../history";
-import WebSocketClient from "./WebSocketClient";
+import WebSocketClient from "../../../dashboard/WebRtc/WebSocketClient";
 
 import Calls from "../../../dashboard/WebRtc/Calls";
 class Login extends React.Component {

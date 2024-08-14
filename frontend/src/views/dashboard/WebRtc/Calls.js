@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import { v4 as uuidv4 } from "uuid";
 import "../../../assets/scss/pages/Calls.scss";
-import WebSocketClient from "../../pages/authentication/login/WebSocketClient";
 import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
-
+import WebSocketClient from "./WebSocketClient";
+import CallState from "./CallState";
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [callStatus, setCallStatus] = useState("idle"); // idle, calling, connected
+  // const [callStatus, setCallStatus] =  useState("idle"); // idle, calling, connected
   const [callHistory, setCallHistory] = useState([
     {
       id: uuidv4(),
@@ -154,8 +154,10 @@ export default function Calls() {
       isHovered: false,
     },
   ]);
-
   const [webSocketClient, setWebSocketClient] = useState(null);
+  // const peerConnection = new RTCPeerConnection();
+  const [callStatus, setCallStatus] = useState(CallState.getCallStatus());
+  // let callStatus = CallState.getCallStatus();
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -164,7 +166,7 @@ export default function Calls() {
     if (username && password) {
       const client = new WebSocketClient(
         "wss://103.95.96.100:3000/",
-        (message) => handleWebSocketMessage(message),
+        handleWebSocketMessage,
         "janus-protocol"
       );
       client.connect(username, password);
@@ -176,71 +178,122 @@ export default function Calls() {
     }
   }, []);
 
-  const handleWebSocketMessage = (message) => {
-    console.log("WebSocket message:", message);
-    // Handle call connected event
-    if (
-      message.janus === "event" &&
-      message.plugindata?.data?.result?.event === "accepted"
-    ) {
-      setCallStatus("connected");
-    }
-    // Handle call hangup event
-    if (
-      message.janus === "event" &&
-      message.plugindata?.data?.result?.event === "hangup"
-    ) {
-      setCallStatus("idle");
-    }
-  };
-
   const handleButtonClick = (value) => {
     setPhoneNumber((prev) => prev + value);
+  };
+
+  // this.socket.onmessage = (event) => {
+  //   console.log(event.data.toString());
+  //   this.handleWebSocketMessage(JSON.parse(event.data));
+  // };
+
+  const handleWebSocketMessage = (message) => {
+
   };
 
   const handleCall = async () => {
     if (phoneNumber && webSocketClient) {
       try {
         // Request microphone access
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        console.log("Microphone access granted");
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('Microphone access granted');
+
+        const iceServers = [
+          {
+            urls: "stun:stun.l.google.com:19302" // Google STUN server
+          }
+        ];
+
+        // Create RTCPeerConnection with STUN servers
+        const peerConnection = new RTCPeerConnection({ iceServers });
 
         // Create an SDP offer
-        const offer = await createOffer(stream);
-
-        // Send call request via WebSocket
+        const offer = await createOffer(stream, peerConnection);
         webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
 
-        // Handle the call logic (this part depends on your setup)
-        setCallStatus("calling");
+
+        // Handle ICE candidates
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+            const candidate = {
+              janus: "trickle",
+              candidate: {
+                candidate: event.candidate.candidate,
+                sdpMid: event.candidate.sdpMid,
+                sdpMLineIndex: event.candidate.sdpMLineIndex
+              },
+              transaction: WebSocketClient.randomString(12),
+              session_id: webSocketClient.sessionId,
+              handle_id: webSocketClient.handleId
+            };
+            webSocketClient.sendMessage(JSON.stringify(candidate));
+            // console.log("Sending ICE candidate:", candidate);
+          } else {
+            const completedCandidate = {
+              janus: "trickle",
+              candidate: { completed: true },
+              transaction: WebSocketClient.randomString(12),
+              session_id: webSocketClient.sessionId,
+              handle_id: webSocketClient.handleId
+            };
+            webSocketClient.sendMessage(JSON.stringify(completedCandidate));
+            console.log("Sending ICE candidate completion.");
+          }
+        };
+        CallState.setPeerConnection(peerConnection);
+
+        CallState.setCallStatus("calling");
+        setCallStatus(CallState.getCallStatus());
         console.log(`Calling ${phoneNumber}`);
       } catch (error) {
-        console.error("Error accessing microphone:", error);
-        alert(
-          "Failed to access microphone. Please ensure you have granted permission."
-        );
+        console.error('Error accessing microphone:', error);
+        alert('Failed to access microphone. Please ensure you have granted permission.');
       }
     }
   };
 
-  const createOffer = (stream) => {
+  const createOffer = (stream, peerConnection) => {
     return new Promise((resolve, reject) => {
-      const peerConnection = new RTCPeerConnection();
-      stream
-        .getTracks()
-        .forEach((track) => peerConnection.addTrack(track, stream));
-
-      peerConnection
-        .createOffer()
-        .then((offer) => {
-          return peerConnection.setLocalDescription(offer).then(() => offer);
+      // Add only audio tracks to the peer connection
+      stream.getTracks().forEach(track => {
+        if (track.kind === 'audio') {
+          peerConnection.addTrack(track, stream);
+        }
+      });
+      peerConnection.createOffer()
+        .then(offer => peerConnection.setLocalDescription(offer).then(() => offer))
+        .then(offer => {
+          attachMediaStreams(peerConnection); // Attach media streams after setting local description
+          resolve(offer);
         })
-        .then((offer) => resolve(offer))
-        .catch((error) => reject(error));
+        .catch(error => reject(error));
+
+      CallState.setPeerConnection(peerConnection);
     });
   };
+
+  const attachMediaStreams = (peerConnection) => {
+    peerConnection.getReceivers().forEach(receiver => {
+      if (receiver.track.kind === 'audio') {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = new MediaStream([receiver.track]);
+          console.log('Attached remote audio stream');
+        }
+      }
+    });
+
+    peerConnection.ontrack = (event) => {
+      event.streams.forEach(stream => {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = stream;
+          console.log('Remote stream added to audio element');
+        }
+      });
+    };
+  };
+
 
   const handleBackspace = () => {
     setPhoneNumber((prev) => prev.slice(0, -1));
@@ -256,23 +309,20 @@ export default function Calls() {
   };
 
   const handleHangup = () => {
-    if (
-      webSocketClient &&
-      (callStatus === "connected" || callStatus === "calling")
-    ) {
+    if (webSocketClient && (callStatus === "connected" || callStatus === "calling")) {
       webSocketClient.sendHangupRequest();
-      setCallStatus("idle");
+      CallState.setCallStatus("idle");
+      setCallStatus(CallState.getCallStatus());
       console.log(`Call with ${phoneNumber} ended`);
     }
   };
-
+console.log(callStatus);
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
-
   return (
     <div className="calls__container">
       <Dialpad
@@ -283,7 +333,8 @@ export default function Calls() {
         handleCall={handleCall}
         handleHangup={handleHangup}
       />
-      <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} />
+      <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory}/>
+      <audio id="remoteAudio" autoPlay></audio>
     </div>
   );
 }

@@ -212,6 +212,18 @@ const UserDashBoard = () => {
     { title: "Miss Called", value: systemInfo.disk?.usage || "Loading..." },
   ];
 
+
+  const goToAnotherPage = (metric) => {
+
+      if(metric?.title === "Total Calls"){
+        history.push("/CDRs");
+      }
+      else if(metric?.title === "Balance"){
+        history.push("/balance");
+      }
+     
+  }
+
   return (
     <React.Fragment>
       <div className="d-flex justify-content-between flex-wrap">
@@ -306,7 +318,7 @@ const UserDashBoard = () => {
           <CardBody>
             <Row>
               {metrics.map((metric, index) => (
-                <Col md={4} key={index} style={{ marginBottom: "20px" }}>
+                <Col md={4} key={index} style={{ marginBottom: "20px" }} onClick={()=>goToAnotherPage(metric)}>
                   <Paper style={{ padding: "20px", position: "relative" }}>
                     <Box
                       display="flex"
