@@ -123,13 +123,31 @@ body {
       & > div:nth-child(2) {
         display: flex;
         align-items: center;
-        i {
-          font-size: 1.2rem;
-        }
         & > button:nth-child(1) {
           color: green;
         }
+        i {
+          font-size: 1.2rem;
+        }
       }
+    }
+  }
+  &__add {
+    button {
+      border: none;
+      outline: none;
+      background-color: #00215e;
+      color: #fff;
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 5px;
+      i {
+        margin-left: 3px;
+        font-size: 1.2rem;
+      }
+    }
+    button:hover {
+      background-color: #00215e;
     }
   }
 }

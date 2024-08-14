@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../../assets/scss/pages/Contacts.scss";
+import ContactModal from "./ContactModal";
 import ContactsCategory from "./ContactsCategory";
 import ContactsUser from "./ContactsUser";
 
@@ -7,17 +8,51 @@ const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Contacts");
 
-  const initialContacts = [
-    { id: 1000, name: "1000", isHovered: false, isFavourite: true },
-    { id: 5001, name: "5001", isHovered: false, isFavourite: false },
-    { id: 5002, name: "5002", isHovered: false, isFavourite: false },
-    { id: 5003, name: "5003", isHovered: false, isFavourite: false },
-    { id: 5004, name: "5004", isHovered: false, isFavourite: true },
-    { id: 5005, name: "5005", isHovered: false, isFavourite: false },
-    { id: 5006, name: "5006", isHovered: false, isFavourite: false },
-    { id: 5007, name: "5007", isHovered: false, isFavourite: false },
-    { id: 4008, name: "4008", isHovered: false, isFavourite: false },
+  const response = [
+    {
+      id: 1,
+      firstName: "Rizwan",
+      lastName: "Uddin",
+      phone: "01521408552",
+      email: "rizwanshuvo@gmail.com",
+    },
+    {
+      id: 2,
+      firstName: "Yasin",
+      lastName: "Islam",
+      phone: "01521408553",
+      email: "rizwansuvocu@gmail.com",
+    },
+    {
+      id: 3,
+      firstName: "Emon",
+      lastName: "Chowdhury",
+      phone: "01521408554",
+      email: "",
+    },
+    {
+      id: 4,
+      firstName: "Yasin",
+      lastName: "",
+      phone: "01521408555",
+      email: "humayun@gmail.com",
+    },
+    {
+      id: 5,
+      firstName: "Humayun",
+      lastName: "Ahmed",
+      phone: "01521408555",
+      email: "",
+    },
   ];
+
+  const initialContacts = response.map((contact) => {
+    return {
+      ...contact,
+      isHovered: false,
+      isFavourite: false,
+    };
+  });
 
   const [contacts, setContacts] = useState(initialContacts);
   const [showContacts, setShowContacts] = useState(initialContacts);
@@ -26,39 +61,51 @@ const Contacts = () => {
 
   const handleFavourite = (id) => {
     setContacts((prev) => {
-      return prev.map((item) => {
-        if (item.id === id) {
+      return prev.map((contact) => {
+        if (contact.id === id) {
           return {
-            ...item,
-            isFavourite: !item.isFavourite,
+            ...contact,
+            isFavourite: !contact.isFavourite,
           };
         }
-        return item;
+        return contact;
       });
     });
   };
 
   const handleChangeCategory = (category) => {
     setSelectedCategory(category);
-    setSearchTerm(""); // Optionally clear search when changing category
+    setSearchTerm("");
+  };
+
+  const handleAddContact = (formData) => {
+    setContacts([
+      ...contacts,
+      {
+        ...formData,
+        isHovered: false,
+        isFavourite: false,
+        id: contacts.length + 1,
+      },
+    ]);
   };
 
   const handleEditContact = (id, formData) => {
     setContacts((prev) => {
-      return prev.map((item) => {
-        if (item.id === id) {
+      return prev.map((contact) => {
+        if (contact.id === id) {
           return {
             ...formData,
           };
         }
-        return item;
+        return contact;
       });
     });
   };
 
   const handleDeleteContact = (id) => {
     setContacts((prev) => {
-      return prev.filter((item) => item.id !== id);
+      return prev.filter((contact) => contact.id !== id);
     });
   };
 
@@ -77,7 +124,7 @@ const Contacts = () => {
 
     // Apply search filter
     const results = filteredContacts.filter((contact) =>
-      contact.name.toLowerCase().includes(value)
+      (contact.firstName + contact.lastName).toLowerCase().includes(value)
     );
 
     setShowContacts(results);
@@ -85,7 +132,7 @@ const Contacts = () => {
 
   useEffect(() => {
     if (selectedCategory === "Favourites") {
-      setShowContacts(contacts.filter((item) => item.isFavourite));
+      setShowContacts(contacts.filter((contact) => contact.isFavourite));
     } else {
       setShowContacts([...contacts]);
     }
@@ -145,6 +192,9 @@ const Contacts = () => {
             />
           ))}
         </ul>
+      </div>
+      <div className="contacts__add">
+        <ContactModal type="Add" handleAddContact={handleAddContact} />
       </div>
     </div>
   );
