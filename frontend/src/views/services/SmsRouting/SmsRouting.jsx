@@ -10,77 +10,74 @@ import { Form, Button } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DistributorsModal from "./DistributorsModal";
-import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
-import toast, { Toaster } from "react-hot-toast";
 
-const Distributors = () => {
+import SmsRoutingModal from "./SmsRoutingModal";
+import smsRouteServices from "../../../apiServices/SmsRouteService/SmsRouteService";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
+import toast from "react-hot-toast";
+
+const SmsRouting = () => {
+  const [routes, setRoutes] = useState([]);
   const [partners, setPartners] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    partnerName: "",
-    telephone: "",
-    email: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "",
-    alternateNameInvoice: "",
-    alternateNameOther: "",
-    vatRegistrationNo: "",
-    invoiceAddress: "",
-    customerPrePaid: "",
-    partnerType: "",
-    defaultCurrency: 1,
+    routeName: "",
+    description: "",
+    field5: "",
+    zone: "",
+    nationalOrInternational: "",
+    field4: "",
+    switchId: 1,
+    idPartner: "",
   });
-  const [selectedPartnerId, setPartnerId] = useState(null);
+  const [selectedRouteId, setRouteId] = useState(null);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
-    fetchPartners();
+    fetchRoutes();
+    fetchPartner();
   }, []);
 
-  const fetchPartners = async () => {
+  const fetchPartner = async () => {
     try {
       const data = await partnerServices.fetchPartners();
       setPartners(data);
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
+  };
+
+  const fetchRoutes = async () => {
+    try {
+      const data = await smsRouteServices.fetchRoutes();
+      setRoutes(data);
       console.log(data);
     } catch (error) {
       console.error("Error fetching permissions:", error);
     }
   };
 
-  const handleOpenModal = (partnerId = null) => {
-    setPartnerId(partnerId);
+  const handleOpenModal = (routeId = null) => {
+    setRouteId(routeId);
     setModalOpen(true);
-    if (partnerId) {
-      console.log("Opening modal with partnerId:", partnerId); // Debugging line
-      fetchPartnerData(partnerId);
+    if (routeId) {
+      fetchPartnerData(routeId);
     }
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setFormData({
-      partnerName: "",
-      telephone: "",
-      email: "",
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      alternateNameInvoice: "",
-      alternateNameOther: "",
-      vatRegistrationNo: "",
-      invoiceAddress: "",
-      customerPrePaid: "",
-      partnerType: "",
+      routeName: "",
+      description: "",
+      field5: "",
+      zone: "",
+      nationalOrInternational: "",
+      field4: "",
+      switchId: 1,
+      idPartner: "",
     });
-    setPartnerId(null);
+    setRouteId(null);
   };
 
   const handleChange = (e) => {
@@ -94,78 +91,61 @@ const Distributors = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      partnerName: formData.partnerName,
-      telephone: formData.telephone,
-      email: formData.email,
-      address1: formData.address1,
-      address2: formData.address2,
-      city: formData.city,
-      state: formData.state,
-      postalCode: formData.postalCode,
-      country: formData.country,
-      alternateNameInvoice: formData.alternateNameInvoice,
-      alternateNameOther: formData.alternateNameOther,
-      vatRegistrationNo: formData.vatRegistrationNo,
-      invoiceAddress: formData.invoiceAddress,
-      customerPrePaid: formData.customerPrePaid,
-      partnerType: formData.partnerType,
-      defaultCurrency: 1,
+      routeName: formData.routeName,
+      description: formData.description,
+      field5: formData.field5,
+      zone: formData.zone,
+      nationalOrInternational: formData.nationalOrInternational,
+      field4: formData.field4,
+      switchId: 1,
+      idPartner: formData.idPartner,
     };
     try {
-      if (selectedPartnerId) {
-        await partnerServices.updatePartner(
-          selectedPartnerId,
-          data,
-          userInfo.token
-        );
-        toast.success("Partner information updated successfully!");
+      if (selectedRouteId) {
+        await smsRouteServices.updateRoute(selectedRouteId, data);
+        toast.success("Route information updated successfully!");
       } else {
-        await partnerServices.createPartner(data, userInfo.token);
-        toast.success("Partner created successfully!");
+        await smsRouteServices.createRoute(data, userInfo.token);
+        toast.success("Route created successfully!");
       }
       handleCloseModal();
-      fetchPartners();
+      fetchRoutes();
     } catch (error) {
-      console.error("Error adding/updating partner:", error);
-      toast.error("Failed to save partner information. Please try again.");
+      console.error("Error adding/updating permission:", error);
+      toast.error(
+        "Failed to save partner information. Please try again.",
+        `${error}`
+      );
     }
     console.log(data);
   };
 
-  const fetchPartnerData = async (partnerId) => {
+  const fetchPartnerData = async (routeId) => {
     try {
-      console.log(partnerId);
-      const data = await partnerServices.fetchPartnerById(
-        partnerId,
+      console.log(routeId);
+      const data = await smsRouteServices.fetchRouteById(
+        routeId,
         userInfo.token
       );
       setFormData({
-        partnerName: data.partnerName || "",
-        telephone: data.telephone || "",
-        email: data.email || "",
-        address1: data.address1 || "",
-        address2: data.address2 || "",
-        city: data.city || "",
-        state: data.state || "",
-        postalCode: data.postalCode || "",
-        country: data.country || "",
-        alternateNameInvoice: data.alternateNameInvoice || "",
-        alternateNameOther: data.alternateNameOther || "",
-        vatRegistrationNo: data.vatRegistrationNo || "",
-        invoiceAddress: data.invoiceAddress || "",
-        customerPrePaid: data.customerPrePaid || "",
-        partnerType: data.partnerType || "",
+        routeName: data.routeName || "",
+        description: data.description || "",
+        field5: data.field5 || "",
+        zone: data.zone || "",
+        nationalOrInternational: data.nationalOrInternational || "",
+        field4: data.field4 || "",
+        idPartner: data.idPartner || "",
       });
     } catch (error) {
       console.error("Error fetching partner data:", error);
     }
   };
 
-  const handleDeletePartner = async (partnerId) => {
+  const handleDeleteRoute = async (routeId) => {
     toast(
       (t) => (
         <div>
-          <p>Are you sure you want to delete this partner?</p>
+          <p>Are you sure you want to delete this Route?</p>
           <div
             style={{
               display: "flex",
@@ -202,12 +182,12 @@ const Distributors = () => {
                   if (!token) {
                     throw new Error("No authentication token available");
                   }
-                  await partnerServices.deletePartner(partnerId, token);
-                  fetchPartners();
-                  toast.success("Partner deleted successfully!");
+                  await smsRouteServices.deleteRoute(routeId, token);
+                  fetchRoutes();
+                  toast.success("Route deleted successfully!");
                 } catch (error) {
                   console.error("Error deleting partner:", error);
-                  toast.error("Failed to delete partner!");
+                  toast.error("Failed to delete partner!", `${error}`);
                 }
               }}
             >
@@ -225,25 +205,26 @@ const Distributors = () => {
 
   return (
     <div>
-      <DistributorsModal
+      <SmsRoutingModal
         open={modalOpen}
         handleClose={handleCloseModal}
         handleSubmit={handleSubmit}
         formData={formData}
+        partners={partners}
         handleChange={handleChange}
-        title={selectedPartnerId ? "Update partner" : "Add Partner"}
-        buttonText={selectedPartnerId ? "Update" : "Save"}
+        title={selectedRouteId ? "Update partner" : "Add Partner"}
+        buttonText={selectedRouteId ? "Update" : "Save"}
       />
 
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">
-            <h4 className="pb-3">Partner</h4>
+            <h4 className="pb-3">Route</h4>
           </div>
           <div className="mt-4 container-fluid">
             <div className="row mb-3">
               <div className="col-md-4">
-                <h6>Find Partner:</h6>
+                <h6>Find Sms Routing:</h6>
                 <Form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."
@@ -263,7 +244,7 @@ const Distributors = () => {
                   style={{ padding: "7px 30px" }}
                   onClick={() => handleOpenModal()}
                 >
-                  Add Partner
+                  Add Sms Routing
                 </Button>
               </div>
             </div>
@@ -276,26 +257,33 @@ const Distributors = () => {
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>
-                  <th>ID Partner</th>
-                  <th align="right">Partner Name</th>
-                  <th align="right">Email</th>
-                  <th align="right">Coustomer Per/Post Paid</th>
-                  <th align="right">Partner Type</th>
+                  <th>ID Route</th>
+                  <th align="right">Route Name</th>
+                  <th align="right">ID Partner</th>
+                  <th align="right">National / International</th>
+                  <th align="right">Description</th>
+                  <th align="right">Channel</th>
+                  <th align="right">Route Addrres</th>
+                  <th align="right">Zone</th>
                   <th align="right">Action</th>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {partners.map((row, i) => (
-                  <TableRow key={row?.idPartner}>
+                {routes.map((row, i) => (
+                  <TableRow key={row?.idroute}>
+                    <TableCell>{row?.idroute}</TableCell>
+                    <TableCell>{row?.routeName}</TableCell>
                     <TableCell>{row?.idPartner}</TableCell>
-                    <TableCell>{row?.partnerName}</TableCell>
-                    <TableCell>{row?.email}</TableCell>
                     <TableCell>
-                      {row?.customerPrePaid === 1 ? "Prepaid" : "Postpaid"}
+                      {row?.nationalOrInternational === 1
+                        ? "National"
+                        : "International"}
                     </TableCell>
-                    <TableCell>
-                      {row?.partnerType === 1 ? "IOS" : "ANS"}
-                    </TableCell>
+
+                    <TableCell>{row?.description}</TableCell>
+                    <TableCell>{row?.field4}</TableCell>
+                    <TableCell>{row?.field5}</TableCell>
+                    <TableCell>{row?.zone}</TableCell>
                     <TableCell>
                       {/* <IconButton
                         aria-label="edit"
@@ -306,17 +294,17 @@ const Distributors = () => {
                       </IconButton>
                       <IconButton
                         aria-label="delete"
-                        onClick={() => handleDeletePartner(row.id)}
+                        onClick={() => handleDeleteRoute(row.id)}
                         style={{ color: "red" }}
                       >
                         <DeleteIcon />
                       </IconButton> */}
-                      <Button onClick={() => handleOpenModal(row.idPartner)}>
+                      <Button onClick={() => handleOpenModal(row.idroute)}>
                         Edit
                       </Button>{" "}
                       <Button
                         variant="danger"
-                        onClick={() => handleDeletePartner(row.idPartner)}
+                        onClick={() => handleDeleteRoute(row.idroute)}
                       >
                         Delete
                       </Button>
@@ -331,5 +319,4 @@ const Distributors = () => {
     </div>
   );
 };
-
-export default Distributors;
+export default SmsRouting;

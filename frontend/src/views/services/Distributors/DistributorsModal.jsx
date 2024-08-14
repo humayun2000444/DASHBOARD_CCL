@@ -39,7 +39,7 @@ const DistributorsModal = ({
     alternateNameOther = "",
     vatRegistrationNo = "",
     invoiceAddress = "",
-    prePostPaid = "",
+    customerPrePaid = "",
     partnerType = "",
   } = formData || {};
   return (
@@ -391,12 +391,12 @@ const DistributorsModal = ({
               <FormControl fullWidth variant="standard">
                 <InputLabel>Pre/Post Paid</InputLabel>
                 <Select
-                  name="prePostPaid"
-                  value={prePostPaid}
+                  name="customerPrePaid"
+                  value={customerPrePaid}
                   onChange={handleChange}
                 >
-                  <MenuItem value="prepaid">Prepaid</MenuItem>
-                  <MenuItem value="postpaid">Postpaid</MenuItem>
+                  <MenuItem value={1}>Prepaid</MenuItem>
+                  <MenuItem value={2}>Postpaid</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -408,8 +408,8 @@ const DistributorsModal = ({
                   value={partnerType}
                   onChange={handleChange}
                 >
-                  <MenuItem value="IOS">IOS</MenuItem>
-                  <MenuItem value="IOS">ANS</MenuItem>
+                  <MenuItem value={1}>IOS</MenuItem>
+                  <MenuItem value={2}>ANS</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

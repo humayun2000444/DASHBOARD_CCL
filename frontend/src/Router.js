@@ -1031,6 +1031,10 @@ const Distributors = lazy(() =>
   import("./views/services/Distributors/Distributors.jsx")
 );
 
+const SmsRouting = lazy(() =>
+  import("./views/services/SmsRouting/SmsRouting.jsx")
+);
+
 const BtrcPortal = lazy(() =>
   import("./views/services/Dashboard/Pages/BtrcAdmin/BtrcPortal.jsx")
 );
@@ -1148,6 +1152,9 @@ class AppRouter extends React.Component {
                   )}
                   {adminChecking && (
                     <AppRoute path="/distributors" component={Distributors} />
+                  )}
+                  {adminChecking && (
+                    <AppRoute path="/smsRouting" component={SmsRouting} />
                   )}
                   <AppRoute
                     exact
