@@ -1165,11 +1165,9 @@ class AppRouter extends React.Component {
                   {adminChecking && (
                     <AppRoute path="/distributors" component={Distributors} />
                   )}
-<<<<<<< HEAD
                   {adminChecking && (
                     <AppRoute path="/smsRouting" component={SmsRouting} />
                   )}
-=======
 
                   {adminChecking && (
                     <AppRoute path="/CDRs" component={CDR} />
@@ -1180,8 +1178,6 @@ class AppRouter extends React.Component {
                     <AppRoute path="/balance" component={Balance} />
                   )}    
 
-
->>>>>>> 7d7791a3588419c5a1cbaad935d3caeb2b0571c1
                   <AppRoute
                     exact
                     path="/admissionManagerList"
