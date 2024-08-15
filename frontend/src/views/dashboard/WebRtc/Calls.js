@@ -5,6 +5,17 @@ import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
 import WebSocketClient from "./WebSocketClient";
 import CallState from "./CallState";
+import IncomingCallToast from "./IncomingCallToast";
+import {  toast } from 'react-hot-toast';
+import OngoingCallToast from "./OngoingCallToast";
+
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PhoneIcon from '@mui/icons-material/Phone';
+import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
+
+
+
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
   // const [callStatus, setCallStatus] =  useState("idle"); // idle, calling, connected
@@ -285,6 +296,83 @@ export default function Calls() {
     }
   };
 
+const incomingCall = async () => {
+    try {
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log('Microphone access granted');
+
+      const iceServers = [
+        {
+          urls: "stun:stun.l.google.com:19302" // Google STUN server
+        }
+      ];
+
+      // Create RTCPeerConnection with STUN servers
+      const peerConnection = new RTCPeerConnection({ iceServers });
+
+      // Create an SDP offer
+      const offer = await createOffer(stream, peerConnection);
+      webSocketClient.sendAcceptRequest(offer.sdp);
+
+
+      // Handle ICE candidates
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          const candidate = {
+            janus: "trickle",
+            candidate: {
+              candidate: event.candidate.candidate,
+              sdpMid: event.candidate.sdpMid,
+              sdpMLineIndex: event.candidate.sdpMLineIndex
+            },
+            transaction: WebSocketClient.randomString(12),
+            session_id: webSocketClient.sessionId,
+            handle_id: webSocketClient.handleId
+          };
+          webSocketClient.sendMessage(JSON.stringify(candidate));
+          // console.log("Sending ICE candidate:", candidate);
+        } else {
+          const completedCandidate = {
+            janus: "trickle",
+            candidate: { completed: true },
+            transaction: WebSocketClient.randomString(12),
+            session_id: webSocketClient.sessionId,
+            handle_id: webSocketClient.handleId
+          };
+          webSocketClient.sendMessage(JSON.stringify(completedCandidate));
+          console.log("Sending ICE candidate completion.");
+        }
+      };
+      CallState.setPeerConnection(peerConnection);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Failed to access microphone. Please ensure you have granted permission.');
+    }
+}
+
+
+
+// testing
+  const handleAcceptCall = () => {
+    toast.dismiss(); // Dismiss the incoming call toast
+    toast.custom((t) => (
+      <OngoingCallToast callerName="Billy Forbes" toastId={t.id} />
+  
+    ));
+  
+  };
+
+  const handleIncomingCall = () => {
+    toast.custom(
+      <IncomingCallToast phoneNumber="(650) 555-1212" onAccept={handleAcceptCall} />,
+    {
+      position: 'top-center', // Set this toast to appear at the top center
+    }
+    );
+  };
+
+
   const createOffer = (stream, peerConnection) => {
     return new Promise((resolve, reject) => {
       // Add only audio tracks to the peer connection
@@ -357,16 +445,79 @@ export default function Calls() {
   }, []);
   return (
     <div className="calls__container">
+      {/* <button onClick={handleIncomingCall}>Simulate Incoming Call</button> */}
       <Dialpad
         phoneNumber={phoneNumber}
         callStatus={callStatus}
         handleButtonClick={handleButtonClick}
-        handleBackspace={handleBackspace}
+        handleBackspace={handleBackspace}                           
         handleCall={handleCall}
         handleHangup={handleHangup}
       />
+      {callStatus==="incomingcall" && (
+        // <IncomingCallToast
+        // />
+        <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '10px',
+          borderRadius: '10px',
+          backgroundColor: '#f0f0f0',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          width: '300px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <AccountCircleIcon
+            style={{
+              width: '50px',
+              height: '50px',
+              color: '#4CAF50',
+              marginRight: '10px',
+            }}
+          />
+          <div>
+            <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
+            <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
+          </div>
+        </div>
+        <div style={{display: 'flex', gap: '10px'}}>
+          <button
+            style={{
+              backgroundColor: '#ff4b4b',
+              color: 'white',
+              border: 'none',
+              padding: '10px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+            }}
+            onClick={(handleHangup) => toast.dismiss() }
+          >
+            <PhoneDisabledIcon/>
+          </button>
+          <button
+            style={{
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              padding: '10px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+            }}
+            onClick={incomingCall}
+          >
+            <PhoneIcon/>
+          </button>
+        </div>
+      </div>
+      )}
       <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory}/>
       <audio id="remoteAudio" autoPlay></audio>
     </div>
   );
 }
+/*
+
+*/

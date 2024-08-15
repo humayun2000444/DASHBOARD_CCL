@@ -70,6 +70,7 @@ class WebSocketClient {
   }
 
   handleEvent(json) {
+    const janusEvent = new JanusEvent(json);
     const callState = CallState; // Access singleton instance
     const peerConnection = callState.getPeerConnection();
     if (json.janus === "server_info") {
@@ -129,7 +130,6 @@ class WebSocketClient {
     }
     else if (json.janus === "event")
     {
-      const janusEvent = new JanusEvent(json);
       const event = janusEvent.getEvent();
       if (event === "accepted") {
         callState.setCallStatus("connected");
@@ -139,6 +139,7 @@ class WebSocketClient {
         if (this.onCallStateChange) this.onCallStateChange("idle");
       }
       else if (janusEvent.getPlugin() === "janus.plugin.sip") {
+        // console.log(janusEvent.getPlugin());
         const jsep = janusEvent.getJsep();
         if (jsep && janusEvent.getJsepType() === "answer") {
           peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
@@ -151,7 +152,24 @@ class WebSocketClient {
           if (this.onCallStateChange) this.onCallStateChange("in_call");
           callState.setPeerConnection(peerConnection);
         }
+        else if (jsep && janusEvent.getJsepType() === "offer") {
+          peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
+            .then(() => console.log('Remote description set with SDP answer'))
+            .catch(error => console.error('Error setting remote description:', error));
+          if (event === "incomingcall") {
+            // console.log(`Call is in progress with ${janusEvent.getUsername()}`);
+          }
+          callState.setCallStatus("incomingcall");
+          callState.setIncomingUser(janusEvent.getDisplayname)
+          if (this.onCallStateChange) this.onCallStateChange("incomingcall");
+          callState.setPeerConnection(peerConnection);
+        }
       }
+    }
+    else if(janusEvent.getEvent === "accepted")
+    {
+        callState.setCallStatus("accepted");
+        if (this.onCallStateChange) this.onCallStateChange("accepted");
     }
     else if(json.janus === "media")
     {
@@ -186,6 +204,22 @@ class WebSocketClient {
     }));
 
   }
+
+  sendAcceptRequest(sdp) {
+    this.sendMessage(JSON.stringify({
+      janus: "message",
+      body: {
+        request: "accept"
+      },
+      transaction: WebSocketClient.randomString(12),
+      jsep: {
+        type: "answer",
+        sdp: sdp
+      },
+      session_id: this.sessionId,
+      handle_id: this.handleId
+    }));
+}
 
   sendHangupRequest() {
     this.sendMessage(JSON.stringify({
