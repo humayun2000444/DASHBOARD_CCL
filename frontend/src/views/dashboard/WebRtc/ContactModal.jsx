@@ -1,35 +1,25 @@
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
+import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import * as React from "react";
-import { useState } from "react";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import React, { useState } from "react";
 
 export default function ContactModal({
   handleEditContact,
   handleDeleteContact,
+  handleAddContact,
   contact,
+  type,
 }) {
   const [formData, setFormData] = useState({ ...contact });
+
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (action) => {
-    if (action === "delete") {
-      handleDeleteContact(contact.id);
-    } else if (action === "submit") {
-      handleEditContact(contact.id, formData);
-    }
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -41,11 +31,25 @@ export default function ContactModal({
     }));
   };
 
+  const handleSubmit = (type) => {
+    if (type === "Edit") {
+      handleEditContact(contact.id, formData);
+    } else {
+      handleAddContact(formData);
+    }
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    handleDeleteContact(contact.id);
+    setOpen(false);
+  };
+
   return (
-    <React.Fragment>
+    <>
       <Button
         variant="outlined"
-        onClick={handleClickOpen}
+        onClick={handleOpen}
         sx={{
           border: "none",
           padding: 0,
@@ -56,39 +60,64 @@ export default function ContactModal({
           },
         }}
       >
-        <i className="fa-regular fa-pen-to-square"></i>
+        {type === "Add" ? (
+          <i class="fa-solid fa-user-plus"></i>
+        ) : (
+          <i className="fa-regular fa-pen-to-square"></i>
+        )}
       </Button>
-      <Dialog
+      <Modal
         open={open}
-        TransitionComponent={Transition}
-        keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
+        aria-labelledby="edit-contact-modal"
+        aria-describedby="edit-contact-description"
       >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <DialogTitle>{"Edit"}</DialogTitle>
-          <DialogActions>
-            <Button
-              onClick={() => handleClose("delete")}
-              sx={{ fontSize: "18px" }}
-            >
-              <i className="fa-solid fa-trash-can"></i>
-            </Button>
-          </DialogActions>
-        </div>
-        <DialogContent>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            outline: 0,
+            borderRadius: "10px",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h2 id="edit-contact-modal">{type === "Edit" ? "Edit" : "Add"}</h2>
+            {type === "Edit" && (
+              <Button sx={{ fontSize: "18px" }} onClick={handleDelete}>
+                <i className="fa-solid fa-trash-can"></i>
+              </Button>
+            )}
+          </div>
           <div>
             <TextField
-              autoFocus
               required
               margin="dense"
-              id="name"
-              name="name"
-              label="Name"
+              id="firstName"
+              name="firstName"
+              label="First Name"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.name}
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <TextField
+              margin="dense"
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={formData.lastName}
               onChange={handleChange}
             />
           </div>
@@ -96,35 +125,54 @@ export default function ContactModal({
             <TextField
               required
               margin="dense"
-              id="number"
-              name="id"
-              label="id"
+              id="phone"
+              name="phone"
+              label="Phone"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.id}
+              value={formData.phone}
               onChange={handleChange}
             />
           </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => handleClose("submit")}
-            sx={{
-              backgroundColor: "#164677",
-              padding: "6px 12px 4px 12px",
-              color: "#fff",
-              fontWeight: "500",
-              "&:hover": {
-                backgroundColor: "#164677",
-                color: "#fff",
-              },
+          <div>
+            <TextField
+              margin="dense"
+              id="email"
+              name="email"
+              label="Email"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            style={{
+              marginTop: "16px",
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
-            <span>Submit</span>
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+            <Button
+              onClick={() => handleSubmit(type)}
+              sx={{
+                backgroundColor: "#164677",
+                padding: "6px 12px 4px 12px",
+                color: "#fff",
+                fontWeight: "500",
+                "&:hover": {
+                  backgroundColor: "#164677",
+                  color: "#fff",
+                },
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+    </>
   );
 }

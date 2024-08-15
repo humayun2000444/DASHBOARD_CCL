@@ -1160,7 +1160,7 @@ class AppRouter extends React.Component {
                   {adminChecking && (
                     <AppRoute path="/distributors" component={Distributors} />
                   )}
-
+<<<<<<< HEAD
                   {adminChecking && (
                     <AppRoute path="/smsRouting" component={SmsRouting} />
                   )}

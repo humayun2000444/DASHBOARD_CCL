@@ -26,16 +26,24 @@ const ContactsUser = ({
     });
     setContacts(mappedArray);
   };
+
   return (
     <li
       className="contacts__list--users"
       onMouseOver={() => handleMouseHover(contact.id)}
     >
       <div>
-        <div style={{ backgroundColor: bgColor }}>{contact.name.charAt(0)}</div>
+        <div style={{ backgroundColor: bgColor }}>
+          {contact.firstName?.charAt(0) ||
+            contact.firstName?.charAt(0) ||
+            contact.phone?.charAt(0)}
+        </div>
         <div>
-          <p>{contact.name}</p>
-          <p>{contact.id}</p>
+          <p>
+            {(contact.firstName + " " + contact.lastName).trim() ||
+              contact.phone}
+          </p>
+          <p>{contact.phone}</p>
         </div>
       </div>
       <div>
@@ -44,14 +52,14 @@ const ContactsUser = ({
             <i className="fas fa-phone"></i>
           </button>
         )}
-        {contact.isHovered && (
+        <div>
           <ContactModal
             handleEditContact={handleEditContact}
             handleDeleteContact={handleDeleteContact}
             contact={contact}
+            type="Edit"
           />
-        )}
-
+        </div>
         {contact.isFavourite && (
           <button onClick={() => handleFavourite(contact.id)}>
             <i className="fa-solid fa-star" style={{ color: "#F4CE14" }}></i>
