@@ -3,9 +3,9 @@ import CallState from "./CallState";
 
 class WebSocketClient {
 
-  constructor(url, onMessage, protocol = null) {
+  constructor(url, protocol = null, onCallStateChange) {
     this.url = url;
-    this.onMessage = onMessage;
+    // this.onMessage = onMessage;
     this.protocol = protocol;
     this.socket = null;
     this.sessionId = null;
@@ -14,6 +14,7 @@ class WebSocketClient {
     this.username = null;
     this.password = null;
     this.transactions = {};
+    this.onCallStateChange = onCallStateChange;
     this.pluginHandles = {};
   }
 
@@ -95,10 +96,10 @@ class WebSocketClient {
             body: {
               request: "register",
               username: `sip:${this.username}@103.95.96.100`,
-              authuser: this.username,
+              // authuser: this.username,
               // display_name: "Humayun",
               secret: this.password,
-              proxy: "sip:103.95.96.100:5060"
+              // proxy: "sip:103.95.96.100:5060"
             },
             transaction: WebSocketClient.randomString(12),
             session_id: this.sessionId,
@@ -123,6 +124,7 @@ class WebSocketClient {
     }
     else if(json.janus === "hangup") {
       CallState.setCallStatus("idle");
+      if (this.onCallStateChange) this.onCallStateChange("idle");
       this.sendHangupRequest();
     }
     else if (json.janus === "event")
@@ -131,8 +133,10 @@ class WebSocketClient {
       const event = janusEvent.getEvent();
       if (event === "accepted") {
         callState.setCallStatus("connected");
+        if (this.onCallStateChange) this.onCallStateChange("connected");
       } else if (event === "hangup") {
         callState.setCallStatus("idle");
+        if (this.onCallStateChange) this.onCallStateChange("idle");
       }
       else if (janusEvent.getPlugin() === "janus.plugin.sip") {
         const jsep = janusEvent.getJsep();
@@ -144,6 +148,7 @@ class WebSocketClient {
             console.log(`Call is in progress with ${janusEvent.getUsername()}`);
           }
           callState.setCallStatus("in_call");
+          if (this.onCallStateChange) this.onCallStateChange("in_call");
           callState.setPeerConnection(peerConnection);
         }
       }

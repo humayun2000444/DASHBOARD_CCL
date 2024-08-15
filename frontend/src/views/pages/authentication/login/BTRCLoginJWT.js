@@ -51,7 +51,8 @@ class Login extends React.Component {
 
           // After successful login, register with WebSocket
           this.webSocketClient = new WebSocketClient(
-            "wss://103.95.96.100:3000/",
+            // "wss://103.95.96.100:3000/",
+            "wss://pbx.cosmocom.net:3000/",
             this.handleWebSocketMessage,
             "janus-protocol"
           );

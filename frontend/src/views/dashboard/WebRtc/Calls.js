@@ -165,9 +165,10 @@ export default function Calls() {
 
     if (username && password) {
       const client = new WebSocketClient(
-        "wss://103.95.96.100:3000/",
-        handleWebSocketMessage,
-        "janus-protocol"
+        // "wss://103.95.96.100:3000/",
+        "wss://pbx.cosmocom.net:3000/",
+        "janus-protocol",
+        handleCallStateChange
       );
       client.connect(username, password);
       setWebSocketClient(client);
@@ -178,6 +179,42 @@ export default function Calls() {
     }
   }, []);
 
+  const handleCallStateChange = (newStatus) => {
+    setCallStatus(newStatus);
+  };
+
+  // Handle network changes to restart ICE
+  // useEffect(() => {
+  //   const handleNetworkChange = () => {
+  //     console.log('Network changed, restarting ICE...');
+  //     restartIce();
+  //   };
+  //
+  //   window.addEventListener("offline", handleNetworkChange);
+  //   window.addEventListener("online", handleNetworkChange);
+  //
+  //   return () => {
+  //     window.removeEventListener("offline", handleNetworkChange);
+  //     window.removeEventListener("online", handleNetworkChange);
+  //   };
+  // }, [webSocketClient]);
+  //
+  // const restartIce = async () => {
+  //   if (webSocketClient && callStatus === "connected") {
+  //     const peerConnection = CallState.getPeerConnection();
+  //     if (peerConnection) {
+  //       try {
+  //         const offer = await peerConnection.createOffer({ iceRestart: true });
+  //         await peerConnection.setLocalDescription(offer);
+  //         webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
+  //         console.log('ICE restarted and new offer sent.');
+  //       } catch (error) {
+  //         console.error('Error restarting ICE:', error);
+  //       }
+  //     }
+  //   }
+  // };
+
   const handleButtonClick = (value) => {
     setPhoneNumber((prev) => prev + value);
   };
@@ -186,10 +223,6 @@ export default function Calls() {
   //   console.log(event.data.toString());
   //   this.handleWebSocketMessage(JSON.parse(event.data));
   // };
-
-  const handleWebSocketMessage = (message) => {
-
-  };
 
   const handleCall = async () => {
     if (phoneNumber && webSocketClient) {
@@ -316,7 +349,6 @@ export default function Calls() {
       console.log(`Call with ${phoneNumber} ended`);
     }
   };
-console.log(callStatus);
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
