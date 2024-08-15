@@ -1041,15 +1041,10 @@ const BtrcPortal = lazy(() =>
 
 // Call Details Record Component Here
 
-const CDR = lazy(() =>
-  import("./views/services/Reports/CDR.jsx")
-);
+const CDR = lazy(() => import("./views/services/Reports/CDR.jsx"));
 
 // Balance Component
-const Balance = lazy(() =>
-  import("./views/services/Balance/Balance.jsx")
-);
-
+const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
 
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
@@ -1165,23 +1160,17 @@ class AppRouter extends React.Component {
                   {adminChecking && (
                     <AppRoute path="/distributors" component={Distributors} />
                   )}
-<<<<<<< HEAD
+
                   {adminChecking && (
                     <AppRoute path="/smsRouting" component={SmsRouting} />
                   )}
-=======
 
-                  {adminChecking && (
-                    <AppRoute path="/CDRs" component={CDR} />
-                  )}
-
+                  {adminChecking && <AppRoute path="/CDRs" component={CDR} />}
 
                   {adminChecking && (
                     <AppRoute path="/balance" component={Balance} />
-                  )}    
+                  )}
 
-
->>>>>>> 7d7791a3588419c5a1cbaad935d3caeb2b0571c1
                   <AppRoute
                     exact
                     path="/admissionManagerList"
