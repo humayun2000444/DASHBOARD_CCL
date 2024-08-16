@@ -220,6 +220,17 @@ class WebSocketClient {
       handle_id: this.handleId
     }));
 }
+  sendDeclineRequest() {
+    this.sendMessage(JSON.stringify({
+      janus: "message",
+      body: {
+        request: "decline"
+      },
+      transaction: WebSocketClient.randomString(12),
+      session_id: this.sessionId,
+      handle_id: this.handleId
+    }));
+  }
 
   sendHangupRequest() {
     this.sendMessage(JSON.stringify({

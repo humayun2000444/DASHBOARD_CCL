@@ -10,9 +10,6 @@ import {  toast } from 'react-hot-toast';
 import OngoingCallToast from "./OngoingCallToast";
 
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PhoneIcon from '@mui/icons-material/Phone';
-import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
 
 
 
@@ -194,46 +191,13 @@ export default function Calls() {
     setCallStatus(newStatus);
   };
 
-  // Handle network changes to restart ICE
-  // useEffect(() => {
-  //   const handleNetworkChange = () => {
-  //     console.log('Network changed, restarting ICE...');
-  //     restartIce();
-  //   };
-  //
-  //   window.addEventListener("offline", handleNetworkChange);
-  //   window.addEventListener("online", handleNetworkChange);
-  //
-  //   return () => {
-  //     window.removeEventListener("offline", handleNetworkChange);
-  //     window.removeEventListener("online", handleNetworkChange);
-  //   };
-  // }, [webSocketClient]);
-  //
-  // const restartIce = async () => {
-  //   if (webSocketClient && callStatus === "connected") {
-  //     const peerConnection = CallState.getPeerConnection();
-  //     if (peerConnection) {
-  //       try {
-  //         const offer = await peerConnection.createOffer({ iceRestart: true });
-  //         await peerConnection.setLocalDescription(offer);
-  //         webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
-  //         console.log('ICE restarted and new offer sent.');
-  //       } catch (error) {
-  //         console.error('Error restarting ICE:', error);
-  //       }
-  //     }
-  //   }
-  // };
+
 
   const handleButtonClick = (value) => {
     setPhoneNumber((prev) => prev + value);
   };
 
-  // this.socket.onmessage = (event) => {
-  //   console.log(event.data.toString());
-  //   this.handleWebSocketMessage(JSON.parse(event.data));
-  // };
+
 
   const handleCall = async () => {
     if (phoneNumber && webSocketClient) {
@@ -354,23 +318,44 @@ const incomingCall = async () => {
 
 
 // testing
-  const handleAcceptCall = () => {
-    toast.dismiss(); // Dismiss the incoming call toast
-    toast.custom((t) => (
-      <OngoingCallToast callerName="Billy Forbes" toastId={t.id} />
-  
-    ));
-  
-  };
+  // const handleAcceptCall = () => {
+  //   toast.dismiss(); // Dismiss the incoming call toast
+  //   toast.custom((t) => (
+  //     <OngoingCallToast callerName="Billy Forbes" toastId={t.id} />
 
-  const handleIncomingCall = () => {
+  //   ));
+
+  // };
+
+    const handleIncomingCall = () => {
     toast.custom(
-      <IncomingCallToast phoneNumber="(650) 555-1212" onAccept={handleAcceptCall} />,
-    {
-      position: 'top-center', // Set this toast to appear at the top center
-    }
+      <IncomingCallToast phoneNumber={phoneNumber} onAccept={handleAcceptCall} onHangup={handlePopHangup}/>,
+      {
+        position: 'top-center',
+      }
     );
   };
+  const handlePopHangup = () => {
+    // <IncomingCallToast onHangup={handleHangup()}
+    toast.dismiss(); // Dismiss the incoming call toast
+    handleDecline();
+  };
+
+  const handleAcceptCall = () => {
+    toast.dismiss(); // Dismiss the incoming call toast
+
+      incomingCall(); // Call the incomingCall method on WebSocketClient
+
+    toast.custom((t) => (
+      <OngoingCallToast callerName={phoneNumber} toastId={t.id} />
+    ));
+  };
+
+  useEffect(() => {
+    if (callStatus === "incomingcall") {
+      handleIncomingCall();
+    }
+  }, [callStatus]);
 
 
   const createOffer = (stream, peerConnection) => {
@@ -409,7 +394,7 @@ const incomingCall = async () => {
         const remoteAudio = document.getElementById('remoteAudio');
         if (remoteAudio) {
           remoteAudio.srcObject = stream;
-          console.log('Remote stream added to audio element');
+          console.log('Remote stream added to audio element',stream);
         }
       });
     };
@@ -429,8 +414,16 @@ const incomingCall = async () => {
     }
   };
 
+  const handleDecline = () => {
+    if(webSocketClient && (callStatus === "idle" || callStatus === "incomingcall")) {
+      webSocketClient.sendDeclineRequest();
+      CallState.setCallStatus("idle");
+      setCallStatus(CallState.getCallStatus());
+      // console.log(`Call with ${phoneNumber} ended`);
+    }
+  }
   const handleHangup = () => {
-    if (webSocketClient && (callStatus === "connected" || callStatus === "calling")) {
+    if (webSocketClient && (callStatus === "connected" || callStatus === "calling" || callStatus === "incomingcall")) {
       webSocketClient.sendHangupRequest();
       CallState.setCallStatus("idle");
       setCallStatus(CallState.getCallStatus());
@@ -450,69 +443,71 @@ const incomingCall = async () => {
         phoneNumber={phoneNumber}
         callStatus={callStatus}
         handleButtonClick={handleButtonClick}
-        handleBackspace={handleBackspace}                           
+        handleBackspace={handleBackspace}
         handleCall={handleCall}
         handleHangup={handleHangup}
       />
-      {callStatus==="incomingcall" && (
+      {/* {callStatus==="incomingcall" && (
+        handleIncomingCall
         // <IncomingCallToast
         // />
-        <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '10px',
-          borderRadius: '10px',
-          backgroundColor: '#f0f0f0',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          width: '300px',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <AccountCircleIcon
-            style={{
-              width: '50px',
-              height: '50px',
-              color: '#4CAF50',
-              marginRight: '10px',
-            }}
-          />
-          <div>
-            <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
-            <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
-          </div>
-        </div>
-        <div style={{display: 'flex', gap: '10px'}}>
-          <button
-            style={{
-              backgroundColor: '#ff4b4b',
-              color: 'white',
-              border: 'none',
-              padding: '10px',
-              borderRadius: '50%',
-              cursor: 'pointer',
-            }}
-            onClick={(handleHangup) => toast.dismiss() }
-          >
-            <PhoneDisabledIcon/>
-          </button>
-          <button
-            style={{
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              padding: '10px',
-              borderRadius: '50%',
-              cursor: 'pointer',
-            }}
-            onClick={incomingCall}
-          >
-            <PhoneIcon/>
-          </button>
-        </div>
-      </div>
-      )}
+      //   <div
+      //   style={{
+      //     display: 'flex',
+      //     alignItems: 'center',
+      //     padding: '10px',
+      //     borderRadius: '10px',
+      //     backgroundColor: '#f0f0f0',
+      //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      //     width: '300px',
+      //     justifyContent: 'space-between',
+      //   }}
+      // >
+      //   <div style={{ display: 'flex', alignItems: 'center' }}>
+      //     <AccountCircleIcon
+      //       style={{
+      //         width: '50px',
+      //         height: '50px',
+      //         color: '#4CAF50',
+      //         marginRight: '10px',
+      //       }}
+      //     />
+      //     <div>
+      //       <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
+      //       <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
+      //     </div>
+      //   </div>
+      //   <div style={{display: 'flex', gap: '10px'}}>
+      //     <button
+      //       style={{
+      //         backgroundColor: '#ff4b4b',
+      //         color: 'white',
+      //         border: 'none',
+      //         padding: '10px',
+      //         borderRadius: '50%',
+      //         cursor: 'pointer',
+      //       }}
+      //       onClick={(handleHangup) => toast.dismiss() }
+      //     >
+      //       <PhoneDisabledIcon/>
+      //     </button>
+      //     <button
+      //       style={{
+      //         backgroundColor: '#4CAF50',
+      //         color: 'white',
+      //         border: 'none',
+      //         padding: '10px',
+      //         borderRadius: '50%',
+      //         cursor: 'pointer',
+      //       }}
+      //       onClick={incomingCall}
+      //     >
+      //       <PhoneIcon/>
+      //     </button>
+      //   </div>
+      // </div>
+      )} */}
+
       <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory}/>
       <audio id="remoteAudio" autoPlay></audio>
     </div>

@@ -3,9 +3,8 @@ import { toast } from 'react-hot-toast';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PhoneDisabledIcon from '@mui/icons-material/PhoneDisabled';
-import Calls from './Calls';
 
-const IncomingCallToast = ({ phoneNumber, onAccept }) => (
+const IncomingCallToast = ({ phoneNumber, onAccept,onHangup }) => (
   <div
     style={{
       display: 'flex',
@@ -29,7 +28,7 @@ const IncomingCallToast = ({ phoneNumber, onAccept }) => (
       />
       <div>
         <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
-        <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
+        <p style={{ margin: 0, color: '#666' }}>Incoming call </p>
       </div>
     </div>
     <div style={{display: 'flex', gap: '10px'}}>
@@ -42,7 +41,7 @@ const IncomingCallToast = ({ phoneNumber, onAccept }) => (
           borderRadius: '50%',
           cursor: 'pointer',
         }}
-        onClick={() => toast.dismiss()}
+        onClick={onHangup}
       >
         <PhoneDisabledIcon/>
       </button>
