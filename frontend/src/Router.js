@@ -1043,6 +1043,12 @@ const BtrcPortal = lazy(() =>
 
 const CDR = lazy(() => import("./views/services/Reports/CDR.jsx"));
 
+// Rates Component Here
+
+const Rates = lazy(() => import("./views/services/Rates/Rates.jsx"));
+
+
+
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
 
@@ -1166,6 +1172,8 @@ class AppRouter extends React.Component {
                   )}
 
                   {adminChecking && <AppRoute path="/CDRs" component={CDR} />}
+
+                  {adminChecking && <AppRoute path="/rates" component={Rates} />}
 
                   {adminChecking && (
                     <AppRoute path="/balance" component={Balance} />
