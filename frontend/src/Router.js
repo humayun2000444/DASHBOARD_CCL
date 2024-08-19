@@ -1003,6 +1003,11 @@ const AddPermission = lazy(() =>
 );
 
 const RatePlan = lazy(() => import("./views/services/RatePlan/RatePlan.jsx"));
+
+// Rate Plan Assignment Component Here
+
+const RatePlanAssignment = lazy(() => import("./views/services/RatePlan/RatePlanAssignment.jsx"));
+
 const Sales = lazy(() => import("./views/services/Sales/Sales.jsx"));
 
 const RetailClients = lazy(() =>
@@ -1120,6 +1125,9 @@ class AppRouter extends React.Component {
                   )}
                   {adminChecking && (
                     <AppRoute path="/ratePlan" component={RatePlan} />
+                  )}
+                  {adminChecking && (
+                    <AppRoute path="/ratePlanAssignment" component={RatePlanAssignment} />
                   )}
                   {adminChecking && (
                     <AppRoute path="/addRole" component={AddRole} />
