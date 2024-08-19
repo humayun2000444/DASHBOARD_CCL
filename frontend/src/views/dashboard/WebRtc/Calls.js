@@ -165,6 +165,7 @@ export default function Calls() {
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
   const [callStatus, setCallStatus] = useState(CallState.getCallStatus());
+  const [incomingCallStatus, setIncomingCallStatus] = useState(CallState.getIncomingCallStatus());
   // let callStatus = CallState.getCallStatus();
 
   useEffect(() => {
@@ -176,7 +177,8 @@ export default function Calls() {
         // "wss://103.95.96.100:3000/",
         "wss://pbx.cosmocom.net:3000/",
         "janus-protocol",
-        handleCallStateChange
+        handleCallStateChange,
+        handleIncomingCallStateChange
       );
       client.connect(username, password);
       setWebSocketClient(client);
@@ -189,6 +191,11 @@ export default function Calls() {
 
   const handleCallStateChange = (newStatus) => {
     setCallStatus(newStatus);
+  };
+
+
+  const handleIncomingCallStateChange = (newStatus) => {
+    setIncomingCallStatus(newStatus);
   };
 
 
@@ -266,18 +273,18 @@ const incomingCall = async () => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       console.log('Microphone access granted');
 
-      const iceServers = [
-        {
-          urls: "stun:stun.l.google.com:19302" // Google STUN server
+      const peerConnection = CallState.getPeerConnection();
+      stream.getTracks().forEach(track => {
+        if (track.kind === 'audio') {
+          peerConnection.addTrack(track, stream);
         }
-      ];
-
-      // Create RTCPeerConnection with STUN servers
-      const peerConnection = new RTCPeerConnection({ iceServers });
-
+      });
+      attachIncomingMediaStreams(peerConnection);
       // Create an SDP offer
-      const offer = await createOffer(stream, peerConnection);
-      webSocketClient.sendAcceptRequest(offer.sdp);
+      const answer = await peerConnection.createAnswer();
+      peerConnection.setLocalDescription(answer);
+      console.log(answer.sdp.toString());
+      webSocketClient.sendAcceptRequest(answer.sdp);
 
 
       // Handle ICE candidates
@@ -309,11 +316,37 @@ const incomingCall = async () => {
         }
       };
       CallState.setPeerConnection(peerConnection);
+
+      CallState.setIncomingCallStatus("accepted");
+      setIncomingCallStatus(CallState.getIncomingCallStatus());
+      // console.log(`Calling ${phoneNumber}`);
     } catch (error) {
       console.error('Error accessing microphone:', error);
       alert('Failed to access microphone. Please ensure you have granted permission.');
     }
-}
+};
+
+  const attachIncomingMediaStreams = (peerConnection) => {
+    peerConnection.getReceivers().forEach(receiver => {
+      if (receiver.track.kind === 'audio') {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = new MediaStream([receiver.track]);
+          console.log('Attached remote audio stream');
+        }
+      }
+    });
+
+    peerConnection.ontrack = (event) => {
+      event.streams.forEach(stream => {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = stream;
+          console.log('Remote stream added to audio element', stream);
+        }
+      });
+    };
+  };
 
 
 
@@ -352,10 +385,10 @@ const incomingCall = async () => {
   };
 
   useEffect(() => {
-    if (callStatus === "incomingcall") {
+    if (incomingCallStatus === "incomingcall") {
       handleIncomingCall();
     }
-  }, [callStatus]);
+  }, [incomingCallStatus]);
 
 
   const createOffer = (stream, peerConnection) => {
@@ -423,7 +456,7 @@ const incomingCall = async () => {
     }
   }
   const handleHangup = () => {
-    if (webSocketClient && (callStatus === "connected" || callStatus === "calling" || callStatus === "incomingcall")) {
+    if (webSocketClient && (callStatus === "connected" || callStatus === "calling")) {
       webSocketClient.sendHangupRequest();
       CallState.setCallStatus("idle");
       setCallStatus(CallState.getCallStatus());
@@ -513,6 +546,3 @@ const incomingCall = async () => {
     </div>
   );
 }
-/*
-
-*/

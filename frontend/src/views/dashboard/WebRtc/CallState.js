@@ -3,6 +3,7 @@ class CallState {
     if (!CallState.instance) {
       this.peerConnection = new RTCPeerConnection();
       this.callStatus = 'idle';
+      this.incomingCallStatus = "idle";
       this.incomingUser = null;
       CallState.instance = this;
     }
@@ -19,6 +20,13 @@ class CallState {
 
   setCallStatus(status) {
     this.callStatus = status;
+  }
+
+  setIncomingCallStatus(status) {
+    this.incomingCallStatus = status;
+  }
+  getIncomingCallStatus() {
+    return this.incomingCallStatus;
   }
 
   getCallStatus() {

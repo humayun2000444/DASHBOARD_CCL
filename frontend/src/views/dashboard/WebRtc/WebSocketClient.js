@@ -3,7 +3,7 @@ import CallState from "./CallState";
 
 class WebSocketClient {
 
-  constructor(url, protocol = null, onCallStateChange) {
+  constructor(url, protocol = null, onCallStateChange, onIncomingCallStateChange) {
     this.url = url;
     // this.onMessage = onMessage;
     this.protocol = protocol;
@@ -15,6 +15,7 @@ class WebSocketClient {
     this.password = null;
     this.transactions = {};
     this.onCallStateChange = onCallStateChange;
+    this.onIncomingCallStateChange = onIncomingCallStateChange;
     this.pluginHandles = {};
   }
 
@@ -69,10 +70,10 @@ class WebSocketClient {
     }
   }
 
+
   handleEvent(json) {
     const janusEvent = new JanusEvent(json);
     const callState = CallState; // Access singleton instance
-    const peerConnection = callState.getPeerConnection();
     if (json.janus === "server_info") {
       const transaction = json.transaction;
       if (transaction) {
@@ -139,6 +140,7 @@ class WebSocketClient {
         if (this.onCallStateChange) this.onCallStateChange("idle");
       }
       else if (janusEvent.getPlugin() === "janus.plugin.sip") {
+        const peerConnection = callState.getPeerConnection();
         // console.log(janusEvent.getPlugin());
         const jsep = janusEvent.getJsep();
         if (jsep && janusEvent.getJsepType() === "answer") {
@@ -153,16 +155,20 @@ class WebSocketClient {
           callState.setPeerConnection(peerConnection);
         }
         else if (jsep && janusEvent.getJsepType() === "offer") {
+          const iceServers = [
+            {
+              urls: "stun:stun.l.google.com:19302" // Google STUN server
+            }
+          ];
+
+          // Create RTCPeerConnection with STUN servers
+          const peerConnection = new RTCPeerConnection({ iceServers });
           peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
-            .then(() => console.log('Remote description set with SDP answer'))
             .catch(error => console.error('Error setting remote description:', error));
-          if (event === "incomingcall") {
-            // console.log(`Call is in progress with ${janusEvent.getUsername()}`);
-          }
-          callState.setCallStatus("incomingcall");
-          callState.setIncomingUser(janusEvent.getDisplayname)
-          if (this.onCallStateChange) this.onCallStateChange("incomingcall");
           callState.setPeerConnection(peerConnection);
+          callState.setIncomingCallStatus("incomingcall");
+          callState.setIncomingUser(janusEvent.getDisplayname)
+          if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("incomingcall");
         }
       }
     }
@@ -185,6 +191,8 @@ class WebSocketClient {
       console.debug(json);
     }
   }
+
+
 
   sendCallRequest(uri, sdp) {
     this.sendMessage(JSON.stringify({
