@@ -1,4 +1,6 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
+import getWebRtcServices from "../../../apiServices/WebRtcServices/getWebRtcServices";
 import "../../../assets/scss/pages/Contacts.scss";
 import ContactModal from "./ContactModal";
 import ContactsCategory from "./ContactsCategory";
@@ -7,106 +9,157 @@ import ContactsUser from "./ContactsUser";
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Contacts");
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showContacts, setShowContacts] = useState(
+    JSON.parse(localStorage.getItem("contacts"))
+  );
+  const username = localStorage.getItem("username");
 
-  const response = [
-    {
-      id: 1,
-      firstName: "Rizwan",
-      lastName: "Uddin",
-      phone: "01521408552",
-      email: "rizwanshuvo@gmail.com",
-    },
-    {
-      id: 2,
-      firstName: "Yasin",
-      lastName: "Islam",
-      phone: "01521408553",
-      email: "rizwansuvocu@gmail.com",
-    },
-    {
-      id: 3,
-      firstName: "Emon",
-      lastName: "Chowdhury",
-      phone: "01521408554",
-      email: "",
-    },
-    {
-      id: 4,
-      firstName: "Yasin",
-      lastName: "",
-      phone: "01521408555",
-      email: "humayun@gmail.com",
-    },
-    {
-      id: 5,
-      firstName: "Humayun",
-      lastName: "Ahmed",
-      phone: "01521408555",
-      email: "",
-    },
-  ];
+  const loadContactsFromLocalStorage = () => {
+    const storedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
+    setContacts(storedContacts);
+    setShowContacts(storedContacts);
+  };
 
-  const initialContacts = response.map((contact) => {
-    return {
-      ...contact,
-      isHovered: false,
-      isFavourite: false,
-    };
-  });
+  const saveContactsToLocalStorage = (contacts) => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  };
 
-  const [contacts, setContacts] = useState(initialContacts);
-  const [showContacts, setShowContacts] = useState(initialContacts);
+  const fetchContacts = async () => {
+    setLoading(true);
+    try {
+      const data = await getWebRtcServices.fetchAllContacts(username);
+      const initialContacts = data.map((contact) => ({
+        ...contact,
+        isHovered: false,
+        isFavourite: false,
+      }));
+      setShowContacts(initialContacts);
+      setContacts(initialContacts);
+      saveContactsToLocalStorage(initialContacts);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const contactCategories = ["All Contacts", "Favourites"];
+  useEffect(() => {
+    const storedContacts = JSON.parse(localStorage.getItem("contacts"));
+    if (!storedContacts || storedContacts.length === 0) {
+      fetchContacts();
+    } else {
+      loadContactsFromLocalStorage();
+    }
+  }, []);
+
+  const handleAddContact = async (formData) => {
+    setLoading(true);
+    try {
+      const newContact = await getWebRtcServices.createContact({...formData,username});
+      setContacts((prev) => {
+        const updatedContacts = [
+          ...prev,
+          { ...newContact, isFavourite: false },
+        ];
+        saveContactsToLocalStorage(updatedContacts);
+        return updatedContacts;
+      });
+      setShowContacts((prev) => {
+        const updatedContacts = [
+          ...prev,
+          { ...newContact, isFavourite: false },
+        ];
+        return updatedContacts;
+      });
+    } catch (error) {
+      console.error("Error adding contact:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteContact = async (id) => {
+    setLoading(true);
+    try {
+      await getWebRtcServices.deleteContact(id);
+      setContacts((prev) => {
+        const updatedContacts = prev.filter((contact) => contact.id !== id);
+        saveContactsToLocalStorage(updatedContacts);
+        return updatedContacts;
+      });
+      setShowContacts((prev) => {
+        const updatedContacts = prev.filter((contact) => contact.id !== id);
+        return updatedContacts;
+      });
+    } catch (error) {
+      console.error("Error deleting contact:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFavourite = (id) => {
     setContacts((prev) => {
-      return prev.map((contact) => {
-        if (contact.id === id) {
-          return {
-            ...contact,
-            isFavourite: !contact.isFavourite,
-          };
-        }
-        return contact;
-      });
+      const updatedContacts = prev.map((contact) =>
+        contact.id === id
+          ? { ...contact, isFavourite: !contact.isFavourite }
+          : contact
+      );
+      const favouriteContacts = updatedContacts.filter(
+        (contact) => contact.isFavourite
+      );
+      localStorage.setItem(
+        "favouriteContacts",
+        JSON.stringify(favouriteContacts)
+      );
+      if (selectedCategory === "Favourites") {
+        setShowContacts(favouriteContacts);
+      } else {
+        setShowContacts(updatedContacts);
+      }
+      saveContactsToLocalStorage(updatedContacts);
+      return updatedContacts;
     });
   };
 
   const handleChangeCategory = (category) => {
     setSelectedCategory(category);
     setSearchTerm("");
+
+    if (category === "Favourites") {
+      const favouriteContacts = JSON.parse(
+        localStorage.getItem("favouriteContacts")
+      );
+      setShowContacts(favouriteContacts);
+    } else {
+      setShowContacts(contacts);
+    }
   };
 
-  const handleAddContact = (formData) => {
-    setContacts([
-      ...contacts,
-      {
-        ...formData,
-        isHovered: false,
-        isFavourite: false,
-        id: contacts.length + 1,
-      },
-    ]);
-  };
-
-  const handleEditContact = (id, formData) => {
-    setContacts((prev) => {
-      return prev.map((contact) => {
-        if (contact.id === id) {
-          return {
-            ...formData,
-          };
-        }
-        return contact;
+  const handleEditContact = async (id, formData) => {
+    setLoading(true);
+    try {
+      await getWebRtcServices.updateContact({ id: id, ...formData });
+      setContacts((prev) => {
+        const updatedContacts = prev.map((contact) =>
+          contact.id === id ? { ...contact, ...formData } : contact
+        );
+        saveContactsToLocalStorage(updatedContacts);
+        return updatedContacts;
       });
-    });
-  };
-
-  const handleDeleteContact = (id) => {
-    setContacts((prev) => {
-      return prev.filter((contact) => contact.id !== id);
-    });
+      setShowContacts((prev) => {
+        const updatedContacts = prev.map((contact) =>
+          contact.id === id ? { ...contact, ...formData } : contact
+        );
+        return updatedContacts;
+      });
+    } catch (error) {
+      console.error("Error Updating contact:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = (searchText) => {
@@ -115,14 +168,12 @@ const Contacts = () => {
 
     let filteredContacts = [...contacts];
 
-    // Filter by category
     if (selectedCategory === "Favourites") {
       filteredContacts = filteredContacts.filter(
         (contact) => contact.isFavourite
       );
     }
 
-    // Apply search filter
     const results = filteredContacts.filter((contact) =>
       (contact.firstName + contact.lastName).toLowerCase().includes(value)
     );
@@ -130,25 +181,13 @@ const Contacts = () => {
     setShowContacts(results);
   };
 
-  useEffect(() => {
-    if (selectedCategory === "Favourites") {
-      setShowContacts(contacts.filter((contact) => contact.isFavourite));
-    } else {
-      setShowContacts([...contacts]);
-    }
-  }, [contacts, selectedCategory]);
+  const handleMouseLeave = () => {
+    setShowContacts((prev) =>
+      prev.map((contact) => ({ ...contact, isHovered: false }))
+    );
+  };
 
   const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
-
-  const handleMouseLeave = () => {
-    const mappedArray = contacts.map((contact) => {
-      return {
-        ...contact,
-        isHovered: false,
-      };
-    });
-    setContacts(mappedArray);
-  };
 
   return (
     <div className="contacts">
@@ -163,7 +202,7 @@ const Contacts = () => {
           />
         </div>
         <ul className="contacts__sidebar--list">
-          {contactCategories.map((category) => (
+          {["All Contacts", "Favourites"].map((category) => (
             <ContactsCategory
               key={category}
               selectedCategory={selectedCategory}
@@ -176,22 +215,28 @@ const Contacts = () => {
       <div className="contacts__list">
         <div>
           <h3>{selectedCategory}</h3>
-          <span>{showContacts.length} Contacts</span>
+          <span>{showContacts?.length} Contacts</span>
         </div>
-        <ul onMouseLeave={handleMouseLeave}>
-          {showContacts.map((contact, i) => (
-            <ContactsUser
-              key={contact.id}
-              contact={contact}
-              contacts={contacts}
-              setContacts={setContacts}
-              handleFavourite={handleFavourite}
-              handleEditContact={handleEditContact}
-              handleDeleteContact={handleDeleteContact}
-              bgColor={colors[i % colors.length]}
-            />
-          ))}
-        </ul>
+        {loading ? (
+          <div className="contacts__loading">
+            <CircularProgress color="primary" />
+          </div>
+        ) : (
+          <ul onMouseLeave={handleMouseLeave}>
+            {showContacts?.map((contact, i) => (
+              <ContactsUser
+                key={contact.id}
+                contact={contact}
+                contacts={showContacts}
+                setContacts={setShowContacts}
+                handleFavourite={handleFavourite}
+                handleEditContact={handleEditContact}
+                handleDeleteContact={handleDeleteContact}
+                bgColor={colors[i % colors.length]}
+              />
+            ))}
+          </ul>
+        )}
       </div>
       <div className="contacts__add">
         <ContactModal type="Add" handleAddContact={handleAddContact} />
