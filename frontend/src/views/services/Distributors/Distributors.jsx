@@ -7,12 +7,11 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import { Form, Button } from "react-bootstrap";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Select from "react-select";
 import DistributorsModal from "./DistributorsModal";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import Pagination from "../Pagination/Pagination";
 
 const Distributors = () => {
   const [partners, setPartners] = useState([]);
@@ -36,27 +35,49 @@ const Distributors = () => {
     defaultCurrency: 1,
   });
   const [selectedPartnerId, setPartnerId] = useState(null);
+  const [dataPerPage, setDataPerPage] = useState(10);
+  const [entity, setEntity] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // User select data per page
+  const dataSizeArr = [10, 15, 20, 30, 50];
+  const dataSizeName = dataSizeArr.map((dsn) => ({ label: dsn, value: dsn }));
+
+  const selectDataSize = (value) => {
+    setLoading(true);
+    setDataPerPage(value);
+  };
+
+  // Fetch partners data
   useEffect(() => {
     fetchPartners();
-  }, []);
+  }, [currentPage, dataPerPage]);
 
   const fetchPartners = async () => {
     try {
       const data = await partnerServices.fetchPartners();
-      setPartners(data);
-      console.log(data);
+      setPartners(
+        data.slice((currentPage - 1) * dataPerPage, currentPage * dataPerPage)
+      );
+      setEntity(data.length);
     } catch (error) {
-      console.error("Error fetching permissions:", error);
+      console.error("Error fetching partners:", error);
     }
+    setLoading(false);
   };
 
   const handleOpenModal = (partnerId = null) => {
     setPartnerId(partnerId);
     setModalOpen(true);
     if (partnerId) {
-      console.log("Opening modal with partnerId:", partnerId); // Debugging line
       fetchPartnerData(partnerId);
     }
   };
@@ -94,21 +115,7 @@ const Distributors = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      partnerName: formData.partnerName,
-      telephone: formData.telephone,
-      email: formData.email,
-      address1: formData.address1,
-      address2: formData.address2,
-      city: formData.city,
-      state: formData.state,
-      postalCode: formData.postalCode,
-      country: formData.country,
-      alternateNameInvoice: formData.alternateNameInvoice,
-      alternateNameOther: formData.alternateNameOther,
-      vatRegistrationNo: formData.vatRegistrationNo,
-      invoiceAddress: formData.invoiceAddress,
-      customerPrePaid: formData.customerPrePaid,
-      partnerType: formData.partnerType,
+      ...formData,
       defaultCurrency: 1,
     };
     try {
@@ -129,12 +136,10 @@ const Distributors = () => {
       console.error("Error adding/updating partner:", error);
       toast.error("Failed to save partner information. Please try again.");
     }
-    console.log(data);
   };
 
   const fetchPartnerData = async (partnerId) => {
     try {
-      console.log(partnerId);
       const data = await partnerServices.fetchPartnerById(
         partnerId,
         userInfo.token
@@ -199,9 +204,6 @@ const Distributors = () => {
                 try {
                   toast.dismiss(t.id);
                   const token = userInfo.token;
-                  if (!token) {
-                    throw new Error("No authentication token available");
-                  }
                   await partnerServices.deletePartner(partnerId, token);
                   fetchPartners();
                   toast.success("Partner deleted successfully!");
@@ -231,7 +233,7 @@ const Distributors = () => {
         handleSubmit={handleSubmit}
         formData={formData}
         handleChange={handleChange}
-        title={selectedPartnerId ? "Update partner" : "Add Partner"}
+        title={selectedPartnerId ? "Update Partner" : "Add Partner"}
         buttonText={selectedPartnerId ? "Update" : "Save"}
       />
 
@@ -259,6 +261,16 @@ const Distributors = () => {
                 className="col-md-6 d-flex justify-content-end"
                 style={{ marginTop: "23px" }}
               >
+                <div className="d-flex align-items-center mr-1">
+                  <h6 className="mr-2 mb-0">Show : </h6>
+                  <Select
+                    defaultValue={dataSizeName[0]}
+                    options={dataSizeName}
+                    onChange={(e) => selectDataSize(e.value)}
+                    className="w-auto"
+                  />
+                </div>
+
                 <Button
                   style={{ padding: "7px 30px" }}
                   onClick={() => handleOpenModal()}
@@ -297,20 +309,6 @@ const Distributors = () => {
                       {row?.partnerType === 1 ? "IOS" : "ANS"}
                     </TableCell>
                     <TableCell>
-                      {/* <IconButton
-                        aria-label="edit"
-                        onClick={() => handleOpenModal(row.id)}
-                        style={{ color: "green" }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeletePartner(row.id)}
-                        style={{ color: "red" }}
-                      >
-                        <DeleteIcon />
-                      </IconButton> */}
                       <Button onClick={() => handleOpenModal(row.idPartner)}>
                         Edit
                       </Button>{" "}
@@ -319,13 +317,22 @@ const Distributors = () => {
                         onClick={() => handleDeletePartner(row.idPartner)}
                       >
                         Delete
-                      </Button>
+                      </Button>{" "}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
+
+          {/* Pagination */}
+
+          <Pagination
+            dataPerPage={dataPerPage}
+            totalData={entity}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
         </CardBody>
       </Card>
     </div>
