@@ -11,7 +11,7 @@ const ContactsUser = ({
   bgColor,
 }) => {
   const handleMouseHover = (id) => {
-    const mappedArray = contacts.map((contact) => {
+    const mappedArray = contacts?.map((contact) => {
       if (contact.id === id) {
         return {
           ...contact,

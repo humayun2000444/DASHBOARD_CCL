@@ -1003,6 +1003,11 @@ const AddPermission = lazy(() =>
 );
 
 const RatePlan = lazy(() => import("./views/services/RatePlan/RatePlan.jsx"));
+
+// Rate Plan Assignment Component Here
+
+const RatePlanAssignment = lazy(() => import("./views/services/RatePlan/RatePlanAssignment.jsx"));
+
 const Sales = lazy(() => import("./views/services/Sales/Sales.jsx"));
 
 const RetailClients = lazy(() =>
@@ -1042,6 +1047,12 @@ const BtrcPortal = lazy(() =>
 // Call Details Record Component Here
 
 const CDR = lazy(() => import("./views/services/Reports/CDR.jsx"));
+
+// Rates Component Here
+
+const Rates = lazy(() => import("./views/services/Rates/Rates.jsx"));
+
+
 
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
@@ -1116,6 +1127,9 @@ class AppRouter extends React.Component {
                     <AppRoute path="/ratePlan" component={RatePlan} />
                   )}
                   {adminChecking && (
+                    <AppRoute path="/ratePlanAssignment" component={RatePlanAssignment} />
+                  )}
+                  {adminChecking && (
                     <AppRoute path="/addRole" component={AddRole} />
                   )}
                   {adminChecking && (
@@ -1166,6 +1180,8 @@ class AppRouter extends React.Component {
                   )}
 
                   {adminChecking && <AppRoute path="/CDRs" component={CDR} />}
+
+                  {adminChecking && <AppRoute path="/rates" component={Rates} />}
 
                   {adminChecking && (
                     <AppRoute path="/balance" component={Balance} />

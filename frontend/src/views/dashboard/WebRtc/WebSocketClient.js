@@ -3,9 +3,9 @@ import CallState from "./CallState";
 
 class WebSocketClient {
 
-  constructor(url, onMessage, protocol = null) {
+  constructor(url, protocol = null, onCallStateChange, onIncomingCallStateChange) {
     this.url = url;
-    this.onMessage = onMessage;
+    // this.onMessage = onMessage;
     this.protocol = protocol;
     this.socket = null;
     this.sessionId = null;
@@ -14,6 +14,8 @@ class WebSocketClient {
     this.username = null;
     this.password = null;
     this.transactions = {};
+    this.onCallStateChange = onCallStateChange;
+    this.onIncomingCallStateChange = onIncomingCallStateChange;
     this.pluginHandles = {};
   }
 
@@ -68,9 +70,10 @@ class WebSocketClient {
     }
   }
 
+
   handleEvent(json) {
+    const janusEvent = new JanusEvent(json);
     const callState = CallState; // Access singleton instance
-    const peerConnection = callState.getPeerConnection();
     if (json.janus === "server_info") {
       const transaction = json.transaction;
       if (transaction) {
@@ -95,10 +98,10 @@ class WebSocketClient {
             body: {
               request: "register",
               username: `sip:${this.username}@103.95.96.100`,
-              authuser: this.username,
+              // authuser: this.username,
               // display_name: "Humayun",
               secret: this.password,
-              proxy: "sip:103.95.96.100:5060"
+              // proxy: "sip:103.95.96.100:5060"
             },
             transaction: WebSocketClient.randomString(12),
             session_id: this.sessionId,
@@ -123,18 +126,22 @@ class WebSocketClient {
     }
     else if(json.janus === "hangup") {
       CallState.setCallStatus("idle");
+      if (this.onCallStateChange) this.onCallStateChange("idle");
       this.sendHangupRequest();
     }
     else if (json.janus === "event")
     {
-      const janusEvent = new JanusEvent(json);
       const event = janusEvent.getEvent();
       if (event === "accepted") {
         callState.setCallStatus("connected");
+        if (this.onCallStateChange) this.onCallStateChange("connected");
       } else if (event === "hangup") {
         callState.setCallStatus("idle");
+        if (this.onCallStateChange) this.onCallStateChange("idle");
       }
       else if (janusEvent.getPlugin() === "janus.plugin.sip") {
+        const peerConnection = callState.getPeerConnection();
+        // console.log(janusEvent.getPlugin());
         const jsep = janusEvent.getJsep();
         if (jsep && janusEvent.getJsepType() === "answer") {
           peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
@@ -144,9 +151,31 @@ class WebSocketClient {
             console.log(`Call is in progress with ${janusEvent.getUsername()}`);
           }
           callState.setCallStatus("in_call");
+          if (this.onCallStateChange) this.onCallStateChange("in_call");
           callState.setPeerConnection(peerConnection);
         }
+        else if (jsep && janusEvent.getJsepType() === "offer") {
+          const iceServers = [
+            {
+              urls: "stun:stun.l.google.com:19302" // Google STUN server
+            }
+          ];
+
+          // Create RTCPeerConnection with STUN servers
+          const peerConnection = new RTCPeerConnection({ iceServers });
+          peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
+            .catch(error => console.error('Error setting remote description:', error));
+          callState.setPeerConnection(peerConnection);
+          callState.setIncomingCallStatus("incomingcall");
+          callState.setIncomingUser(janusEvent.getDisplayname)
+          if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("incomingcall");
+        }
       }
+    }
+    else if(janusEvent.getEvent === "accepted")
+    {
+        callState.setCallStatus("accepted");
+        if (this.onCallStateChange) this.onCallStateChange("accepted");
     }
     else if(json.janus === "media")
     {
@@ -162,6 +191,8 @@ class WebSocketClient {
       console.debug(json);
     }
   }
+
+
 
   sendCallRequest(uri, sdp) {
     this.sendMessage(JSON.stringify({
@@ -180,6 +211,33 @@ class WebSocketClient {
       handle_id: this.handleId
     }));
 
+  }
+
+  sendAcceptRequest(sdp) {
+    this.sendMessage(JSON.stringify({
+      janus: "message",
+      body: {
+        request: "accept"
+      },
+      transaction: WebSocketClient.randomString(12),
+      jsep: {
+        type: "answer",
+        sdp: sdp
+      },
+      session_id: this.sessionId,
+      handle_id: this.handleId
+    }));
+}
+  sendDeclineRequest() {
+    this.sendMessage(JSON.stringify({
+      janus: "message",
+      body: {
+        request: "decline"
+      },
+      transaction: WebSocketClient.randomString(12),
+      session_id: this.sessionId,
+      handle_id: this.handleId
+    }));
   }
 
   sendHangupRequest() {

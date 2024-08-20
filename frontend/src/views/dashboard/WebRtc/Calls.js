@@ -5,6 +5,14 @@ import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
 import WebSocketClient from "./WebSocketClient";
 import CallState from "./CallState";
+import IncomingCallToast from "./IncomingCallToast";
+import {  toast } from 'react-hot-toast';
+import OngoingCallToast from "./OngoingCallToast";
+
+
+
+
+
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
   // const [callStatus, setCallStatus] =  useState("idle"); // idle, calling, connected
@@ -157,6 +165,7 @@ export default function Calls() {
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
   const [callStatus, setCallStatus] = useState(CallState.getCallStatus());
+  const [incomingCallStatus, setIncomingCallStatus] = useState(CallState.getIncomingCallStatus());
   // let callStatus = CallState.getCallStatus();
 
   useEffect(() => {
@@ -165,9 +174,11 @@ export default function Calls() {
 
     if (username && password) {
       const client = new WebSocketClient(
-        "wss://103.95.96.100:3000/",
-        handleWebSocketMessage,
-        "janus-protocol"
+        // "wss://103.95.96.100:3000/",
+        "wss://pbx.cosmocom.net:3000/",
+        "janus-protocol",
+        handleCallStateChange,
+        handleIncomingCallStateChange
       );
       client.connect(username, password);
       setWebSocketClient(client);
@@ -178,18 +189,22 @@ export default function Calls() {
     }
   }, []);
 
+  const handleCallStateChange = (newStatus) => {
+    setCallStatus(newStatus);
+  };
+
+
+  const handleIncomingCallStateChange = (newStatus) => {
+    setIncomingCallStatus(newStatus);
+  };
+
+
+
   const handleButtonClick = (value) => {
     setPhoneNumber((prev) => prev + value);
   };
 
-  // this.socket.onmessage = (event) => {
-  //   console.log(event.data.toString());
-  //   this.handleWebSocketMessage(JSON.parse(event.data));
-  // };
 
-  const handleWebSocketMessage = (message) => {
-
-  };
 
   const handleCall = async () => {
     if (phoneNumber && webSocketClient) {
@@ -252,6 +267,130 @@ export default function Calls() {
     }
   };
 
+const incomingCall = async () => {
+    try {
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log('Microphone access granted');
+
+      const peerConnection = CallState.getPeerConnection();
+      stream.getTracks().forEach(track => {
+        if (track.kind === 'audio') {
+          peerConnection.addTrack(track, stream);
+        }
+      });
+      attachIncomingMediaStreams(peerConnection);
+      // Create an SDP offer
+      const answer = await peerConnection.createAnswer();
+      peerConnection.setLocalDescription(answer);
+      console.log(answer.sdp.toString());
+      webSocketClient.sendAcceptRequest(answer.sdp);
+
+
+      // Handle ICE candidates
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          const candidate = {
+            janus: "trickle",
+            candidate: {
+              candidate: event.candidate.candidate,
+              sdpMid: event.candidate.sdpMid,
+              sdpMLineIndex: event.candidate.sdpMLineIndex
+            },
+            transaction: WebSocketClient.randomString(12),
+            session_id: webSocketClient.sessionId,
+            handle_id: webSocketClient.handleId
+          };
+          webSocketClient.sendMessage(JSON.stringify(candidate));
+          // console.log("Sending ICE candidate:", candidate);
+        } else {
+          const completedCandidate = {
+            janus: "trickle",
+            candidate: { completed: true },
+            transaction: WebSocketClient.randomString(12),
+            session_id: webSocketClient.sessionId,
+            handle_id: webSocketClient.handleId
+          };
+          webSocketClient.sendMessage(JSON.stringify(completedCandidate));
+          console.log("Sending ICE candidate completion.");
+        }
+      };
+      CallState.setPeerConnection(peerConnection);
+
+      CallState.setIncomingCallStatus("accepted");
+      setIncomingCallStatus(CallState.getIncomingCallStatus());
+      // console.log(`Calling ${phoneNumber}`);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Failed to access microphone. Please ensure you have granted permission.');
+    }
+};
+
+  const attachIncomingMediaStreams = (peerConnection) => {
+    peerConnection.getReceivers().forEach(receiver => {
+      if (receiver.track.kind === 'audio') {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = new MediaStream([receiver.track]);
+          console.log('Attached remote audio stream');
+        }
+      }
+    });
+
+    peerConnection.ontrack = (event) => {
+      event.streams.forEach(stream => {
+        const remoteAudio = document.getElementById('remoteAudio');
+        if (remoteAudio) {
+          remoteAudio.srcObject = stream;
+          console.log('Remote stream added to audio element', stream);
+        }
+      });
+    };
+  };
+
+
+
+// testing
+  // const handleAcceptCall = () => {
+  //   toast.dismiss(); // Dismiss the incoming call toast
+  //   toast.custom((t) => (
+  //     <OngoingCallToast callerName="Billy Forbes" toastId={t.id} />
+
+  //   ));
+
+  // };
+
+    const handleIncomingCall = () => {
+    toast.custom(
+      <IncomingCallToast phoneNumber={phoneNumber} onAccept={handleAcceptCall} onHangup={handlePopHangup}/>,
+      {
+        position: 'top-center',
+      }
+    );
+  };
+  const handlePopHangup = () => {
+    // <IncomingCallToast onHangup={handleHangup()}
+    toast.dismiss(); // Dismiss the incoming call toast
+    handleDecline();
+  };
+
+  const handleAcceptCall = () => {
+    toast.dismiss(); // Dismiss the incoming call toast
+
+      incomingCall(); // Call the incomingCall method on WebSocketClient
+
+    toast.custom((t) => (
+      <OngoingCallToast callerName={phoneNumber} toastId={t.id} />
+    ));
+  };
+
+  useEffect(() => {
+    if (incomingCallStatus === "incomingcall") {
+      handleIncomingCall();
+    }
+  }, [incomingCallStatus]);
+
+
   const createOffer = (stream, peerConnection) => {
     return new Promise((resolve, reject) => {
       // Add only audio tracks to the peer connection
@@ -288,7 +427,7 @@ export default function Calls() {
         const remoteAudio = document.getElementById('remoteAudio');
         if (remoteAudio) {
           remoteAudio.srcObject = stream;
-          console.log('Remote stream added to audio element');
+          console.log('Remote stream added to audio element',stream);
         }
       });
     };
@@ -308,6 +447,14 @@ export default function Calls() {
     }
   };
 
+  const handleDecline = () => {
+    if(webSocketClient && (callStatus === "idle" || callStatus === "incomingcall")) {
+      webSocketClient.sendDeclineRequest();
+      CallState.setCallStatus("idle");
+      setCallStatus(CallState.getCallStatus());
+      // console.log(`Call with ${phoneNumber} ended`);
+    }
+  }
   const handleHangup = () => {
     if (webSocketClient && (callStatus === "connected" || callStatus === "calling")) {
       webSocketClient.sendHangupRequest();
@@ -316,7 +463,6 @@ export default function Calls() {
       console.log(`Call with ${phoneNumber} ended`);
     }
   };
-console.log(callStatus);
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
@@ -325,6 +471,7 @@ console.log(callStatus);
   }, []);
   return (
     <div className="calls__container">
+      {/* <button onClick={handleIncomingCall}>Simulate Incoming Call</button> */}
       <Dialpad
         phoneNumber={phoneNumber}
         callStatus={callStatus}
@@ -333,6 +480,67 @@ console.log(callStatus);
         handleCall={handleCall}
         handleHangup={handleHangup}
       />
+      {/* {callStatus==="incomingcall" && (
+        handleIncomingCall
+        // <IncomingCallToast
+        // />
+      //   <div
+      //   style={{
+      //     display: 'flex',
+      //     alignItems: 'center',
+      //     padding: '10px',
+      //     borderRadius: '10px',
+      //     backgroundColor: '#f0f0f0',
+      //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      //     width: '300px',
+      //     justifyContent: 'space-between',
+      //   }}
+      // >
+      //   <div style={{ display: 'flex', alignItems: 'center' }}>
+      //     <AccountCircleIcon
+      //       style={{
+      //         width: '50px',
+      //         height: '50px',
+      //         color: '#4CAF50',
+      //         marginRight: '10px',
+      //       }}
+      //     />
+      //     <div>
+      //       <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
+      //       <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
+      //     </div>
+      //   </div>
+      //   <div style={{display: 'flex', gap: '10px'}}>
+      //     <button
+      //       style={{
+      //         backgroundColor: '#ff4b4b',
+      //         color: 'white',
+      //         border: 'none',
+      //         padding: '10px',
+      //         borderRadius: '50%',
+      //         cursor: 'pointer',
+      //       }}
+      //       onClick={(handleHangup) => toast.dismiss() }
+      //     >
+      //       <PhoneDisabledIcon/>
+      //     </button>
+      //     <button
+      //       style={{
+      //         backgroundColor: '#4CAF50',
+      //         color: 'white',
+      //         border: 'none',
+      //         padding: '10px',
+      //         borderRadius: '50%',
+      //         cursor: 'pointer',
+      //       }}
+      //       onClick={incomingCall}
+      //     >
+      //       <PhoneIcon/>
+      //     </button>
+      //   </div>
+      // </div>
+      )} */}
+
       <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory}/>
       <audio id="remoteAudio" autoPlay></audio>
     </div>

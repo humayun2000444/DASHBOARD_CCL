@@ -1,6 +1,6 @@
 // JanusEvent.js
 export default class JanusEvent {
-  constructor(data) {
+  constructor(data, plugindata) {
     this.data = data;
   }
 
@@ -38,6 +38,10 @@ export default class JanusEvent {
 
   getUsername() {
     return this.data.plugindata.data.result.username;
+  }
+
+  getDisplayname() {
+    return this.data.plugindata.data.result.displayname;
   }
 
   getCallId() {

@@ -36,6 +36,12 @@ export default function ContactModal({
       handleEditContact(contact.id, formData);
     } else {
       handleAddContact(formData);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      });
     }
     setOpen(false);
   };

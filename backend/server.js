@@ -20,7 +20,7 @@ app.get('/systeminfo', async (req, res) => {
     const freeMemoryGB = (mem.free / (1024 ** 3)).toFixed(2);
     const usedMemoryGB = (mem.used / (1024 ** 3)).toFixed(2);
     const memoryUsagePercentage = ((mem.used / mem.total) * 100).toFixed(2);
-    
+
     // Calculate disk usage percentage
     const diskUsedPercentage = ((diskUsage[0].used / diskUsage[0].size) * 100).toFixed(2);
 
