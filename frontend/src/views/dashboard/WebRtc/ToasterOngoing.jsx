@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
-import MicIcon from "@mui/icons-material/Mic";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MicIcon from "@mui/icons-material/Mic";
 
-const CustomToast = ({
-  callerName,
-  phoneNumber,
-  onEndCall,
-  onMute,
-  isVisible,
-  callDuration,
-  isMuted,
-}) => {
+const ToasterOngoing = ({ callerName, phoneNumber, setToasterOngoing }) => {
+  const [isMuted, setIsMuted] = useState(false);
+  const [callDuration, setCallDuration] = useState(0);
+
+  const handleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCallDuration((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const formatDuration = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -20,14 +26,18 @@ const CustomToast = ({
     }${remainingSeconds}`;
   };
 
-  if (!isVisible) return null;
+  const handleEndCall = () => {
+    setToasterOngoing(false);
+  };
 
   return (
     <div
       style={{
         position: "absolute",
-        bottom: "20px",
-        right: "20px",
+        left: "50%",
+        top: "10%",
+        zIndex: 999,
+        transform: "translate(-50%,-10%)",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -38,7 +48,6 @@ const CustomToast = ({
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         width: "350px",
         justifyContent: "space-between",
-        zIndex: 1000,
       }}
     >
       <div
@@ -54,14 +63,15 @@ const CustomToast = ({
             height: "50px",
             color: "#fff",
             marginRight: "10px",
+            pointerEvents: "none",
           }}
         />
         <div>
           <p style={{ margin: 0, fontWeight: "bold", fontSize: "16px" }}>
-            {callerName} WEBRTC
+            {callerName}
           </p>
           <p style={{ margin: 0, fontSize: "14px", color: "#ccc" }}>
-            {phoneNumber} 123424
+            {phoneNumber}
           </p>
           <p style={{ margin: 0, fontSize: "14px", color: "#ccc" }}>
             {formatDuration(callDuration)}
@@ -90,9 +100,9 @@ const CustomToast = ({
             width: "40px",
             height: "40px",
           }}
-          onClick={onMute}
+          onClick={handleMute}
         >
-          <MicIcon />
+          <MicIcon style={{ pointerEvents: "none" }} />
         </button>
         <button
           style={{
@@ -107,13 +117,13 @@ const CustomToast = ({
             width: "40px",
             height: "40px",
           }}
-          onClick={onEndCall}
+          onClick={handleEndCall}
         >
-          <PhoneDisabledIcon />
+          <PhoneDisabledIcon style={{ pointerEvents: "none" }} />
         </button>
       </div>
     </div>
   );
 };
 
-export default CustomToast;
+export default ToasterOngoing;
