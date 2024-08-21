@@ -1052,6 +1052,10 @@ const CDR = lazy(() => import("./views/services/Reports/CDR.jsx"));
 
 const Rates = lazy(() => import("./views/services/Rates/Rates.jsx"));
 
+// Rate Task Component Here
+
+const RateTask = lazy(() => import("./views/services/Rates/RateTask.jsx"));
+
 
 
 // Balance Component
@@ -1182,6 +1186,8 @@ class AppRouter extends React.Component {
                   {adminChecking && <AppRoute path="/CDRs" component={CDR} />}
 
                   {adminChecking && <AppRoute path="/rates" component={Rates} />}
+
+                  {adminChecking && <AppRoute path="/rateTask" component={RateTask} />}
 
                   {adminChecking && (
                     <AppRoute path="/balance" component={Balance} />
