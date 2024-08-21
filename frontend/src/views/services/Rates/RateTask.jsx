@@ -51,7 +51,7 @@ const RateTask = () => {
       ];
 
 
-      const handleFileChange = (event) => {
+      const checkUploadedFile = (event) => {
         const file = event.target.files[0];
 
         console.log(file);
@@ -108,7 +108,7 @@ const RateTask = () => {
                 <span className='ml-1'>Or</span>
                 <span className='ml-2'style={{color: '#034af3', textDecoration: 'underline',cursor:'pointer'}}>Import</span>
                 <span className='mx-1'>Rate Sheet</span>
-                <input type="file" accept=".csv" onChange={handleFileChange}/>
+                <input type="file" accept=".csv" onChange={checkUploadedFile}/>
 
              </div>
 
