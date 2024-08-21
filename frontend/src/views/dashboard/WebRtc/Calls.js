@@ -216,6 +216,11 @@ export default function Calls() {
         const iceServers = [
           {
             urls: "stun:stun.l.google.com:19302" // Google STUN server
+          },
+          {
+            urls: 'turn:iptsp.cosmocom.net:3478',
+            username: 'ccl',
+            credential: 'ccl!pt$p'
           }
         ];
 

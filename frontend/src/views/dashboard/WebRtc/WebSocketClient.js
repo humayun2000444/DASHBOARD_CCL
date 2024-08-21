@@ -155,11 +155,22 @@ class WebSocketClient {
           callState.setPeerConnection(peerConnection);
         }
         else if (jsep && janusEvent.getJsepType() === "offer") {
+          // const iceServers = [
+          //   {
+          //     urls: "stun:stun.l.google.com:19302" // Google STUN server
+          //   }
+          // ];
           const iceServers = [
             {
               urls: "stun:stun.l.google.com:19302" // Google STUN server
+            },
+            {
+              urls: 'turn:iptsp.cosmocom.net:3478',
+              username: 'ccl',
+              credential: 'ccl!pt$p'
             }
           ];
+
 
           // Create RTCPeerConnection with STUN servers
           const peerConnection = new RTCPeerConnection({ iceServers });
