@@ -10,11 +10,12 @@ import { Form, Button } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import Select from "react-select";
 import SmsRoutingModal from "./SmsRoutingModal";
 import smsRouteServices from "../../../apiServices/SmsRouteService/SmsRouteService";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import toast from "react-hot-toast";
+import Pagination from "../Pagination/Pagination";
 
 const SmsRouting = () => {
   const [routes, setRoutes] = useState([]);
@@ -31,12 +32,31 @@ const SmsRouting = () => {
     idPartner: "",
   });
   const [selectedRouteId, setRouteId] = useState(null);
+  const [dataPerPage, setDataPerPage] = useState(10);
+  const [entity, setEntity] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // User select data per page
+  const dataSizeArr = [10, 15, 20, 30, 50];
+  const dataSizeName = dataSizeArr.map((dsn) => ({ label: dsn, value: dsn }));
+
+  const selectDataSize = (value) => {
+    setLoading(true);
+    setDataPerPage(value);
+  };
 
   useEffect(() => {
     fetchRoutes();
     fetchPartner();
-  }, []);
+  }, [currentPage, dataPerPage]);
 
   const fetchPartner = async () => {
     try {
@@ -50,11 +70,14 @@ const SmsRouting = () => {
   const fetchRoutes = async () => {
     try {
       const data = await smsRouteServices.fetchRoutes();
-      setRoutes(data);
-      console.log(data);
+      setRoutes(
+        data.slice((currentPage - 1) * dataPerPage, currentPage * dataPerPage)
+      );
+      setEntity(data.length);
     } catch (error) {
       console.error("Error fetching permissions:", error);
     }
+    setLoading(false);
   };
 
   const handleOpenModal = (routeId = null) => {
@@ -240,6 +263,15 @@ const SmsRouting = () => {
                 className="col-md-6 d-flex justify-content-end"
                 style={{ marginTop: "23px" }}
               >
+                <div className="d-flex align-items-center mr-1">
+                  <h6 className="mr-2 mb-0">Show : </h6>
+                  <Select
+                    defaultValue={dataSizeName[0]}
+                    options={dataSizeName}
+                    onChange={(e) => selectDataSize(e.value)}
+                    className="w-auto"
+                  />
+                </div>
                 <Button
                   style={{ padding: "7px 30px" }}
                   onClick={() => handleOpenModal()}
@@ -314,6 +346,13 @@ const SmsRouting = () => {
               </TableBody>
             </Table>
           </div>
+
+          <Pagination
+            dataPerPage={dataPerPage}
+            totalData={entity}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
         </CardBody>
       </Card>
     </div>

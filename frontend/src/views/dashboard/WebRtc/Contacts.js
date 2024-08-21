@@ -12,12 +12,12 @@ const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showContacts, setShowContacts] = useState(
-    JSON.parse(localStorage.getItem("contacts"))
+    JSON.parse(localStorage.getItem("contacts")) ?? []
   );
   const username = localStorage.getItem("username");
 
   const loadContactsFromLocalStorage = () => {
-    const storedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
+    const storedContacts = JSON.parse(localStorage.getItem("contacts")) ?? [];
     setContacts(storedContacts);
     setShowContacts(storedContacts);
   };
@@ -57,7 +57,10 @@ const Contacts = () => {
   const handleAddContact = async (formData) => {
     setLoading(true);
     try {
-      const newContact = await getWebRtcServices.createContact({...formData,username});
+      const newContact = await getWebRtcServices.createContact({
+        ...formData,
+        username,
+      });
       setContacts((prev) => {
         const updatedContacts = [
           ...prev,
@@ -130,7 +133,7 @@ const Contacts = () => {
 
     if (category === "Favourites") {
       const favouriteContacts = JSON.parse(
-        localStorage.getItem("favouriteContacts")
+        localStorage.getItem("favouriteContacts") ?? "[]"
       );
       setShowContacts(favouriteContacts);
     } else {
@@ -215,7 +218,7 @@ const Contacts = () => {
       <div className="contacts__list">
         <div>
           <h3>{selectedCategory}</h3>
-          <span>{showContacts?.length} Contacts</span>
+          <span>{showContacts?.length ?? 0} Contacts</span>
         </div>
         {loading ? (
           <div className="contacts__loading">

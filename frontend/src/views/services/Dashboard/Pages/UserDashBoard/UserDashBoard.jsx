@@ -212,17 +212,13 @@ const UserDashBoard = () => {
     { title: "Miss Called", value: systemInfo.disk?.usage || "Loading..." },
   ];
 
-
   const goToAnotherPage = (metric) => {
-
-      if(metric?.title === "Total Calls"){
-        history.push("/CDRs");
-      }
-      else if(metric?.title === "Balance"){
-        history.push("/balance");
-      }
-     
-  }
+    if (metric?.title === "Total Calls") {
+      history.push("/CDRs");
+    } else if (metric?.title === "Balance") {
+      history.push("/balance");
+    }
+  };
 
   return (
     <React.Fragment>
@@ -239,78 +235,6 @@ const UserDashBoard = () => {
       <Card>
         <CardBody>
           <h2 className="mb-4">User Dashboard</h2>
-          <div className="row">
-            <div className="col-md-3 mb-3">
-              <div className="count-card count-primary counter-h-112 bg-gray shadow border-0">
-                <div className="count-card-title">Total Users</div>
-                <div
-                  className="count-card-value"
-                  onClick={() => {
-                    history.push(`/applications`);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  {count?.totalApplication}
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3 mb-3">
-              <div className="count-card count-primary counter-h-112 bg-gray shadow border-0">
-                <span className="pvdadmin-span-style1">Online Users</span>
-
-                <span
-                  className="pvdadmin-span-style2"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    history.push(`/applicationsByStatus/${2}/${1}`);
-                  }}
-                >
-                  {count?.totalApplicationInProgress}
-                </span>
-              </div>
-            </div>
-
-            <div className="col-md-3 mb-3">
-              <div
-                className="count-card counter-h-112 bg-gray shadow border-0"
-                style={{ border: "0.5px solid #AE75F8" }}
-              >
-                <span className="pvdadmin-span-style1">Lives Call</span>
-
-                <span
-                  className="pvdadmin-span-style2"
-                  style={{ color: "#AE75F8", cursor: "pointer" }}
-                  onClick={() => {
-                    history.push(`/applicationsByStatus/${2}/${2}`);
-                  }}
-                >
-                  {count?.totalUnconditionalOffer}
-                </span>
-              </div>
-            </div>
-
-            <div className="col-md-3 mb-3">
-              <div
-                className="count-card counter-h-112 bg-gray shadow border-0"
-                style={{ border: "0.5px solid #F7BD12 " }}
-              >
-                <span className="pvdadmin-span-style1">
-                  Live Out / In Calls
-                </span>
-
-                <span
-                  className="pvdadmin-span-style2"
-                  style={{ color: "#F7BD12", cursor: "pointer" }}
-                  onClick={() => {
-                    history.push(`/applicationsByStatus/${2}/${3}`);
-                  }}
-                >
-                  {count?.totalRegistered}
-                </span>
-              </div>
-            </div>
-          </div>
         </CardBody>
       </Card>
       <div>
@@ -318,7 +242,12 @@ const UserDashBoard = () => {
           <CardBody>
             <Row>
               {metrics.map((metric, index) => (
-                <Col md={4} key={index} style={{ marginBottom: "20px" }} onClick={()=>goToAnotherPage(metric)}>
+                <Col
+                  md={4}
+                  key={index}
+                  style={{ marginBottom: "20px" }}
+                  onClick={() => goToAnotherPage(metric)}
+                >
                   <Paper style={{ padding: "20px", position: "relative" }}>
                     <Box
                       display="flex"
@@ -357,151 +286,6 @@ const UserDashBoard = () => {
           </CardBody>
         </Card>
       </div>
-
-      <section>
-        <Card>
-          <CardBody>
-            <p style={{ textAlign: "center", fontWeight: "700" }}>Total</p>
-          </CardBody>
-        </Card>
-      </section>
-      {/* message section */}
-
-      {/* call section */}
-      <section className="row">
-        <div className="col-md-12">
-          <Card>
-            <CardBody>
-              {/* call by types */}
-              <div className="border-bottom">
-                <h4>Calls by Types</h4>
-              </div>
-              <div className="row mt-3" style={{ fontSize: "18px" }}>
-                <div className="col-md-4  border-right">
-                  <div className="d-flex justify-content-around">
-                    {" "}
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>Internal calls</p>
-                    </div>
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>Duration (min)</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 border-right">
-                  <div className="d-flex justify-content-around">
-                    {" "}
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>Out calls</p>
-                    </div>
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>Duration (min)</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="d-flex justify-content-around">
-                    {" "}
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>In calls</p>
-                    </div>
-                    <div>
-                      <p className="mb-1">0.0</p>
-                      <p>Duration (min)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <Card>
-                <CardBody>
-                  <div className="row my-4">
-                    <div className="col-md-3">
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <div className="custom-conslt-div1"></div>
-                          <p
-                            style={{
-                              fontWeight: "500",
-                              position: "relative",
-                              top: "4px",
-                            }}
-                          >
-                            Total
-                          </p>
-                        </div>
-
-                        <div>
-                          <span style={{ position: "relative", top: "4px" }}>
-                            40
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <div className="custom-conslt-div2"></div>
-                          <p
-                            style={{
-                              fontWeight: "500",
-                              position: "relative",
-                              top: "4px",
-                            }}
-                          >
-                            In Single Chats{" "}
-                          </p>
-                        </div>
-
-                        <div>
-                          <span style={{ position: "relative", top: "4px" }}>
-                            20
-                          </span>
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <div className="custom-conslt-div4"></div>
-                          <p
-                            style={{
-                              fontWeight: "500",
-                              position: "relative",
-                              top: "4px",
-                            }}
-                          >
-                            In Group Chats
-                          </p>
-                        </div>
-
-                        <div>
-                          <span style={{ position: "relative", top: "4px" }}>
-                            20
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-5">
-                      <Chart
-                        options={options}
-                        series={series}
-                        type="donut"
-                        width="100%"
-                        height="100%"
-                      />
-                    </div>
-                    <div className="col-md-4"></div>
-                  </div>
-                </CardBody>
-              </Card> */}
-            </CardBody>
-          </Card>
-        </div>
-      </section>
-
-      {/* consultant transaction list table end */}
     </React.Fragment>
   );
 };
