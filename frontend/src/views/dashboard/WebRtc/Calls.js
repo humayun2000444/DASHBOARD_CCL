@@ -488,66 +488,6 @@ export default function Calls() {
         handleCall={handleCall}
         handleHangup={handleHangup}
       />
-      {/* {callStatus==="incomingcall" && (
-        handleIncomingCall
-        // <IncomingCallToast
-        // />
-      //   <div
-      //   style={{
-      //     display: 'flex',
-      //     alignItems: 'center',
-      //     padding: '10px',
-      //     borderRadius: '10px',
-      //     backgroundColor: '#f0f0f0',
-      //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      //     width: '300px',
-      //     justifyContent: 'space-between',
-      //   }}
-      // >
-      //   <div style={{ display: 'flex', alignItems: 'center' }}>
-      //     <AccountCircleIcon
-      //       style={{
-      //         width: '50px',
-      //         height: '50px',
-      //         color: '#4CAF50',
-      //         marginRight: '10px',
-      //       }}
-      //     />
-      //     <div>
-      //       <p style={{ margin: 0, fontWeight: 'bold' }}>{phoneNumber}</p>
-      //       <p style={{ margin: 0, color: '#666' }}>Incoming call</p>
-      //     </div>
-      //   </div>
-      //   <div style={{display: 'flex', gap: '10px'}}>
-      //     <button
-      //       style={{
-      //         backgroundColor: '#ff4b4b',
-      //         color: 'white',
-      //         border: 'none',
-      //         padding: '10px',
-      //         borderRadius: '50%',
-      //         cursor: 'pointer',
-      //       }}
-      //       onClick={(handleHangup) => toast.dismiss() }
-      //     >
-      //       <PhoneDisabledIcon/>
-      //     </button>
-      //     <button
-      //       style={{
-      //         backgroundColor: '#4CAF50',
-      //         color: 'white',
-      //         border: 'none',
-      //         padding: '10px',
-      //         borderRadius: '50%',
-      //         cursor: 'pointer',
-      //       }}
-      //       onClick={incomingCall}
-      //     >
-      //       <PhoneIcon/>
-      //     </button>
-      //   </div>
-      // </div>
-      )} */}
       <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} />
       <audio id="remoteAudio" autoPlay></audio>
     </div>
