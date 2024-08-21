@@ -88,6 +88,7 @@
     "react-numeric-input": "~2.2.3",
     "react-perfect-scrollbar": "^1.5.5",
     "react-public-ip": "^1.0.0",
+    "react-push-notification": "^1.5.4",
     "react-quill": "^2.0.0",
     "react-radio-buttons": "^1.2.2",
     "react-rating-stars-component": "^2.2.0",

@@ -10,12 +10,14 @@ import "./components/core/rippleButton/RippleButton";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import toast, { Toaster } from "react-hot-toast";
+import { Notifications } from "react-push-notification";
 
 const App = (props) => {
   return (
     <>
+      <Notifications />
       <Router />
-      <Toaster position="top-right" />
+      <Toaster />
     </>
   );
 };
