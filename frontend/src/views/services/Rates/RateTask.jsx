@@ -7,6 +7,12 @@ import TableBody from "@mui/material/TableBody";
 
 const RateTask = () => {
 
+
+
+// https://api.uapp.uk/Student/GetPaginated?page=1&pageSize=15&studenttype=3&searchstring=&consultantId=10&status=2&sortby=0&branchid=0&isconsultant=false
+
+     
+
     const typeArray = [
 
         "All",
@@ -51,6 +57,7 @@ const RateTask = () => {
       ];
 
 
+
       const checkUploadedFile = (event) => {
         const file = event.target.files[0];
 
@@ -58,6 +65,53 @@ const RateTask = () => {
         
         
       };
+
+      const [prefixObj,setPrefixObj]= useState({
+        prefix:"",
+        search:""
+      })
+
+
+
+      // const baseURl = ;
+      let mainUrl = "";
+
+      const handleChangeInput=(e)=>{
+        const { name, value } = e.target;
+        setPrefixObj((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      }
+
+
+      // if(prefixObj.prefix.trim() && prefixObj.search.trim()){
+      //   mainUrl = baseURl+`prefix=${prefixObj.prefix.trim()}&search=${prefixObj.search.trim()}`
+      // }
+      // else if(prefixObj.prefix.trim()){
+      //   mainUrl = baseURl+`prefix=${prefixObj.prefix.trim()}`
+      // }
+      // else if(prefixObj.search.trim()){
+      //   mainUrl = baseURl+`search=${prefixObj.search.trim()}`
+      // }
+      // else{
+      //   mainUrl = baseURl;
+      // }
+      
+
+      // console.log(mainUrl);
+      let prefix = prefixObj.prefix.trim();
+      let search = prefixObj.search.trim();
+
+
+      mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}`;
+
+      console.log(mainUrl);
+
+
+
+    
+    
 
   return (
     <div>
@@ -114,9 +168,9 @@ const RateTask = () => {
 
              <div className='mt-3'>
                 <span className='mr-1'>Find Prefix [*]</span>
-                <input className='mr-1' type='text' style={{borderRadius: '5px'}} />
+                <input className='mr-1' type='text' style={{borderRadius: '5px'}} value={prefixObj.prefix} name='prefix'  onChange={(e)=>handleChangeInput(e)}/>
                 <span className='mr-1'>and Search Description</span>
-                <input type='text' className='mr-1'  style={{borderRadius: '5px'}} />
+                <input type='text' className='mr-1'  style={{borderRadius: '5px'}} value={prefixObj.search} name="search"  onChange={(e)=>handleChangeInput(e)}/>
                 <span className='mr-1'>and, Type:</span>
                 <select className='mr-1'  style={{borderRadius: '5px'}}>
                     <option selected>Complete</option>
