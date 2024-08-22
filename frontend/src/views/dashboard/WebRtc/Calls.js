@@ -10,7 +10,6 @@ import ToasterOngoing from "./ToasterOngoing";
 
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  // const [callStatus, setCallStatus] =  useState("idle"); // idle, calling, connected
   const [callHistory, setCallHistory] = useState([
     {
       id: uuidv4(),
@@ -159,10 +158,8 @@ export default function Calls() {
   ]);
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
-  const [callStatus, setCallStatus] = useState(CallState.getCallStatus());
-  const [incomingCallStatus, setIncomingCallStatus] = useState(
-    CallState.getIncomingCallStatus()
-  );
+  const [outgoingCallStatus, setOutgoingCallStatus] = useState(CallState.getOutgoingCallStatus());
+  const [incomingCallStatus, setIncomingCallStatus] = useState(CallState.getIncomingCallStatus());
   // let callStatus = CallState.getCallStatus();
   const [toasterIncoming, setToasterIncoming] = useState(false);
   const [toasterOngoing, setToasterOngoing] = useState(false);
@@ -176,7 +173,7 @@ export default function Calls() {
         // "wss://103.95.96.100:3000/",
         "wss://pbx.cosmocom.net:3000/",
         "janus-protocol",
-        handleCallStateChange,
+        handleOutgoingCallStateChange,
         handleIncomingCallStateChange
       );
       client.connect(username, password);
@@ -188,19 +185,23 @@ export default function Calls() {
     }
   }, []);
 
-  const handleCallStateChange = (newStatus) => {
-    setCallStatus(newStatus);
+  const handleOutgoingCallStateChange = (newStatus) => {
+    setOutgoingCallStatus(newStatus);
   };
 
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
+    if(newStatus === "idle") {
+      setToasterIncoming(false);
+      setToasterOngoing(false);
+    }
   };
 
   const handleButtonClick = (value) => {
     setPhoneNumber((prev) => prev + value);
   };
 
-  const handleCall = async () => {
+  const handleOutgoingCall = async () => {
     if (phoneNumber && webSocketClient) {
       try {
         // Request microphone access
@@ -223,42 +224,33 @@ export default function Calls() {
         // Create RTCPeerConnection with STUN servers
         const peerConnection = new RTCPeerConnection({ iceServers });
 
+        // Add only audio tracks to the peer connection
+        stream.getTracks().forEach((track) => {
+          if (track.kind === "audio") {
+            peerConnection.addTrack(track, stream);
+          }
+        });
+
         // Create an SDP offer
-        const offer = await createOffer(stream, peerConnection);
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+
+        // Attach media streams after setting the local description
+        attachMediaStreams(peerConnection);
+
+        // Send the offer via WebSocket
         webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
 
         // Handle ICE candidates
-        peerConnection.onicecandidate = (event) => {
-          if (event.candidate) {
-            const candidate = {
-              janus: "trickle",
-              candidate: {
-                candidate: event.candidate.candidate,
-                sdpMid: event.candidate.sdpMid,
-                sdpMLineIndex: event.candidate.sdpMLineIndex,
-              },
-              transaction: WebSocketClient.randomString(12),
-              session_id: webSocketClient.sessionId,
-              handle_id: webSocketClient.handleId,
-            };
-            webSocketClient.sendMessage(JSON.stringify(candidate));
-            // console.log("Sending ICE candidate:", candidate);
-          } else {
-            const completedCandidate = {
-              janus: "trickle",
-              candidate: { completed: true },
-              transaction: WebSocketClient.randomString(12),
-              session_id: webSocketClient.sessionId,
-              handle_id: webSocketClient.handleId,
-            };
-            webSocketClient.sendMessage(JSON.stringify(completedCandidate));
-            console.log("Sending ICE candidate completion.");
-          }
-        };
+        await handleIceCandidates(peerConnection);
+
+        // Set the peer connection state
         CallState.setPeerConnection(peerConnection);
 
-        CallState.setCallStatus("calling");
-        setCallStatus(CallState.getCallStatus());
+        // Update call status
+        CallState.setOutgoingCallStatus("calling");
+        CallState.setMediaStream(stream);
+        setOutgoingCallStatus(CallState.getOutgoingCallStatus());
         console.log(`Calling ${phoneNumber}`);
       } catch (error) {
         console.error("Error accessing microphone:", error);
@@ -269,7 +261,7 @@ export default function Calls() {
     }
   };
 
-  const incomingCall = async () => {
+  const handleIncomingCall = async () => {
     try {
       // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -281,77 +273,58 @@ export default function Calls() {
           peerConnection.addTrack(track, stream);
         }
       });
-      attachIncomingMediaStreams(peerConnection);
+      attachMediaStreams(peerConnection);
       // Create an SDP offer
       const answer = await peerConnection.createAnswer();
-      peerConnection.setLocalDescription(answer);
+      await peerConnection.setLocalDescription(answer);
       console.log(answer.sdp.toString());
       webSocketClient.sendAcceptRequest(answer.sdp);
 
       // Handle ICE candidates
-      peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          const candidate = {
-            janus: "trickle",
-            candidate: {
-              candidate: event.candidate.candidate,
-              sdpMid: event.candidate.sdpMid,
-              sdpMLineIndex: event.candidate.sdpMLineIndex,
-            },
-            transaction: WebSocketClient.randomString(12),
-            session_id: webSocketClient.sessionId,
-            handle_id: webSocketClient.handleId,
-          };
-          webSocketClient.sendMessage(JSON.stringify(candidate));
-          // console.log("Sending ICE candidate:", candidate);
-        } else {
-          const completedCandidate = {
-            janus: "trickle",
-            candidate: { completed: true },
-            transaction: WebSocketClient.randomString(12),
-            session_id: webSocketClient.sessionId,
-            handle_id: webSocketClient.handleId,
-          };
-          webSocketClient.sendMessage(JSON.stringify(completedCandidate));
-          console.log("Sending ICE candidate completion.");
-        }
-      };
+      await handleIceCandidates(peerConnection);
       CallState.setPeerConnection(peerConnection);
 
       CallState.setIncomingCallStatus("accepted");
+      CallState.setMediaStream(stream);
       setIncomingCallStatus(CallState.getIncomingCallStatus());
       // console.log(`Calling ${phoneNumber}`);
     } catch (error) {
-      console.error("Error accessing microphone:", error);
+      console.error("Error: ", error);
       alert(
-        "Failed to access microphone. Please ensure you have granted permission."
+        "Error: " + error
       );
     }
   };
 
-  const attachIncomingMediaStreams = (peerConnection) => {
-    peerConnection.getReceivers().forEach((receiver) => {
-      if (receiver.track.kind === "audio") {
-        const remoteAudio = document.getElementById("remoteAudio");
-        if (remoteAudio) {
-          remoteAudio.srcObject = new MediaStream([receiver.track]);
-          console.log("Attached remote audio stream");
-        }
+  const handleIceCandidates = async (peerConnection) => {
+    peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        const candidate = {
+          janus: "trickle",
+          candidate: {
+            candidate: event.candidate.candidate,
+            sdpMid: event.candidate.sdpMid,
+            sdpMLineIndex: event.candidate.sdpMLineIndex,
+          },
+          transaction: WebSocketClient.randomString(12),
+          session_id: webSocketClient.sessionId,
+          handle_id: webSocketClient.handleId,
+        };
+        webSocketClient.sendMessage(JSON.stringify(candidate));
+      } else {
+        const completedCandidate = {
+          janus: "trickle",
+          candidate: { completed: true },
+          transaction: WebSocketClient.randomString(12),
+          session_id: webSocketClient.sessionId,
+          handle_id: webSocketClient.handleId,
+        };
+        webSocketClient.sendMessage(JSON.stringify(completedCandidate));
+        console.log("Sending ICE candidate completion.");
       }
-    });
-
-    peerConnection.ontrack = (event) => {
-      event.streams.forEach((stream) => {
-        const remoteAudio = document.getElementById("remoteAudio");
-        if (remoteAudio) {
-          remoteAudio.srcObject = stream;
-          console.log("Remote stream added to audio element", stream);
-        }
-      });
     };
-  };
-
-  const handleIncomingCall = () => {
+  }
+  const handleIncomingCallToast = () => {
     setToasterIncoming(true);
   };
 
@@ -361,42 +334,22 @@ export default function Calls() {
     setToasterIncoming(false);
   };
 
+
   const handleAcceptCall = () => {
     console.log("Call accepted from Incoming");
-    incomingCall();
-    setToasterIncoming(false);
-    setToasterOngoing(true);
-  };
-
-  useEffect(() => {
-    if (incomingCallStatus === "incomingcall") {
-      handleIncomingCall();
-    }
-  }, [incomingCallStatus]);
-
-  const createOffer = (stream, peerConnection) => {
-    return new Promise((resolve, reject) => {
-      // Add only audio tracks to the peer connection
-      stream.getTracks().forEach((track) => {
-        if (track.kind === "audio") {
-          peerConnection.addTrack(track, stream);
-        }
-      });
-      peerConnection
-        .createOffer()
-        .then((offer) =>
-          peerConnection.setLocalDescription(offer).then(() => offer)
-        )
-        .then((offer) => {
-          attachMediaStreams(peerConnection); // Attach media streams after setting local description
-          resolve(offer);
-        })
-        .catch((error) => reject(error));
-
-      CallState.setPeerConnection(peerConnection);
+    handleIncomingCall().then(r =>{
+      setToasterIncoming(false);
+      setToasterOngoing(true);
     });
   };
 
+
+
+  useEffect(() => {
+    if (incomingCallStatus === "incomingcall") {
+      handleIncomingCallToast();
+    }
+  }, [incomingCallStatus]);
   const attachMediaStreams = (peerConnection) => {
     peerConnection.getReceivers().forEach((receiver) => {
       if (receiver.track.kind === "audio") {
@@ -435,25 +388,21 @@ export default function Calls() {
   const handleDecline = () => {
     if (
       webSocketClient &&
-      (callStatus === "idle" || callStatus === "incomingcall")
+      (incomingCallStatus === "incomingcall")
     ) {
       webSocketClient.sendDeclineRequest();
-      CallState.setCallStatus("idle");
-      setCallStatus(CallState.getCallStatus());
+      CallState.setIncomingCallStatus("idle");
+      setIncomingCallStatus(CallState.getIncomingCallStatus());
       // console.log(`Call with ${phoneNumber} ended`);
     }
   };
 
+
+
   const handleHangup = () => {
-    if (
-      webSocketClient &&
-      (callStatus === "connected" || callStatus === "calling")
-    ) {
       webSocketClient.sendHangupRequest();
-      CallState.setCallStatus("idle");
-      setCallStatus(CallState.getCallStatus());
-      console.log(`Call with ${phoneNumber} ended`);
-    }
+      CallState.setOutgoingCallStatus("idle");
+      setOutgoingCallStatus(CallState.getOutgoingCallStatus());
   };
 
   useEffect(() => {
@@ -467,25 +416,26 @@ export default function Calls() {
     <div className="calls__container">
       {toasterIncoming && (
         <ToasterIncoming
-          onHangup={handlePopHangup}
+          onHangup={handleDecline}
           onAccept={handleAcceptCall}
           phoneNumber={phoneNumber}
         />
       )}
       {toasterOngoing && (
         <ToasterOngoing
+          onEndCall={handleHangup}
           callerName={phoneNumber}
           phoneNumber={phoneNumber}
           setToasterOngoing={setToasterOngoing}
         />
       )}
-      <button onClick={handleIncomingCall}>Simulate Incoming Call</button>
+      {/*<button onClick={handleIncomingCall}>Simulate Incoming Call</button>*/}
       <Dialpad
         phoneNumber={phoneNumber}
-        callStatus={callStatus}
+        callStatus={outgoingCallStatus}
         handleButtonClick={handleButtonClick}
         handleBackspace={handleBackspace}
-        handleCall={handleCall}
+        handleCall={handleOutgoingCall}
         handleHangup={handleHangup}
       />
       <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} />

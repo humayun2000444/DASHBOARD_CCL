@@ -3,7 +3,7 @@ import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MicIcon from "@mui/icons-material/Mic";
 
-const ToasterOngoing = ({ callerName, phoneNumber, setToasterOngoing }) => {
+const ToasterOngoing = ({ callerName, phoneNumber, onEndCall}) => {
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
 
@@ -26,9 +26,6 @@ const ToasterOngoing = ({ callerName, phoneNumber, setToasterOngoing }) => {
     }${remainingSeconds}`;
   };
 
-  const handleEndCall = () => {
-    setToasterOngoing(false);
-  };
 
   return (
     <div
@@ -117,7 +114,7 @@ const ToasterOngoing = ({ callerName, phoneNumber, setToasterOngoing }) => {
             width: "40px",
             height: "40px",
           }}
-          onClick={handleEndCall}
+          onClick={onEndCall}
         >
           <PhoneDisabledIcon style={{ pointerEvents: "none" }} />
         </button>

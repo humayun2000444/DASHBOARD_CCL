@@ -3,7 +3,7 @@ import CallState from "./CallState";
 
 class WebSocketClient {
 
-  constructor(url, protocol = null, onCallStateChange, onIncomingCallStateChange) {
+  constructor(url, protocol = null, onOutgoingCallStateChange, onIncomingCallStateChange) {
     this.url = url;
     // this.onMessage = onMessage;
     this.protocol = protocol;
@@ -14,11 +14,12 @@ class WebSocketClient {
     this.username = null;
     this.password = null;
     this.transactions = {};
-    this.onCallStateChange = onCallStateChange;
+    this.onOutgoingCallStateChange = onOutgoingCallStateChange;
     this.onIncomingCallStateChange = onIncomingCallStateChange;
     this.pluginHandles = {};
   }
 
+  incomingCallStatus = false;
   connect(username, password) {
     this.username = username;
     this.password = password;
@@ -34,7 +35,7 @@ class WebSocketClient {
     };
 
     this.socket.onmessage = (event) => {
-      console.log(event.data.toString());
+      // console.log(event.data.toString());
       this.handleEvent(JSON.parse(event.data));
     };
 
@@ -55,7 +56,7 @@ class WebSocketClient {
 
   sendMessage(message) {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      console.log(message.toString());
+      // console.log(message.toString());
       this.socket.send(message);
     }
   }
@@ -125,23 +126,50 @@ class WebSocketClient {
 
     }
     else if(json.janus === "hangup") {
-      CallState.setCallStatus("idle");
-      if (this.onCallStateChange) this.onCallStateChange("idle");
+      {
+        if(!this.incomingCallStatus)
+        {
+          CallState.setOutgoingCallStatus("idle");
+          if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("idle");
+        }
+        else
+        {
+          CallState.setIncomingCallStatus("idle");
+          if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("idle");
+        }
+      }
       this.sendHangupRequest();
+      this.cleanup(callState.peerConnection, callState.getMediaStream());
     }
-    else if (json.janus === "event")
-    {
+    else if (json.janus === "event") {
       const event = janusEvent.getEvent();
       if (event === "accepted") {
-        callState.setCallStatus("connected");
-        if (this.onCallStateChange) this.onCallStateChange("connected");
-      } else if (event === "hangup") {
-        callState.setCallStatus("idle");
-        if (this.onCallStateChange) this.onCallStateChange("idle");
+        if(!this.incomingCallStatus)
+        {
+          callState.setOutgoingCallStatus("connected");
+          if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("connected");
+        }
+        else
+        {
+          CallState.setIncomingCallStatus("connected");
+          if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("connected");
+        }
+      }
+      else if (event === "hangup") {
+        if(!this.incomingCallStatus)
+        {
+          callState.setOutgoingCallStatus("idle");
+          if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("idle");
+        }
+        else
+        {
+          CallState.setIncomingCallStatus("idle");
+          if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("idle");
+        }
+        this.cleanup(callState.peerConnection, callState.getMediaStream());
       }
       else if (janusEvent.getPlugin() === "janus.plugin.sip") {
         const peerConnection = callState.getPeerConnection();
-        // console.log(janusEvent.getPlugin());
         const jsep = janusEvent.getJsep();
         if (jsep && janusEvent.getJsepType() === "answer") {
           peerConnection.setRemoteDescription(new RTCSessionDescription(jsep))
@@ -150,19 +178,23 @@ class WebSocketClient {
           if (event === "progress") {
             console.log(`Call is in progress with ${janusEvent.getUsername()}`);
           }
-          callState.setCallStatus("in_call");
-          if (this.onCallStateChange) this.onCallStateChange("in_call");
+          if(!this.incomingCallStatus)
+          {
+            callState.setOutgoingCallStatus("in_call");
+            if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("in_call");
+          }
+          else
+          {
+            CallState.setIncomingCallStatus("in_call");
+            if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("in_call");
+          }
           callState.setPeerConnection(peerConnection);
         }
         else if (jsep && janusEvent.getJsepType() === "offer") {
-          // const iceServers = [
-          //   {
-          //     urls: "stun:stun.l.google.com:19302" // Google STUN server
-          //   }
-          // ];
+          this.incomingCallStatus = true;
           const iceServers = [
             {
-              urls: "stun:stun.l.google.com:19302" // Google STUN server
+              urls: "stun:stun.l.google.com:19302"
             },
             {
               urls: 'turn:iptsp.cosmocom.net:3478',
@@ -183,17 +215,22 @@ class WebSocketClient {
         }
       }
     }
-    else if(janusEvent.getEvent === "accepted")
-    {
-        callState.setCallStatus("accepted");
-        if (this.onCallStateChange) this.onCallStateChange("accepted");
+    else if(janusEvent.getEvent === "accepted") {
+      if(!this.incomingCallStatus)
+      {
+        callState.setOutgoingCallStatus("accepted");
+        if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("accepted");
+      }
+      else
+      {
+        CallState.setIncomingCallStatus("accepted");
+        if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("accepted");
+      }
     }
-    else if(json.janus === "media")
-    {
+    else if(json.janus === "media") {
       console.log("media received");
     }
-    else if(json.janus === "webrtcup")
-    {
+    else if(json.janus === "webrtcup") {
       console.log("webrtcup");
     }
     else {
@@ -272,6 +309,26 @@ class WebSocketClient {
     }
     return randomString;
   }
+
+  cleanup = (peerConnection, mediaStream) => {
+    // Close the peer connection
+    if (peerConnection) {
+      peerConnection.close();
+      peerConnection = null;
+    }
+
+    // Stop all media tracks
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => track.stop());
+    }
+
+    // Reset the call status and peer connection state
+    CallState.setIncomingCallStatus("idle");
+    CallState.setOutgoingCallStatus("idle");
+    CallState.setPeerConnection(null);
+
+    console.log("Call has been cleaned up.");
+  };
 
   disconnect() {
     if (this.socket) {
