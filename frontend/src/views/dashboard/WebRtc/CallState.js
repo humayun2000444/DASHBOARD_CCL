@@ -2,12 +2,21 @@ class CallState {
   constructor() {
     if (!CallState.instance) {
       this.peerConnection = new RTCPeerConnection();
-      this.callStatus = 'idle';
+      this.outgoingCallStatus = "idle";
       this.incomingCallStatus = "idle";
       this.incomingUser = null;
+      this.mediaStream = null;
       CallState.instance = this;
     }
     return CallState.instance;
+  }
+
+  setMediaStream(stream){
+    this.mediaStream = stream;
+  }
+
+  getMediaStream(){
+    return this.mediaStream;
   }
 
   setPeerConnection(peerConnection) {
@@ -18,8 +27,8 @@ class CallState {
     return this.peerConnection;
   }
 
-  setCallStatus(status) {
-    this.callStatus = status;
+  setOutgoingCallStatus(status) {
+    this.outgoingCallStatus = status;
   }
 
   setIncomingCallStatus(status) {
@@ -29,8 +38,8 @@ class CallState {
     return this.incomingCallStatus;
   }
 
-  getCallStatus() {
-    return this.callStatus;
+  getOutgoingCallStatus() {
+    return this.outgoingCallStatus;
   }
 
   setIncomingUser(number) {
