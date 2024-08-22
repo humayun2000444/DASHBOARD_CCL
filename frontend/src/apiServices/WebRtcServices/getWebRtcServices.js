@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8001/FREESWITCH/";
+const url = "http://iptsp.cosmocom.net:8001/FREESWITCH/";
 
 const getWebRtcServices = {
   fetchAllContacts: async (payload) => {

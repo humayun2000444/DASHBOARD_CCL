@@ -460,7 +460,7 @@ import get from "../../../../../helpers/get";
 // }
 
 const getInitialState = (roles) => {
-  if (roles.name === "ROLE_ADMIN") {
+  if (roles.name === "ROLE_BTRC") {
     return {
       menu: [
         {

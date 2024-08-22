@@ -20,6 +20,7 @@ import NewDashboard from "../../services/Dashboard/Pages/NewDashboard/NewDashboa
 import StudentDashboard from "../../services/Dashboard/Pages/StudentNew/StudentDashboard";
 import Users from "../../services/Users/Users";
 import UserDashBoard from "../../services/Dashboard/Pages/UserDashBoard/UserDashBoard.jsx";
+import Calls from "../WebRtc/Calls";
 
 const AnalyticsDashboard = () => {
   const currentUser = JSON?.parse(localStorage.getItem("current_user"));
@@ -36,8 +37,12 @@ const AnalyticsDashboard = () => {
   return (
     <>
       {/* working User Dashboard */}
-      {userRole.name === "ROLE_ADMIN" ? <BtrcPortal /> : <UserDashBoard />}
-      {/* 
+      {userRole.name === "ROLE_BTRC" && <BtrcPortal /> }
+      {userRole.name === "ROLE_ADMIN" &&  <SuperAdmin /> }
+      {userRole.name === "ROLE_WEBRTC" &&  <Calls/> }
+      {userRole.name === "ROLE_USER" &&  <UserDashBoard/> }
+
+      {/*
       {userRole.name === "ROLE_ADMIN" ? <BtrcPortal /> : <SuperAdmin />} */}
 
       {/* {userRole.name === "ROLE_USER" && UserDashBoard} */}

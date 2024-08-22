@@ -50,13 +50,13 @@ class Login extends React.Component {
           localStorage.setItem("password", userDetails.password);
 
           // After successful login, register with WebSocket
-          this.webSocketClient = new WebSocketClient(
-            // "wss://103.95.96.100:3000/",
-            "wss://pbx.cosmocom.net:3000/",
-            this.handleWebSocketMessage,
-            "janus-protocol"
-          );
-          this.webSocketClient.connect(userDetails.email, userDetails.password);
+          // this.webSocketClient = new WebSocketClient(
+          //   // "wss://103.95.96.100:3000/",
+          //   "wss://pbx.cosmocom.net:3000/",
+          //   this.handleWebSocketMessage,
+          //   "janus-protocol"
+          // );
+          // this.webSocketClient.connect(userDetails.email, userDetails.password);
 
           window.location.reload();
           history.push(Calls); // Navigate to the Calls page
@@ -76,10 +76,10 @@ class Login extends React.Component {
         });
     }
   };
-
-  handleWebSocketMessage = (message) => {
-    console.log("WebSocket message received:", message);
-  };
+  //
+  // handleWebSocketMessage = (message) => {
+  //   console.log("WebSocket message received:", message);
+  // };
 
   render() {
     return (

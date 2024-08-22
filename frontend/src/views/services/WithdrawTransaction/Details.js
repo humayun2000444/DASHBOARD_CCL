@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Card, CardBody, CardHeader, Table } from "reactstrap";
-import get from "../../../helpers/get";
+
 import Loader from "../Search/Loader/Loader";
 
 const Details = () => {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const { id } = useParams();
+  const [data] = useState({});
+  const [loading] = useState(true);
+  // const { id } = useParams();
   const history = useHistory();
 
   // useEffect(()=>{
