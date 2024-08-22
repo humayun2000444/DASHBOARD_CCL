@@ -70,10 +70,7 @@ const RateTask = () => {
         prefix:"",
         search:""
       })
-
-
-
-      // const baseURl = ;
+      
       let mainUrl = "";
 
       const handleChangeInput=(e)=>{
@@ -83,23 +80,7 @@ const RateTask = () => {
           [name]: value,
         }));
       }
-
-
-      // if(prefixObj.prefix.trim() && prefixObj.search.trim()){
-      //   mainUrl = baseURl+`prefix=${prefixObj.prefix.trim()}&search=${prefixObj.search.trim()}`
-      // }
-      // else if(prefixObj.prefix.trim()){
-      //   mainUrl = baseURl+`prefix=${prefixObj.prefix.trim()}`
-      // }
-      // else if(prefixObj.search.trim()){
-      //   mainUrl = baseURl+`search=${prefixObj.search.trim()}`
-      // }
-      // else{
-      //   mainUrl = baseURl;
-      // }
       
-
-      // console.log(mainUrl);
       let prefix = prefixObj.prefix.trim();
       let search = prefixObj.search.trim();
 
