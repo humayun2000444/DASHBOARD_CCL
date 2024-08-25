@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography, IconButton, Box } from "@material-ui/core";
-import RefreshIcon from "@material-ui/icons/Refresh";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
-import { Card, CardBody, Table } from "reactstrap";
 
 import "../../../../../assets/scss/pages/dashboard-analytics.scss";
 
-import Chart from "react-apexcharts";
-import ReactApexChart from "react-apexcharts";
-import ReactECharts from "echarts-for-react";
-
-import { Link, useHistory } from "react-router-dom";
-import Select from "react-select";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-
-import { Col, Row } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import axios from "axios";
+import AccountDetails from "./AccountDetails";
+import CallSummaryChart from "./CallSummaryChart";
+import DashboardBalance from "./DashboardBalance";
+import DashboardCallStatus from "./DashboardCallStatus";
+import DashboardCdrTable from "./DashboardCdrTable";
+import LiveCalls from "./LiveCalls";
 
 const UserDashBoard = () => {
   const [open, setOpen] = useState(false);
@@ -222,69 +214,38 @@ const UserDashBoard = () => {
 
   return (
     <React.Fragment>
-      <div className="d-flex justify-content-between flex-wrap">
-        <div>
-          <span className="std-dashboard-style1">
-            {/* Hello, {currentUser?.displayName}! */}
-          </span>
+      <div
+        className="dashboardWrapper"
+        style={{
+          width: "100%",
+          display: "flex",
+        }}
+      >
+        <div
+          className="dashboardLeftWrapper"
+          style={{
+            width: "24%",
+            height: "100vh",
+            background: "#f8f8f8",
+            padding: "32px 28px",
+          }}
+        >
+          <AccountDetails />
+          <DashboardBalance />
+          <LiveCalls />
         </div>
-      </div>
-
-      {/* Status */}
-
-      <Card>
-        <CardBody>
-          <h2 className="mb-4">User Dashboard</h2>
-        </CardBody>
-      </Card>
-      <div>
-        <Card>
-          <CardBody>
-            <Row>
-              {metrics.map((metric, index) => (
-                <Col
-                  md={4}
-                  key={index}
-                  style={{ marginBottom: "20px" }}
-                  onClick={() => goToAnotherPage(metric)}
-                >
-                  <Paper style={{ padding: "20px", position: "relative" }}>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Typography variant="h6">{metric.title}</Typography>
-                      {metric.extraIcons && (
-                        <Box>
-                          <IconButton size="small">
-                            <FullscreenIcon fontSize="small" />
-                          </IconButton>
-                          <IconButton size="small">
-                            <RefreshIcon fontSize="small" />
-                          </IconButton>
-                        </Box>
-                      )}
-                    </Box>
-                    <Typography variant="h3" style={{ margin: "10px 0" }}>
-                      {metric.value}
-                    </Typography>
-                    <ReactApexChart
-                      options={chartData.options}
-                      series={chartData.series}
-                      type="area"
-                      height={80}
-                    />
-                  </Paper>
-                </Col>
-              ))}
-            </Row>
-            <ReactECharts
-              option={option}
-              style={{ height: 400, width: "100%" }}
-            />
-          </CardBody>
-        </Card>
+        <div
+          className="dashboardRightWrapper"
+          style={{
+            width: "76%",
+            background: "#fff",
+            padding: "32px 28px",
+          }}
+        >
+          <DashboardCallStatus />
+          <CallSummaryChart />
+          <DashboardCdrTable />
+        </div>
       </div>
     </React.Fragment>
   );
