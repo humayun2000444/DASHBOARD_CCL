@@ -7,6 +7,7 @@ import WebSocketClient from "./WebSocketClient";
 import CallState from "./CallState";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
+import ToasterOngoing2 from "./ToasterOngoing2";
 
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -163,6 +164,7 @@ export default function Calls() {
   // let callStatus = CallState.getCallStatus();
   const [toasterIncoming, setToasterIncoming] = useState(false);
   const [toasterOngoing, setToasterOngoing] = useState(false);
+  const [toasterOngoing2, setToasterOngoing2] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -187,6 +189,9 @@ export default function Calls() {
 
   const handleOutgoingCallStateChange = (newStatus) => {
     setOutgoingCallStatus(newStatus);
+    if(newStatus === "idle") {
+      setToasterOngoing2(false);
+    }
   };
 
   const handleIncomingCallStateChange = (newStatus) => {
@@ -194,6 +199,7 @@ export default function Calls() {
     if(newStatus === "idle") {
       setToasterIncoming(false);
       setToasterOngoing(false);
+      setToasterOngoing2(false);
     }
   };
 
@@ -252,6 +258,7 @@ export default function Calls() {
         CallState.setMediaStream(stream);
         setOutgoingCallStatus(CallState.getOutgoingCallStatus());
         console.log(`Calling ${phoneNumber}`);
+        setToasterOngoing2(true)
       } catch (error) {
         console.error("Error accessing microphone:", error);
         alert(
@@ -427,6 +434,14 @@ export default function Calls() {
           callerName={phoneNumber}
           phoneNumber={phoneNumber}
           setToasterOngoing={setToasterOngoing}
+        />
+      )}
+      {toasterOngoing2 && (
+        <ToasterOngoing2
+          onEndCall={handleHangup}
+          callerName={phoneNumber}
+          phoneNumber={phoneNumber}
+          setToasterOngoing={setToasterOngoing2}
         />
       )}
       {/*<button onClick={handleIncomingCall}>Simulate Incoming Call</button>*/}

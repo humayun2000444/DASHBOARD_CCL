@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://103.95.96.98:8001/FREESWITCH/";
+const url = "https://103.95.96.98:8001/FREESWITCH/";
 
 const getCclIpTraffic = {
   fetchCCLIpData: async () => {
