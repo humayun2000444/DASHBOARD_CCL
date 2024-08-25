@@ -203,10 +203,6 @@ export default function Calls() {
     }
   };
 
-  const handleButtonClick = (value) => {
-    setPhoneNumber((prev) => prev + value);
-  };
-
   const handleOutgoingCall = async () => {
     if (phoneNumber && webSocketClient) {
       try {
@@ -335,13 +331,6 @@ export default function Calls() {
     setToasterIncoming(true);
   };
 
-  const handlePopHangup = () => {
-    console.log("Call disconnected from incoming");
-    handleDecline();
-    setToasterIncoming(false);
-  };
-
-
   const handleAcceptCall = () => {
     console.log("Call accepted from Incoming");
     handleIncomingCall().then(r =>{
@@ -349,8 +338,6 @@ export default function Calls() {
       setToasterOngoing(true);
     });
   };
-
-
 
   useEffect(() => {
     if (incomingCallStatus === "incomingcall") {
@@ -378,20 +365,6 @@ export default function Calls() {
       });
     };
   };
-
-  const handleBackspace = () => {
-    setPhoneNumber((prev) => prev.slice(0, -1));
-  };
-
-  const handleKeyPress = (event) => {
-    const key = event.key;
-    if (/^[0-9]$/.test(key)) {
-      setPhoneNumber((prev) => prev + key);
-    } else if (key === "Backspace") {
-      handleBackspace();
-    }
-  };
-
   const handleDecline = () => {
     if (
       webSocketClient &&
@@ -403,14 +376,29 @@ export default function Calls() {
       // console.log(`Call with ${phoneNumber} ended`);
     }
   };
-
-
-
   const handleHangup = () => {
-      webSocketClient.sendHangupRequest();
-      CallState.setOutgoingCallStatus("idle");
-      setOutgoingCallStatus(CallState.getOutgoingCallStatus());
+    webSocketClient.sendHangupRequest();
+    CallState.setOutgoingCallStatus("idle");
+    setOutgoingCallStatus(CallState.getOutgoingCallStatus());
   };
+
+  const handleBackspace = () => {
+    setPhoneNumber((prev) => prev.slice(0, -1));
+  };
+  const handleButtonClick = (value) => {
+    setPhoneNumber((prev) => prev + value);
+  };
+
+  const handleKeyPress = (event) => {
+    const key = event.key;
+    if (/^[0-9]$/.test(key)) {
+      setPhoneNumber((prev) => prev + key);
+    } else if (key === "Backspace") {
+      handleBackspace();
+    }
+  };
+
+
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
