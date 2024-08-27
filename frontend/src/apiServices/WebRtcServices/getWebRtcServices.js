@@ -49,6 +49,15 @@ const getWebRtcServices = {
       throw error;
     }
   },
+  getCallsHistory: async (payload) => {
+    try {
+      const response = await axios.post(url + "get-call-history", payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating contact:", error);
+      throw error;
+    }
+  },
 };
 
 export default getWebRtcServices;
