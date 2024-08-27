@@ -1,10 +1,42 @@
-import React from "react";
-
+import React, {useEffect, useState} from "react";
+import { useContact } from "./ContactContext";
 const CallsHistory = ({ callHistory, setCallHistory }) => {
   const redColor = {
     color: "#F23557",
   };
   const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
+
+  const { contacts } = useContact(); // Get contacts from context
+
+
+  const [outBoundDisplayNames, setOutBoundDisplayNames] = useState({});
+  const [inBoundDisplayNames, setInBoundDisplayNames] = useState({});
+
+  useEffect(() => {
+    const mapOutBoundDisplayNames = callHistory.reduce((acc, singleCall) => {
+      const contact = contacts.find(
+        (contact) => contact.phone === singleCall.callerDestination
+      );
+      acc[singleCall.id] = contact
+        ? `${contact.firstName} ${contact.lastName}`
+        : singleCall.callerDestination;
+      return acc;
+    }, {});
+    setOutBoundDisplayNames(mapOutBoundDisplayNames);
+  }, [callHistory, contacts]);
+
+  useEffect(() => {
+    const mapInBoundDisplayNames = callHistory.reduce((acc, singleCall) => {
+      const contact = contacts.find(
+        (contact) => contact.phone === singleCall.callerIdNumber
+      );
+      acc[singleCall.id] = contact
+        ? `${contact.firstName} ${contact.lastName}`
+        : singleCall.callerIdNumber;
+      return acc;
+    }, {});
+    setInBoundDisplayNames(mapInBoundDisplayNames);
+  }, [callHistory, contacts]);
 
   const handleMouseHover = (id) => {
     const mappedArray = callHistory?.map((call) => {
@@ -77,10 +109,11 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
             </div>
             <div>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.callerDestination}
+                {/*{outBoundDisplayNames[singleCall.id]}*/}
+                {singleCall.direction === "outbound" ? outBoundDisplayNames[singleCall.id] : inBoundDisplayNames[singleCall.id] }
               </p>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.callerDestination}
+                {singleCall.direction === "outbound" ? singleCall.callerDestination : singleCall.callerIdNumber }
               </p>
             </div>
           </div>
