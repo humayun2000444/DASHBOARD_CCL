@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { v4 as uuidv4 } from "uuid";
 import "../../../assets/scss/pages/Calls.scss";
 import CallsHistory from "./CallsHistory";
@@ -8,6 +8,7 @@ import CallState from "./CallState";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
 import ToasterOngoing2 from "./ToasterOngoing2";
+import ringtone from "./static/whatsapp.mp3";
 
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -166,6 +167,11 @@ export default function Calls() {
   const [toasterOngoing, setToasterOngoing] = useState(false);
   const [toasterOngoing2, setToasterOngoing2] = useState(false);
 
+  const callerName = CallState.getIncomingUser();
+
+  const ringtoneRef = useRef(new Audio(ringtone));
+  const [ringtonePlaying, setRingtonePlaying] = useState(false);
+
   useEffect(() => {
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
@@ -194,12 +200,25 @@ export default function Calls() {
     }
   };
 
+  // const handleIncomingCallStateChange = (newStatus) => {
+  //   setIncomingCallStatus(newStatus);
+  //   if(newStatus === "idle") {
+  //     setToasterIncoming(false);
+  //     setToasterOngoing(false);
+  //     setToasterOngoing2(false);
+  //   }
+  // };
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
-    if(newStatus === "idle") {
+    if (newStatus === "idle") {
       setToasterIncoming(false);
       setToasterOngoing(false);
       setToasterOngoing2(false);
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
     }
   };
 
@@ -327,15 +346,27 @@ export default function Calls() {
       }
     };
   }
+  // const handleIncomingCallToast = () => {
+  //   setToasterIncoming(true);
+  // };
   const handleIncomingCallToast = () => {
     setToasterIncoming(true);
+    ringtoneRef.current.play().then(() => {
+      setRingtonePlaying(true);
+    }).catch(error => {
+      console.error("Error playing ringtone:", error);
+    });
   };
-
   const handleAcceptCall = () => {
     console.log("Call accepted from Incoming");
-    handleIncomingCall().then(r =>{
+    handleIncomingCall().then(() => {
       setToasterIncoming(false);
       setToasterOngoing(true);
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
     });
   };
 
@@ -367,13 +398,16 @@ export default function Calls() {
   };
   const handleDecline = () => {
     if (
-      webSocketClient &&
-      (incomingCallStatus === "incomingcall")
-    ) {
+      webSocketClient && (incomingCallStatus === "incomingcall")) {
       webSocketClient.sendDeclineRequest();
       CallState.setIncomingCallStatus("idle");
       setIncomingCallStatus(CallState.getIncomingCallStatus());
       // console.log(`Call with ${phoneNumber} ended`);
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
     }
   };
   const handleHangup = () => {
@@ -399,7 +433,6 @@ export default function Calls() {
   };
 
 
-
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
@@ -413,13 +446,14 @@ export default function Calls() {
         <ToasterIncoming
           onHangup={handleDecline}
           onAccept={handleAcceptCall}
+          // callerName={callerName}
           phoneNumber={phoneNumber}
         />
       )}
       {toasterOngoing && (
         <ToasterOngoing
           onEndCall={handleHangup}
-          callerName={phoneNumber}
+          // callerName={phoneNumber}
           phoneNumber={phoneNumber}
           setToasterOngoing={setToasterOngoing}
         />
@@ -427,7 +461,7 @@ export default function Calls() {
       {toasterOngoing2 && (
         <ToasterOngoing2
           onEndCall={handleHangup}
-          callerName={phoneNumber}
+          // callerName={phoneNumber}
           phoneNumber={phoneNumber}
           setToasterOngoing={setToasterOngoing2}
         />

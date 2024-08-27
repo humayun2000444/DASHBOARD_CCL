@@ -217,8 +217,8 @@ class VerticalLayout extends PureComponent {
     let navbarProps = {
       toggleSidebarMenu: this.toggleSidebarMenu,
       sidebarState: this.state.sidebarState,
-      sidebarVisibility: this.handleSidebarVisibility,
-      currentLang: this.state.currentLang,
+      // sidebarVisibility: this.handleSidebarVisibility,
+      // currentLang: this.state.currentLang,
       changeCurrentLang: this.handleCurrentLanguage,
       handleAppOverlay: this.handleAppOverlay,
       appOverlayState: this.state.appOverlay,
@@ -226,9 +226,9 @@ class VerticalLayout extends PureComponent {
       navbarType: appProps.navbarType,
 
       // sidebar props
-      toggleSidebarMenu: this.props.collapseSidebar,
+      // toggleSidebarMenu: this.props.collapseSidebar,
       toggle: this.toggleSidebarMenu,
-      sidebarState: this.state.sidebarState,
+      // sidebarState: this.state.sidebarState,
       sidebarHover: this.sidebarMenuHover,
       sidebarVisibility: this.handleSidebarVisibility,
       visibilityState: this.state.sidebarHidden,
@@ -241,7 +241,7 @@ class VerticalLayout extends PureComponent {
       deviceWidth: this.state.width
 
 
-      
+
     };
 
     let footerProps = {

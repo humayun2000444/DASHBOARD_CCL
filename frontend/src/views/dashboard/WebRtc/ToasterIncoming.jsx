@@ -2,8 +2,13 @@ import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
+import CallState from "./CallState";
+
+
 
 const ToasterIncoming = ({ phoneNumber, onHangup, onAccept }) => {
+  const callerName = CallState.getIncomingUser();
+  // console.log(callerName);
   return (
     <div
       style={{
@@ -32,7 +37,7 @@ const ToasterIncoming = ({ phoneNumber, onHangup, onAccept }) => {
           }}
         />
         <div>
-          <p style={{ margin: 0, fontWeight: "bold" }}>{phoneNumber}</p>
+          <p style={{ margin: 0, fontWeight: "bold" }}>{callerName}</p>
           <p style={{ margin: 0, color: "#666" }}>Incoming call</p>
         </div>
       </div>

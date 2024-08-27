@@ -141,11 +141,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MicIcon from "@mui/icons-material/Mic";
 import CallState from "./CallState";
 
-const ToasterOngoing = ({ callerName, phoneNumber, onEndCall }) => {
+const ToasterOngoing = ({ phoneNumber, onEndCall }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [callStatus, setCallStatus] = useState(CallState.getOutgoingCallStatus());
 
+  const callerName = CallState.getIncomingUser();
   const handleMute = () => {
     setIsMuted(!isMuted);
   };

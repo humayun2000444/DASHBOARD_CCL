@@ -47,7 +47,7 @@ class CallState {
   }
 
   getIncomingUser(){
-    const number = this.incomingUser.slice(2, -2);
+    const number = this.incomingUser?.slice(1, -1);
     return number;
   }
 }

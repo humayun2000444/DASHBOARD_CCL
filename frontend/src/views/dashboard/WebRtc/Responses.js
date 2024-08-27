@@ -2,6 +2,7 @@
 export default class JanusEvent {
   constructor(data, plugindata) {
     this.data = data;
+    this.plugindata = plugindata;
   }
 
   getJanus() {

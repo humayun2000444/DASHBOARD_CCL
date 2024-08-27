@@ -67,66 +67,66 @@ const Contacts = () => {
     }
   };
 
-  const handleOutgoingCall = async () => {
-    if (phoneNumber && webSocketClient) {
-      try {
-        // Request microphone access
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        console.log("Microphone access granted");
-
-        const iceServers = [
-          {
-            urls: "stun:stun.l.google.com:19302", // Google STUN server
-          },
-          {
-            urls: "turn:iptsp.cosmocom.net:3478",
-            username: "ccl",
-            credential: "ccl!pt$p",
-          },
-        ];
-
-        // Create RTCPeerConnection with STUN servers
-        const peerConnection = new RTCPeerConnection({ iceServers });
-
-        // Add only audio tracks to the peer connection
-        stream.getTracks().forEach((track) => {
-          if (track.kind === "audio") {
-            peerConnection.addTrack(track, stream);
-          }
-        });
-
-        // Create an SDP offer
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-
-        // Attach media streams after setting the local description
-        attachMediaStreams(peerConnection);
-
-        // Send the offer via WebSocket
-        webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
-
-        // Handle ICE candidates
-        await handleIceCandidates(peerConnection);
-
-        // Set the peer connection state
-        CallState.setPeerConnection(peerConnection);
-
-        // Update call status
-        CallState.setOutgoingCallStatus("calling");
-        CallState.setMediaStream(stream);
-        setOutgoingCallStatus(CallState.getOutgoingCallStatus());
-        console.log(`Calling ${phoneNumber}`);
-        setToasterOngoing2(true)
-      } catch (error) {
-        console.error("Error accessing microphone:", error);
-        alert(
-          "Failed to access microphone. Please ensure you have granted permission."
-        );
-      }
-    }
-  };
+  // const handleOutgoingCall = async () => {
+  //   if (phoneNumber && webSocketClient) {
+  //     try {
+  //       // Request microphone access
+  //       const stream = await navigator.mediaDevices.getUserMedia({
+  //         audio: true,
+  //       });
+  //       console.log("Microphone access granted");
+  //
+  //       const iceServers = [
+  //         {
+  //           urls: "stun:stun.l.google.com:19302", // Google STUN server
+  //         },
+  //         {
+  //           urls: "turn:iptsp.cosmocom.net:3478",
+  //           username: "ccl",
+  //           credential: "ccl!pt$p",
+  //         },
+  //       ];
+  //
+  //       // Create RTCPeerConnection with STUN servers
+  //       const peerConnection = new RTCPeerConnection({ iceServers });
+  //
+  //       // Add only audio tracks to the peer connection
+  //       stream.getTracks().forEach((track) => {
+  //         if (track.kind === "audio") {
+  //           peerConnection.addTrack(track, stream);
+  //         }
+  //       });
+  //
+  //       // Create an SDP offer
+  //       const offer = await peerConnection.createOffer();
+  //       await peerConnection.setLocalDescription(offer);
+  //
+  //       // Attach media streams after setting the local description
+  //       attachMediaStreams(peerConnection);
+  //
+  //       // Send the offer via WebSocket
+  //       webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
+  //
+  //       // Handle ICE candidates
+  //       await handleIceCandidates(peerConnection);
+  //
+  //       // Set the peer connection state
+  //       CallState.setPeerConnection(peerConnection);
+  //
+  //       // Update call status
+  //       CallState.setOutgoingCallStatus("calling");
+  //       CallState.setMediaStream(stream);
+  //       setOutgoingCallStatus(CallState.getOutgoingCallStatus());
+  //       console.log(`Calling ${phoneNumber}`);
+  //       setToasterOngoing2(true)
+  //     } catch (error) {
+  //       console.error("Error accessing microphone:", error);
+  //       alert(
+  //         "Failed to access microphone. Please ensure you have granted permission."
+  //       );
+  //     }
+  //   }
+  // };
 
   const handleIncomingCall = async () => {
     try {

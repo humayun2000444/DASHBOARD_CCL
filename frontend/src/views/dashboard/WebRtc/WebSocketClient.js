@@ -210,7 +210,8 @@ class WebSocketClient {
             .catch(error => console.error('Error setting remote description:', error));
           callState.setPeerConnection(peerConnection);
           callState.setIncomingCallStatus("incomingcall");
-          callState.setIncomingUser(janusEvent.getDisplayname)
+          callState.setIncomingUser(janusEvent.getDisplayname());
+
           if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("incomingcall");
         }
       }
