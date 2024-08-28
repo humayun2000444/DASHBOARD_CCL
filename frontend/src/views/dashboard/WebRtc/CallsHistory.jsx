@@ -77,10 +77,10 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
             </div>
             <div>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.callerDestination}
+                {singleCall.direction === "outbound" ? singleCall.callerDestination : singleCall.callerIdNumber }
               </p>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.callerDestination}
+                {singleCall.direction === "outbound" ? singleCall.callerDestination : singleCall.callerIdNumber }
               </p>
             </div>
           </div>
