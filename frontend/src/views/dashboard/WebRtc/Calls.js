@@ -84,25 +84,18 @@ export default function Calls() {
     }
   };
 
-  // const handleIncomingCallStateChange = (newStatus) => {
-  //   setIncomingCallStatus(newStatus);
-  //   if(newStatus === "idle") {
-  //     setToasterIncoming(false);
-  //     setToasterOngoing(false);
-  //     setToasterOngoing2(false);
-  //   }
-  // };
+
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
     if (newStatus === "idle") {
-      setToasterIncoming(false);
-      setToasterOngoing(false);
-      setToasterOngoing2(false);
       if (ringtonePlaying) {
         ringtoneRef.current.pause();
         ringtoneRef.current.currentTime = 0;
         setRingtonePlaying(false);
       }
+      setToasterIncoming(false);
+      setToasterOngoing(false);
+      setToasterOngoing2(false);
     }
   };
 
@@ -283,15 +276,15 @@ export default function Calls() {
   };
   const handleDecline = () => {
     if (webSocketClient && incomingCallStatus === "incomingcall") {
-      webSocketClient.sendDeclineRequest();
-      CallState.setIncomingCallStatus("idle");
-      setIncomingCallStatus(CallState.getIncomingCallStatus());
-      // console.log(`Call with ${phoneNumber} ended`);
       if (ringtonePlaying) {
         ringtoneRef.current.pause();
         ringtoneRef.current.currentTime = 0;
         setRingtonePlaying(false);
       }
+      webSocketClient.sendDeclineRequest();
+      CallState.setIncomingCallStatus("idle");
+      setIncomingCallStatus(CallState.getIncomingCallStatus());
+      // console.log(`Call with ${phoneNumber} ended`);
     }
   };
   const handleHangup = () => {
