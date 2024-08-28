@@ -36,14 +36,32 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-    const year = String(date.getFullYear()).slice(2); // Get last two digits of the year
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(2);
     let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+    hours = hours % 12 || 12;
 
     return `${day}/${month}/${year} ${hours}:${minutes}${ampm}`;
+  };
+
+  const formatDuration = (durationInSeconds) => {
+    const hours = Math.floor(durationInSeconds / 3600);
+    const minutes = Math.floor((durationInSeconds % 3600) / 60);
+    const seconds = durationInSeconds % 60;
+
+    let formattedDuration = "";
+    if (hours > 0) {
+      formattedDuration += `${hours}h `;
+    }
+    if (minutes > 0) {
+      formattedDuration += `${minutes}min `;
+    }
+    if (seconds > 0 || (hours === 0 && minutes === 0)) {
+      formattedDuration += `${seconds}s`;
+    }
+    return formattedDuration.trim();
   };
 
   return (
@@ -59,28 +77,29 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
             </div>
             <div>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.destinationNumber}
+                {singleCall.callerDestination}
               </p>
               <p style={singleCall.duration === null ? redColor : null}>
-                {singleCall.destinationNumber}
+                {singleCall.callerDestination}
               </p>
             </div>
           </div>
           <div className="calls__history--status">
             <div>
-              {singleCall.duration === null &&
-              singleCall.direction !== "local" ? (
-                <i className="fa-solid fa-phone-slash"></i>
-              ) : (
-                <i className="fa-solid fa-phone"></i>
-              )}
+              {singleCall.duration === null
+                ? singleCall.direction !== "local" && (
+                    <i className="fa-solid fa-phone-slash"></i>
+                  )
+                : singleCall.direction !== "local" && (
+                    <i className="fa-solid fa-phone"></i>
+                  )}
 
               {singleCall.direction !== "local" &&
                 singleCall.duration !== null && (
                   <i
                     className="fa-solid fa-arrow-right"
                     style={
-                      singleCall.direction === "inbound"
+                      singleCall.direction === "outbound"
                         ? { transform: "rotate(-45deg)" }
                         : { transform: "rotate(135deg)" }
                     }
@@ -100,7 +119,7 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
             >
               {singleCall.duration === null
                 ? singleCall.status
-                : singleCall.duration + "s"}
+                : formatDuration(singleCall.duration)}
             </p>
           </div>
           <div className="calls__history--time">
