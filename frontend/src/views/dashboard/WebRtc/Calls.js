@@ -1,167 +1,26 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import getWebRtcServices from "../../../apiServices/WebRtcServices/getWebRtcServices";
 import "../../../assets/scss/pages/Calls.scss";
+import CallState from "./CallState";
 import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
-import WebSocketClient from "./WebSocketClient";
-import CallState from "./CallState";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
 import ToasterOngoing2 from "./ToasterOngoing2";
+import WebSocketClient from "./WebSocketClient";
 import ringtone from "./static/whatsapp.mp3";
-
 export default function Calls() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [callHistory, setCallHistory] = useState([
-    {
-      id: uuidv4(),
-      callerName: "Rizwan",
-      number: "8801712069453",
-      duration: "0s",
-      time: "7/16 12:38 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "",
-      number: "88011670934217",
-      duration: "10s",
-      time: "7/9 05:35 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Munna",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Humayun",
-      number: "09646400100",
-      duration: "44s",
-      time: "7/16 11:51 AM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Yasin",
-      number: "8801712069453",
-      duration: "0s",
-      time: "7/11 03:49 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Emon",
-      number: "8801712069453",
-      duration: "3s",
-      time: "7/11 03:14 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Mikdad",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Jubair",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/10 06:24 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Nahid",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:38 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Apple",
-      number: "88011670934217",
-      duration: "1min  30s",
-      time: "7/9 05:35 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Omi",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Omi",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Omi",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Omi",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "inbound",
-      isHovered: false,
-    },
-    {
-      id: uuidv4(),
-      callerName: "Omi",
-      number: "88011670934217",
-      duration: "0s",
-      time: "7/9 05:35 PM",
-      callStatus: "outbound",
-      isHovered: false,
-    },
-  ]);
+  const [callHistory, setCallHistory] = useState([]);
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
-  const [outgoingCallStatus, setOutgoingCallStatus] = useState(CallState.getOutgoingCallStatus());
-  const [incomingCallStatus, setIncomingCallStatus] = useState(CallState.getIncomingCallStatus());
+  const [outgoingCallStatus, setOutgoingCallStatus] = useState(
+    CallState.getOutgoingCallStatus()
+  );
+  const [incomingCallStatus, setIncomingCallStatus] = useState(
+    CallState.getIncomingCallStatus()
+  );
   // let callStatus = CallState.getCallStatus();
   const [toasterIncoming, setToasterIncoming] = useState(false);
   const [toasterOngoing, setToasterOngoing] = useState(false);
@@ -171,6 +30,31 @@ export default function Calls() {
 
   const ringtoneRef = useRef(new Audio(ringtone));
   const [ringtonePlaying, setRingtonePlaying] = useState(false);
+
+  const username = localStorage.getItem("username");
+
+  useEffect(() => {
+    const fetchCallsHistory = async () => {
+      try {
+        let data = await getWebRtcServices.getCallsHistory({
+          callerIdNumber: username,
+          domainName: "103.95.96.100",
+        });
+        setCallHistory(
+          data.map((singleCall) => {
+            return {
+              ...singleCall,
+              isHovered: false,
+              id: uuidv4(),
+            };
+          })
+        );
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+    fetchCallsHistory();
+  }, [username]);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -195,7 +79,7 @@ export default function Calls() {
 
   const handleOutgoingCallStateChange = (newStatus) => {
     setOutgoingCallStatus(newStatus);
-    if(newStatus === "idle") {
+    if (newStatus === "idle") {
       setToasterOngoing2(false);
     }
   };
@@ -273,7 +157,7 @@ export default function Calls() {
         CallState.setMediaStream(stream);
         setOutgoingCallStatus(CallState.getOutgoingCallStatus());
         console.log(`Calling ${phoneNumber}`);
-        setToasterOngoing2(true)
+        setToasterOngoing2(true);
       } catch (error) {
         console.error("Error accessing microphone:", error);
         alert(
@@ -312,9 +196,7 @@ export default function Calls() {
       // console.log(`Calling ${phoneNumber}`);
     } catch (error) {
       console.error("Error: ", error);
-      alert(
-        "Error: " + error
-      );
+      alert("Error: " + error);
     }
   };
 
@@ -345,17 +227,20 @@ export default function Calls() {
         console.log("Sending ICE candidate completion.");
       }
     };
-  }
+  };
   // const handleIncomingCallToast = () => {
   //   setToasterIncoming(true);
   // };
   const handleIncomingCallToast = () => {
     setToasterIncoming(true);
-    ringtoneRef.current.play().then(() => {
-      setRingtonePlaying(true);
-    }).catch(error => {
-      console.error("Error playing ringtone:", error);
-    });
+    ringtoneRef.current
+      .play()
+      .then(() => {
+        setRingtonePlaying(true);
+      })
+      .catch((error) => {
+        console.error("Error playing ringtone:", error);
+      });
   };
   const handleAcceptCall = () => {
     console.log("Call accepted from Incoming");
@@ -397,8 +282,7 @@ export default function Calls() {
     };
   };
   const handleDecline = () => {
-    if (
-      webSocketClient && (incomingCallStatus === "incomingcall")) {
+    if (webSocketClient && incomingCallStatus === "incomingcall") {
       webSocketClient.sendDeclineRequest();
       CallState.setIncomingCallStatus("idle");
       setIncomingCallStatus(CallState.getIncomingCallStatus());
@@ -431,7 +315,6 @@ export default function Calls() {
       handleBackspace();
     }
   };
-
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
