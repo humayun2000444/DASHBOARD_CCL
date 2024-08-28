@@ -140,13 +140,31 @@ import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MicIcon from "@mui/icons-material/Mic";
 import CallState from "./CallState";
+import {useContact} from "./ContactContext";
 
 const ToasterOngoing = ({ phoneNumber, onEndCall }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [callStatus, setCallStatus] = useState(CallState.getOutgoingCallStatus());
 
+  const { contacts } = useContact();
+  const [displayName, setDisplayName] = useState(phoneNumber);
+
+  // Get the callerName from CallState
   const callerName = CallState.getIncomingUser();
+  if(!phoneNumber) phoneNumber = CallState.getPhoneNumber();
+  useEffect(() => {
+    // Find contact where the phone matches the callerName
+    const contact = contacts.find(contact => contact.phone === phoneNumber);
+    if (contact) {
+      // If the callerName matches a contact's phone, use the firstName + lastName
+      setDisplayName(`${contact.firstName} ${contact.lastName}`);
+    } else {
+      // If no match, use the callerName
+      setDisplayName(phoneNumber);
+    }
+  }, [contacts, phoneNumber]);
+
   const handleMute = () => {
     setIsMuted(!isMuted);
   };
@@ -235,7 +253,7 @@ const ToasterOngoing = ({ phoneNumber, onEndCall }) => {
         />
         <div>
           <p style={{ margin: 0, fontWeight: "bold", fontSize: "16px" }}>
-            {callerName}
+            {displayName}
           </p>
           <p style={{ margin: 0, fontSize: "14px", color: "#ccc" }}>
             {phoneNumber}

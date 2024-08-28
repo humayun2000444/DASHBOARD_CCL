@@ -7,11 +7,11 @@ import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
-import ToasterOngoing2 from "./ToasterOngoing2";
+import ToasterOngoing2 from "./ToasterOngoingForDialPad";
 import WebSocketClient from "./WebSocketClient";
 import ringtone from "./static/whatsapp.mp3";
 export default function Calls() {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  let [phoneNumber, setPhoneNumber] = useState("");
   const [callHistory, setCallHistory] = useState([]);
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
@@ -100,7 +100,8 @@ export default function Calls() {
   };
 
   const handleOutgoingCall = async () => {
-    if (phoneNumber && webSocketClient) {
+    if ((phoneNumber||CallState.getPhoneNumber()) && webSocketClient) {
+      if(!phoneNumber) phoneNumber = CallState.getPhoneNumber();
       try {
         // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -351,7 +352,7 @@ export default function Calls() {
         handleCall={handleOutgoingCall}
         handleHangup={handleHangup}
       />
-      <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} />
+      <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} handleOutgoingCalls={handleOutgoingCall} />
       <audio id="remoteAudio" autoPlay></audio>
     </div>
   );

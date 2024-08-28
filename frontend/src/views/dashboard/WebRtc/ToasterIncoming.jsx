@@ -130,11 +130,12 @@ const ToasterIncoming = ({ phoneNumber, onHangup, onAccept }) => {
           }}
         />
         <div>
-          <p style={{ margin: 0, fontWeight: "bold" }}>{displayName}</p>
-          <p style={{ margin: 0, color: "#666" }}>Incoming call</p>
+          <p style={{margin: 0, fontWeight: "bold"}}>{displayName}</p>
+          <p style={{margin: 0, fontWeight: "bold"}}>{callerName}</p>
+          <p style={{margin: 0, color: "#666"}}>Incoming call</p>
         </div>
       </div>
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div style={{display: "flex", gap: "10px"}}>
         <button
           style={{
             backgroundColor: "#ff4b4b",

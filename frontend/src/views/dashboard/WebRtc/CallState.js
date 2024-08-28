@@ -6,6 +6,7 @@ class CallState {
       this.incomingCallStatus = "idle";
       this.incomingUser = null;
       this.mediaStream = null;
+      this.phoneNumber = null;
       CallState.instance = this;
     }
     return CallState.instance;
@@ -29,6 +30,13 @@ class CallState {
 
   setOutgoingCallStatus(status) {
     this.outgoingCallStatus = status;
+  }
+
+  setPhoneNumber(number) {
+    this.phoneNumber = number;
+  }
+  getPhoneNumber() {
+    return this.phoneNumber;
   }
 
   setIncomingCallStatus(status) {
