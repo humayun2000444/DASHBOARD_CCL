@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Card, CardBody } from 'reactstrap'
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
+import Select from "react-select";
 
 const RateTask = () => {
 
@@ -11,24 +12,37 @@ const RateTask = () => {
 
 // https://api.uapp.uk/Student/GetPaginated?page=1&pageSize=15&studenttype=3&searchstring=&consultantId=10&status=2&sortby=0&branchid=0&isconsultant=false
 
-     
 
-    const typeArray = [
+const customStyles = {
+  container: (provided) => ({
+    ...provided,
+    width: '200px',
+    height: '10px',
+    display: 'inline-block',
+    marginRight:'8px'
+  }),
+  control: (provided) => ({
+    ...provided,
+    minHeight: '30px', // Ensure the control height is what you want
+    height: '30px',
+    fontSize: '12px', // Adjust font size if needed
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: 'auto',
+    padding: '0 8px',
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: '0px',
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: '10px',
+    paddingTop: '10px'
+  }),
+};
 
-        "All",
-        "Validation Errors",
-        "Code End",
-        "New Codes",
-        "Increase",
-        "Decrease",
-        "Unchanged",
-        "Incomplete",
-        "Overlap",
-        "Overlap Adjusted",
-        "Rate Param Conflict",
-        "Rate Position Not Found",
-        "Existing"
-      ];
 
 
       const tableHeaders = [
@@ -65,15 +79,63 @@ const RateTask = () => {
         
         
       };
+      const types = [
+        { label: "All", value: "all" },
+        { label: "Validation Errors", value: "validation_errors" },
+        { label: "Code End", value: "code_end" },
+        { label: "New Codes", value: "new_codes" },
+        { label: "Increase", value: "increase" },
+        { label: "Decrease", value: "decrease" },
+        { label: "Unchanged", value: "unchanged" },
+        { label: "Complete", value: "complete" },
+        { label: "Incomplete", value: "incomplete" },
+        { label: "Overlap", value: "overlap" },
+        { label: "Overlap Adjusted", value: "overlap_adjusted" },
+        { label: "Rate Param Conflict", value: "rate_param_conflict" },
+        { label: "Rate Position Not Found", value: "rate_position_not_found" },
+        { label: "Existing", value: "existing" }
+      ];
+
+        const [typeLabel, setTypeLabel] = useState("");
+        const [typeValue, setTypeValue] = useState("");
+
+        const typeMenu = types.map((elpt) => ({
+          label: elpt?.label,
+          value: elpt?.value,
+        }));
+
+        const selectType = (label, value) => {
+          setTypeLabel(label);
+          setTypeValue(value);
+        
+        };
+  
 
       const [prefixObj,setPrefixObj]= useState({
         prefix:"",
-        search:""
+        search:"",
+        type:""
       })
+
+      // const [directCall, setDirectCall] = useState({
+      //   total: false,
+      //   complete: false,
+      //   incompelet:false,
+      //   validationError: false,
+      //   overlap:false,
+      //   rateParamComplete: false,
+      //   ratePositionNotPound: false,
+      //   existing:false,
+      //   codeEnd:false,
+      //   new:false,
+      //   increase:false,
+      //   unchanged:false,
+      //   overlapAdjust: false,
+      // })
       
       let mainUrl = "";
 
-      const handleChangeInput=(e)=>{
+      const handleChange=(e)=>{
         const { name, value } = e.target;
         setPrefixObj((prevData) => ({
           ...prevData,
@@ -83,11 +145,24 @@ const RateTask = () => {
       
       let prefix = prefixObj.prefix.trim();
       let search = prefixObj.search.trim();
+      let type = prefixObj.type;
 
+      mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}${(prefix || search) && type && "&"}${type && `type=` + type}`;
 
-      mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}`;
+      const callApi = () => {
+      }
 
-      console.log(mainUrl);
+      const handleApiClick = (value)=>{
+        setPrefixObj(prev=>{
+          return {
+            ...prev,
+            type:value
+          }
+        })
+      mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}${(prefix || search) && type && "&"}${type && `type=` + type}`;
+        setTypeLabel(value);
+      }
+
 
 
 
@@ -149,44 +224,56 @@ const RateTask = () => {
 
              <div className='mt-3'>
                 <span className='mr-1'>Find Prefix [*]</span>
-                <input className='mr-1' type='text' style={{borderRadius: '5px'}} value={prefixObj.prefix} name='prefix'  onChange={(e)=>handleChangeInput(e)}/>
+                <input className='mr-1' type='text' style={{borderRadius: '5px'}} value={prefixObj.prefix} name='prefix'  onChange={(e)=>handleChange(e)}/>
                 <span className='mr-1'>and Search Description</span>
-                <input type='text' className='mr-1'  style={{borderRadius: '5px'}} value={prefixObj.search} name="search"  onChange={(e)=>handleChangeInput(e)}/>
+                <input type='text' className='mr-1'  style={{borderRadius: '5px'}} value={prefixObj.search} name="search"  onChange={(e)=>handleChange(e)}/>
                 <span className='mr-1'>and, Type:</span>
-                <select className='mr-1'  style={{borderRadius: '5px'}}>
-                    <option selected>Complete</option>
-                    {
-                        typeArray?.map((singleItem,index)=>
-                        <option key={index} value={singleItem}>{singleItem}</option>
-                        )
-                    }
-                </select>
-                <button className='btn btn-primary mr-1'>Find</button>
+                {/* <Select className='mr-1'  style={{borderRadius: '5px'}} name="type" onChange={handleChange}>
+                options={types} */}
+                      {/* value={{
+                        label: typeLabel,
+                        value: typeValue,
+                      }}
+                      onChange={(opt) => selectType(opt.label, opt.value)}
+                      name="elptStatusId"
+                      id="elptStatusId" */}
+                {/* </Select> */}
+           
+                <Select
+              styles={customStyles}
+             value={{
+                       label: typeLabel,
+                       value: typeValue,
+                     }}
+             onChange={(opt) => selectType(opt.label, opt.value)}
+             options={types}
+           />
+          
+                <button className='btn btn-primary mr-1' onClick={callApi}>Find</button>
                 <button className='btn btn-primary mr-1'>Find & Select</button>
                 <button className='btn btn-primary'>Export</button>
 
              </div>
 
-
              <div className='mt-3'>
-                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline", cursor:'pointer'}}>Total:26197</span>
-                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Complete:26197</span>
-                <span className='' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Incomplete:0</span>
+                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline", cursor:'pointer'}} onClick={()=>handleApiClick("total")}>Total:26197</span>
+                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("complete")}>Complete:26197</span>
+                <span className='' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("incompelet")}>Incomplete:0</span>
 
-                <span className=' ml-4 mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Validation Error:0</span>
-                <span className='' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Overlap:0</span>
+                <span className=' ml-4 mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("validationError")}>Validation Error:0</span>
+                <span className='' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("overlap")}>Overlap:0</span>
 
-                <span className='ml-5 mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Rate Param Conflict:0</span>
-                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Rate Position Not Found:0</span>
-                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Existing:0</span>
-                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Code End:0</span>
+                <span className='ml-5 mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("rateParamComplete")}>Rate Param Conflict:0</span>
+                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("ratePositionNotPound")}>Rate Position Not Found:0</span>
+                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("existing")}>Existing:0</span>
+                <span className='mr-1' style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("codeEnd")}>Code End:0</span>
                 
                 <br/>
 
-                <span className='mr-2'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>New:2911</span>
-                <span className='mr-2'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Increase:1797</span>
-                <span className='mr-1'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>Unchanged:18644</span>
-                <span className='mr-1'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}}>OverlapAdjusted:0</span>
+                <span className='mr-2'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("new")}>New:2911</span>
+                <span className='mr-2'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("increase")}>Increase:1797</span>
+                <span className='mr-1'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("unchanged")}>Unchanged:18644</span>
+                <span className='mr-1'style={{color: '#a52a2a',textDecoration:"underline",cursor:'pointer'}} onClick={()=>handleApiClick("overlapAdjust")}>OverlapAdjusted:0</span>
 
              </div>
 
