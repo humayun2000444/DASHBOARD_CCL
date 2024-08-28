@@ -219,6 +219,9 @@ const UserDashBoard = () => {
         style={{
           width: "100%",
           display: "flex",
+          position: "absolute",
+          top: "-8px",
+          right: "0px",
         }}
       >
         <div
