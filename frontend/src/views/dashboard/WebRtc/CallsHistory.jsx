@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useContact } from "./ContactContext";
-const CallsHistory = ({ callHistory, setCallHistory }) => {
+import CallState from "./CallState";
+const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
   const redColor = {
     color: "#F23557",
   };
@@ -53,6 +54,16 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
       }
     });
     setCallHistory(mappedArray);
+  };
+
+  const handleCall = (singleCall) => {
+    if(singleCall.direction === "outbound"){
+      CallState.setPhoneNumber(singleCall.callerDestination);
+    }
+    else
+      CallState.setPhoneNumber(singleCall.callerIdNumber);
+
+   handleOutgoingCalls();
   };
 
   const handleMouseLeave = () => {
@@ -157,7 +168,10 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
           </div>
           <div className="calls__history--time">
             {singleCall.isHovered ? (
-              <button>
+              // <button>
+              //   <i className="fa-solid fa-phone"></i>
+              // </button>
+              <button onClick={() => handleCall(singleCall)}>
                 <i className="fa-solid fa-phone"></i>
               </button>
             ) : (
@@ -173,3 +187,4 @@ const CallsHistory = ({ callHistory, setCallHistory }) => {
 };
 
 export default CallsHistory;
+
