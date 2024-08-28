@@ -1,15 +1,16 @@
+import classnames from "classnames";
 import React from "react";
 import { Link } from "react-router-dom";
-import classnames from "classnames";
 // import navigationConfig from "../../../../../configs/navigationConfig"
-import SideMenuGroup from "./SideMenuGroup";
-import { Badge } from "reactstrap";
 import { ChevronRight } from "react-feather";
+import { Badge } from "reactstrap";
+import SideMenuGroup from "./SideMenuGroup";
 // import { FormattedMessage } from "react-intl"
 import { history } from "../../../../../history";
-import get from "../../../../../helpers/get";
 
 const getInitialState = (roles) => {
+  const username = localStorage.getItem("username");
+
   if (roles.name === "ROLE_BTRC") {
     return {
       menu: [
@@ -31,11 +32,22 @@ const getInitialState = (roles) => {
       currentActiveGroup: [],
       tempArr: [],
     };
-  }else if(roles.name === "ROLE_WEBRTC") {
+  } else if (roles.name === "ROLE_WEBRTC") {
     return {
       menu: [
         {
           id: 1,
+          title: username,
+          // navLink: "/call-page-webrtc",
+          type: "item",
+          icon: "fa-solid fa-user",
+          parentId: null,
+          parentName: null,
+          displayOrder: 1,
+          children: null,
+        },
+        {
+          id: 2,
           title: "Calls",
           navLink: "/call-page-webrtc",
           type: "item",
@@ -45,8 +57,9 @@ const getInitialState = (roles) => {
           displayOrder: 1,
           children: null,
         },
+
         {
-          id: 2,
+          id: 3,
           title: "Contacts",
           navLink: "/contatc-page-webrtc",
           type: "item",
