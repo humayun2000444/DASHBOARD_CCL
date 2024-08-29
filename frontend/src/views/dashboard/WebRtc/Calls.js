@@ -7,7 +7,7 @@ import CallsHistory from "./CallsHistory";
 import Dialpad from "./Dialpad";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
-import ToasterOngoing2 from "./ToasterOngoing2";
+import ToasterOngoing2 from "./ToasterOngoingForDialPad";
 import WebSocketClient from "./WebSocketClient";
 import ringtone from "./static/whatsapp.mp3";
 export default function Calls() {

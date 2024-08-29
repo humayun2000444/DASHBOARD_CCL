@@ -10,7 +10,7 @@ import WebSocketClient from "./WebSocketClient";
 import CallState from "./CallState";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
-import ToasterOngoing2 from "./ToasterOngoing2";
+import ToasterOngoing2 from "./ToasterOngoingForDialPad";
 
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState("");
