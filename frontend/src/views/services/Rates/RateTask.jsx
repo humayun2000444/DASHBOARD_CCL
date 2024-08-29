@@ -5,6 +5,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
+import { Padding } from '@mui/icons-material';
 
 const RateTask = () => {
 
@@ -17,29 +18,27 @@ const customStyles = {
   container: (provided) => ({
     ...provided,
     width: '200px',
-    height: '10px',
     display: 'inline-block',
-    marginRight:'8px'
+    marginRight:'8px',
+
   }),
   control: (provided) => ({
     ...provided,
-    minHeight: '30px', // Ensure the control height is what you want
-    height: '30px',
+
+    minHeight: '20px',
+
     fontSize: '12px', // Adjust font size if needed
   }),
   valueContainer: (provided) => ({
     ...provided,
-    height: 'auto',
-    padding: '0 8px',
+    
   }),
   input: (provided) => ({
     ...provided,
     margin: '0px',
   }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    height: '10px',
-    paddingTop: '15px'
+  indicatorsContainer: () => ({
+    padding: '0px' 
   }),
 };
 
@@ -224,16 +223,7 @@ const customStyles = {
                 <span className='mr-1'>and Search Description</span>
                 <input type='text' className='mr-1'  style={{borderRadius: '5px'}} value={prefixObj.search} name="search"  onChange={(e)=>handleChange(e)}/>
                 <span className='mr-1'>and, Type:</span>
-                {/* <Select className='mr-1'  style={{borderRadius: '5px'}} name="type" onChange={handleChange}>
-                options={types} */}
-                      {/* value={{
-                        label: typeLabel,
-                        value: typeValue,
-                      }}
-                      onChange={(opt) => selectType(opt.label, opt.value)}
-                      name="elptStatusId"
-                      id="elptStatusId" */}
-                {/* </Select> */}
+              
            
                 <Select
               styles={customStyles}
