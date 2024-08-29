@@ -152,7 +152,7 @@ const ToasterOngoing = ({ phoneNumber, onEndCall }) => {
 
   // Get the callerName from CallState
   const callerName = CallState.getIncomingUser();
-
+  if(!phoneNumber) phoneNumber = CallState.getPhoneNumber();
   useEffect(() => {
     // Find contact where the phone matches the callerName
     const contact = contacts.find(contact => contact.phone === phoneNumber);
