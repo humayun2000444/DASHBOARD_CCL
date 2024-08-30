@@ -1,5 +1,6 @@
 import React from "react";
 import ContactModal from "./ContactModal";
+import CallState from "./CallState";
 
 const ContactsUser = ({
   contact,
@@ -8,7 +9,7 @@ const ContactsUser = ({
   handleFavourite,
   handleEditContact,
   handleDeleteContact,
-  bgColor,
+  bgColor,handleOutgoingCalls,
 }) => {
   const handleMouseHover = (id) => {
     const mappedArray = contacts?.map((contact) => {
@@ -25,6 +26,16 @@ const ContactsUser = ({
       }
     });
     setContacts(mappedArray);
+  };
+
+  const handleCall = (contact) => {
+    // if(contact.direction === "outbound"){
+    //   CallState.setPhoneNumber(contact.callerDestination);
+    // }
+    // else
+    //   CallState.setPhoneNumber(contact.callerIdNumber);
+    CallState.setContactPhoneNumber(contact.phone);
+    handleOutgoingCalls();
   };
 
   return (
@@ -48,7 +59,8 @@ const ContactsUser = ({
       </div>
       <div>
         {contact.isHovered && (
-          <button>
+
+          <button  onClick={() => handleCall(contact)}>
             <i className="fas fa-phone"></i>
           </button>
         )}

@@ -1,5 +1,5 @@
 import CircularProgress from "@mui/material/CircularProgress";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import getWebRtcServices from "../../../apiServices/WebRtcServices/getWebRtcServices";
 import "../../../assets/scss/pages/Contacts.scss";
 import ContactModal from "./ContactModal";
@@ -11,6 +11,7 @@ import CallState from "./CallState";
 import ToasterIncoming from "./ToasterIncoming";
 import ToasterOngoing from "./ToasterOngoing";
 import ToasterOngoing2 from "./ToasterOngoingForDialPad";
+import ringtone from "./static/whatsapp.mp3";
 
 const Contacts = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,7 @@ const Contacts = () => {
   const [loading, setLoading] = useState(false);
 
 
-  const [phoneNumber, setPhoneNumber] = useState("");
+  let [phoneNumber, setPhoneNumber] = useState("");
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
   const [outgoingCallStatus, setOutgoingCallStatus] = useState(CallState.getOutgoingCallStatus());
@@ -29,6 +30,8 @@ const Contacts = () => {
   const [toasterOngoing, setToasterOngoing] = useState(false);
   const [toasterOngoing2, setToasterOngoing2] = useState(false);
 
+  const ringtoneRef = useRef(new Audio(ringtone));
+  const [ringtonePlaying, setRingtonePlaying] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -53,80 +56,87 @@ const Contacts = () => {
 
   const handleOutgoingCallStateChange = (newStatus) => {
     setOutgoingCallStatus(newStatus);
-    if(newStatus === "idle") {
+    if (newStatus === "idle") {
       setToasterOngoing2(false);
     }
   };
 
+
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
-    if(newStatus === "idle") {
+    if (newStatus === "idle") {
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
       setToasterIncoming(false);
       setToasterOngoing(false);
       setToasterOngoing2(false);
     }
   };
 
-  // const handleOutgoingCall = async () => {
-  //   if (phoneNumber && webSocketClient) {
-  //     try {
-  //       // Request microphone access
-  //       const stream = await navigator.mediaDevices.getUserMedia({
-  //         audio: true,
-  //       });
-  //       console.log("Microphone access granted");
-  //
-  //       const iceServers = [
-  //         {
-  //           urls: "stun:stun.l.google.com:19302", // Google STUN server
-  //         },
-  //         {
-  //           urls: "turn:iptsp.cosmocom.net:3478",
-  //           username: "ccl",
-  //           credential: "ccl!pt$p",
-  //         },
-  //       ];
-  //
-  //       // Create RTCPeerConnection with STUN servers
-  //       const peerConnection = new RTCPeerConnection({ iceServers });
-  //
-  //       // Add only audio tracks to the peer connection
-  //       stream.getTracks().forEach((track) => {
-  //         if (track.kind === "audio") {
-  //           peerConnection.addTrack(track, stream);
-  //         }
-  //       });
-  //
-  //       // Create an SDP offer
-  //       const offer = await peerConnection.createOffer();
-  //       await peerConnection.setLocalDescription(offer);
-  //
-  //       // Attach media streams after setting the local description
-  //       attachMediaStreams(peerConnection);
-  //
-  //       // Send the offer via WebSocket
-  //       webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
-  //
-  //       // Handle ICE candidates
-  //       await handleIceCandidates(peerConnection);
-  //
-  //       // Set the peer connection state
-  //       CallState.setPeerConnection(peerConnection);
-  //
-  //       // Update call status
-  //       CallState.setOutgoingCallStatus("calling");
-  //       CallState.setMediaStream(stream);
-  //       setOutgoingCallStatus(CallState.getOutgoingCallStatus());
-  //       console.log(`Calling ${phoneNumber}`);
-  //       setToasterOngoing2(true)
-  //     } catch (error) {
-  //       console.error("Error accessing microphone:", error);
-  //       alert(
-  //         "Failed to access microphone. Please ensure you have granted permission."
-  //       );
-  //     }
-  //   }
-  // };
+  const handleOutgoingCall = async () => {
+    if ((phoneNumber||CallState.getContactPhoneNumber()) && webSocketClient) {
+      if(!phoneNumber) phoneNumber = CallState.getContactPhoneNumber();
+      try {
+        // Request microphone access
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        console.log("Microphone access granted");
+
+        const iceServers = [
+          {
+            urls: "stun:stun.l.google.com:19302", // Google STUN server
+          },
+          {
+            urls: "turn:iptsp.cosmocom.net:3478",
+            username: "ccl",
+            credential: "ccl!pt$p",
+          },
+        ];
+
+        // Create RTCPeerConnection with STUN servers
+        const peerConnection = new RTCPeerConnection({ iceServers });
+
+        // Add only audio tracks to the peer connection
+        stream.getTracks().forEach((track) => {
+          if (track.kind === "audio") {
+            peerConnection.addTrack(track, stream);
+          }
+        });
+
+        // Create an SDP offer
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+
+        // Attach media streams after setting the local description
+        attachMediaStreams(peerConnection);
+
+        // Send the offer via WebSocket
+        webSocketClient.sendCallRequest(phoneNumber, offer.sdp);
+
+        // Handle ICE candidates
+        await handleIceCandidates(peerConnection);
+
+        // Set the peer connection state
+        CallState.setPeerConnection(peerConnection);
+
+        // Update call status
+        CallState.setOutgoingCallStatus("calling");
+        CallState.setMediaStream(stream);
+        setOutgoingCallStatus(CallState.getOutgoingCallStatus());
+        console.log(`Calling ${phoneNumber}`);
+        setToasterOngoing2(true);
+      } catch (error) {
+        console.error("Error accessing microphone:", error);
+        alert(
+          "Failed to access microphone. Please ensure you have granted permission."
+        );
+      }
+    }
+  };
 
   const handleIncomingCall = async () => {
     try {
@@ -157,9 +167,7 @@ const Contacts = () => {
       // console.log(`Calling ${phoneNumber}`);
     } catch (error) {
       console.error("Error: ", error);
-      alert(
-        "Error: " + error
-      );
+      alert("Error: " + error);
     }
   };
 
@@ -190,16 +198,29 @@ const Contacts = () => {
         console.log("Sending ICE candidate completion.");
       }
     };
-  }
-  const handleIncomingCallToast = () => {
-    setToasterIncoming(true);
   };
 
+  const handleIncomingCallToast = () => {
+    setToasterIncoming(true);
+    ringtoneRef.current
+      .play()
+      .then(() => {
+        setRingtonePlaying(true);
+      })
+      .catch((error) => {
+        console.error("Error playing ringtone:", error);
+      });
+  };
   const handleAcceptCall = () => {
     console.log("Call accepted from Incoming");
-    handleIncomingCall().then(r =>{
+    handleIncomingCall().then(() => {
       setToasterIncoming(false);
       setToasterOngoing(true);
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
     });
   };
 
@@ -230,10 +251,12 @@ const Contacts = () => {
     };
   };
   const handleDecline = () => {
-    if (
-      webSocketClient &&
-      (incomingCallStatus === "incomingcall")
-    ) {
+    if (webSocketClient && incomingCallStatus === "incomingcall") {
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
       webSocketClient.sendDeclineRequest();
       CallState.setIncomingCallStatus("idle");
       setIncomingCallStatus(CallState.getIncomingCallStatus());
@@ -441,23 +464,23 @@ const Contacts = () => {
         <ToasterIncoming
           onHangup={handleDecline}
           onAccept={handleAcceptCall}
-          phoneNumber={phoneNumber}
+          // phoneNumber={phoneNumber}
         />
       )}
       {toasterOngoing && (
         <ToasterOngoing
           onEndCall={handleHangup}
-          callerName={phoneNumber}
-          phoneNumber={phoneNumber}
-          setToasterOngoing={setToasterOngoing}
+          // callerName={phoneNumber}
+          // phoneNumber={phoneNumber}
+          // setToasterOngoing={setToasterOngoing}
         />
       )}
       {toasterOngoing2 && (
         <ToasterOngoing2
           onEndCall={handleHangup}
-          callerName={phoneNumber}
-          phoneNumber={phoneNumber}
-          setToasterOngoing={setToasterOngoing2}
+          // callerName={phoneNumber}
+          // phoneNumber={phoneNumber}
+          // setToasterOngoing={setToasterOngoing2}
         />
       )}
       <div className="contacts__sidebar">
@@ -497,6 +520,7 @@ const Contacts = () => {
                 key={contact.id}
                 contact={contact}
                 contacts={showContacts}
+                handleOutgoingCalls={handleOutgoingCall}
                 setContacts={setShowContacts}
                 handleFavourite={handleFavourite}
                 handleEditContact={handleEditContact}

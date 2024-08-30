@@ -39,6 +39,13 @@ class CallState {
     return this.phoneNumber;
   }
 
+  setContactPhoneNumber(number) {
+    this.phoneNumber = number;
+  }
+  getContactPhoneNumber() {
+    return this.phoneNumber;
+  }
+
   setIncomingCallStatus(status) {
     this.incomingCallStatus = status;
   }
@@ -55,8 +62,7 @@ class CallState {
   }
 
   getIncomingUser(){
-    const number = this.incomingUser?.slice(1, -1);
-    return number;
+    return this.incomingUser?.slice(1, -1);
   }
 }
 

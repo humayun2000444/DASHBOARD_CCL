@@ -26,7 +26,7 @@ export default function Calls() {
   const [toasterOngoing, setToasterOngoing] = useState(false);
   const [toasterOngoing2, setToasterOngoing2] = useState(false);
 
-  const callerName = CallState.getIncomingUser();
+
 
   const ringtoneRef = useRef(new Audio(ringtone));
   const [ringtonePlaying, setRingtonePlaying] = useState(false);
@@ -222,9 +222,7 @@ export default function Calls() {
       }
     };
   };
-  // const handleIncomingCallToast = () => {
-  //   setToasterIncoming(true);
-  // };
+
   const handleIncomingCallToast = () => {
     setToasterIncoming(true);
     ringtoneRef.current
