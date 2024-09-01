@@ -5,13 +5,28 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
-import { Padding } from '@mui/icons-material';
-
+import getRateTaskServices from '../../../apiServices/RateTaskServices/getRateTaskServices';
 const RateTask = () => {
 
 
 
-// https://api.uapp.uk/Student/GetPaginated?page=1&pageSize=15&studenttype=3&searchstring=&consultantId=10&status=2&sortby=0&branchid=0&isconsultant=false
+
+
+useEffect(()=>{
+  const fetchingRateTask = async ()=>{
+    try {
+    const data = await getRateTaskServices.fetchAllRateTask();
+    console.log(data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+  fetchingRateTask();
+},[])
+
+
 
 
 const customStyles = {
@@ -64,6 +79,14 @@ const customStyles = {
         "Other\nAmount\n3",
         "Other\nAmount 4",
         "Other\nAmount 5",
+        "Other\nAmount 6",
+        "Other\nAmount 7",
+        "Other\nAmount 8",
+        "Fixed\nCharge\n Duration (Sec)",
+        "Fixed\nCharge\nAmount",
+        "Categoty",
+        "Sub Category",
+        "Validation\nError(s)",
         "       ",
         "       "
 
@@ -289,7 +312,7 @@ const customStyles = {
              {/* Rate Task Table Data Shown Here */}
 
 
-             <div className='mt-4'>
+             <div className='mt-4' style={{overflowX: "scroll"}}>
 
         <Table id="table-to-xls" className="table-sm table-bordered">
        <TableHead className="thead-uapp-bg">
@@ -325,6 +348,22 @@ const customStyles = {
             <td>0</td>
             <td>1/1</td>
             <td>0.000000</td>
+            <td>0.000000</td>
+            <td>0.000000</td>
+            <td>0.000000</td>
+            <td>1</td>
+            <td>0.000000</td>
+            <td>
+              <select disabled="true" style={{width: "204px"}}>
+                <option selected>Call</option>
+              </select>
+            </td>
+            <td>
+              <select disabled="true" style={{width: "100px"}}>
+                <option selected>Voice</option>
+              </select>
+            </td>
+            <td></td>
             <td style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Edit</td>
             <td style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Delete</td>
             
