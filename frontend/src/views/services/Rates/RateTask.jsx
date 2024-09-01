@@ -10,20 +10,23 @@ const RateTask = () => {
 
 
 const [apiData,setApiData] = useState([]);
+const [primaryData,setPrimaryData] = useState([]);
 
+const fetchingRateTask = async ()=>{
+  try {
+  const data = await getRateTaskServices.fetchAllRateTask();
+  console.log(data);
+  setApiData(data);
+  setPrimaryData(data);
+    
+  } catch (error) {
+    console.log(error);
+  }
+
+}
 
 useEffect(()=>{
-  const fetchingRateTask = async ()=>{
-    try {
-    const data = await getRateTaskServices.fetchAllRateTask();
-    console.log(data);
-    setApiData(data);
-      
-    } catch (error) {
-      console.log(error);
-    }
 
-  }
   fetchingRateTask();
 },[])
 
@@ -148,6 +151,7 @@ const customStyles = {
           ...prevData,
           [name]: value,
         }));
+        setApiData(primaryData);
       }
 
       const handleChangeSelect = (opt)=>{
@@ -167,6 +171,9 @@ const customStyles = {
       mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}${(prefix || search) && type && "&"}${type && `type=` + type}`;
 
       const callApi = () => {
+         const newData = apiData?.filter(data => data?.prefix === prefixObj?.prefix || data?.description === prefixObj?.search);
+         console.log(newData);
+         setApiData(newData);
       }
 
       const handleApiClick = (value)=>{
