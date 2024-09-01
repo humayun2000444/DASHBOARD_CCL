@@ -9,7 +9,7 @@ import getRateTaskServices from '../../../apiServices/RateTaskServices/getRateTa
 const RateTask = () => {
 
 
-
+const [apiData,setApiData] = useState([]);
 
 
 useEffect(()=>{
@@ -17,6 +17,7 @@ useEffect(()=>{
     try {
     const data = await getRateTaskServices.fetchAllRateTask();
     console.log(data);
+    setApiData(data);
       
     } catch (error) {
       console.log(error);
@@ -325,50 +326,53 @@ const customStyles = {
          </TableRow>
        </TableHead>
        <TableBody>
-        <tr>
-            <td>
+         {
+          apiData?.map((item,index) => <>
+          <tr>
+          <td>
                 <input type='checkbox'/>
             </td>
             <td>
                 <input type='checkbox' defaultChecked='true' disabled/>
             </td>
-            <td>Unchnaged</td>
-            <td>0</td>
-            <td>1201</td>
-            <td>USA</td>
-            <td>0.002000</td>
-            <td>2024-07-01 06:00:00</td>
-            <td></td>
-            <td>1</td>
-            <td>0</td>
-            <td>USA, Canada & Other (1)</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>1/1</td>
-            <td>0.000000</td>
-            <td>0.000000</td>
-            <td>0.000000</td>
-            <td>0.000000</td>
-            <td>1</td>
-            <td>0.000000</td>
+            <td>{item?.type}</td>
+            <td>{item?.executionOrder}</td>
+            <td>{item?.prefix}</td>
+            <td>{item?.description}</td>
+            <td>{item?.rateAmount}</td>
+            <td>{item?.startDate}</td>
+            <td>{item?.endDate}</td>
+            <td>{item?.resolution}</td>
+            <td>{item?.minDurationSec}</td>
+            <td>{item?.countryCode}</td>
+            <td>{item?.rateAmountRoundupDecimal}</td>
+            <td>{item?.otherAmount1}</td>
+            <td>{item?.otherAmount2}</td>
+            <td>{item?.otherAmount3}</td>
+            <td>{item?.otherAmount4}</td>
+            <td>{item?.otherAmount5}</td>
+            <td>{item?.otherAmount6}</td>
+            <td>{item?.otherAmount7}</td>
+            <td>{item?.otherAmount8}</td>
+            <td>{item?.surchargeTime}</td>
+            <td>{item?.surchargeAmount}</td>
             <td>
-              <select disabled="true" style={{width: "204px"}}>
-                <option selected>Call</option>
-              </select>
+            <select disabled="true" style={{width: "204px"}}>
+            <option selected>{item?.category}</option>
+            </select>
             </td>
             <td>
-              <select disabled="true" style={{width: "100px"}}>
-                <option selected>Voice</option>
-              </select>
+            <select disabled="true" style={{width: "100px"}}>
+            <option selected>{item?.subCategory}</option>
+            </select>
             </td>
-            <td></td>
+            <td>{item?.field2}</td>
             <td style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Edit</td>
             <td style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Delete</td>
-            
-        </tr>
-       </TableBody>
+          </tr>
+          </>)
+         }
+</TableBody>
      </Table>
 
 
