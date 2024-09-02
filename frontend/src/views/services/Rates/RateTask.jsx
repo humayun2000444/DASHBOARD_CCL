@@ -6,6 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
 import getRateTaskServices from '../../../apiServices/RateTaskServices/getRateTaskServices';
+import { X } from 'react-feather';
 const RateTask = () => {
 
 
@@ -18,6 +19,7 @@ const fetchingRateTask = async ()=>{
   console.log(data);
   setApiData(data);
   setPrimaryData(data);
+  
     
   } catch (error) {
     console.log(error);
@@ -121,14 +123,33 @@ const customStyles = {
         { label: "Rate Position Not Found", value: "Rate Position Not Found" },
         { label: "Existing", value: "Existing" }
       ];
+      // const uniqueValues = new Set();
+      // apiData.forEach(X =>{
+      //   uniqueValues.add(X.type);
+      // })
+
+
+
+
+
+
+      // console.log(uniqueValues);
+
+
+    
 
         const [typeLabel, setTypeLabel] = useState("");
         const [typeValue, setTypeValue] = useState("");
 
-        const typeMenu = types.map((elpt) => ({
-          label: elpt?.label,
-          value: elpt?.value,
+        let typeMenu = primaryData?.map((elpt) => ({
+          label: elpt?.type,
+          value: elpt?.type,
         }));
+   
+        const uniqueArray = [
+          ...new Map(typeMenu.map(item => [item.label, item])).values()
+        ];
+     
 
         const selectType = (label, value) => {
           setTypeLabel(label);
@@ -142,6 +163,8 @@ const customStyles = {
         search:"",
         type:""
       })
+
+      console.log(prefixObj.type);
       
       let mainUrl = "";
 
@@ -162,6 +185,7 @@ const customStyles = {
             type:opt.label
           }
         })
+        setApiData(primaryData);
       }
       
       let prefix = prefixObj.prefix.trim();
@@ -171,7 +195,7 @@ const customStyles = {
       mainUrl = `https://baseusrl.com?${prefix && `prefix=` + prefix}${prefix && search && "&"}${search && `search=` + search}${(prefix || search) && type && "&"}${type && `type=` + type}`;
 
       const callApi = () => {
-         const newData = apiData?.filter(data => data?.prefix === prefixObj?.prefix || data?.description === prefixObj?.search);
+         const newData = apiData?.filter(data => data?.prefix === prefixObj?.prefix || data?.description === prefixObj?.search || data?.type === prefixObj?.type);
          console.log(newData);
          setApiData(newData);
       }
@@ -263,7 +287,7 @@ const customStyles = {
                        value: typeValue,
                      }}
              onChange={(opt) => handleChangeSelect(opt)}
-             options={types}
+             options={uniqueArray}
            />
           
                 <button className='btn btn-primary mr-1' onClick={callApi}>Find</button>
