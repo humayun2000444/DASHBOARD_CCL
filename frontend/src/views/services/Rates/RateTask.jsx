@@ -7,11 +7,30 @@ import TableBody from "@mui/material/TableBody";
 import Select from "react-select";
 import getRateTaskServices from '../../../apiServices/RateTaskServices/getRateTaskServices';
 import { X } from 'react-feather';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Row, Col, Form, Button } from "react-bootstrap";
 const RateTask = () => {
 
 
 const [apiData,setApiData] = useState([]);
 const [primaryData,setPrimaryData] = useState([]);
+const [open,setOpen] = useState(false);
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "90%",
+  maxWidth: 900,
+  backgroundColor: "background.paper",
+  boxShadow: "0 3px 6px rgba(0, 0, 0, 0.16)",
+  padding: 4,
+  overflowY: "scroll",
+  maxHeight: "98%",
+};
 
 const fetchingRateTask = async ()=>{
   try {
@@ -31,6 +50,8 @@ useEffect(()=>{
 
   fetchingRateTask();
 },[])
+
+console.log(open)
 
 
 
@@ -62,6 +83,20 @@ const customStyles = {
     padding: '0px' 
   }),
 };
+
+
+const handleSubmit = (e) => {
+
+  e.preventDefault();
+  const subData = new FormData(e.target);
+  const formValues = {};
+  subData.forEach((value, key) => {
+    formValues[key] = value;
+  });
+
+  console.log(formValues); 
+
+}
 
 
 
@@ -262,7 +297,7 @@ const customStyles = {
              <div className='mt-3'>
 
                 <span>Create</span>
-                <span className='ml-2' style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>New Rate Task</span>
+                <span className='ml-2' style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}onClick={()=> setOpen(true)}>New Rate Task</span>
                 <span className='ml-1'>Or</span>
                 <span className='ml-2'style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Code Delete Task with Helper</span>
                 <span className='ml-1'>Or</span>
@@ -408,6 +443,274 @@ const customStyles = {
 
 
 </div>
+
+{
+
+
+  open ?
+
+  <div>
+      <Modal
+        open={open}
+        onClose={()=>setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            New Task Rate
+          </Typography>
+
+          <Form onSubmit={handleSubmit}>
+            <Row className="mb-4">
+              <Col md={6}>
+                <Form.Group controlId="prefix">
+                  <Form.Label>Prefix: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="prefix"
+                    required
+                  />
+                </Form.Group>
+                {/* dropdown */}
+                <Form.Group controlId="country">
+                  <Form.Label>Country: </Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="country"
+                    //   value={formData.userStatus}
+                   
+                  >
+                    <option value="">Choose...</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="description">
+                  <Form.Label>Description: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="description"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="rateAmount">
+                  <Form.Label>Rate Amount: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="rateAmount"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="pulse">
+                  <Form.Label>Pulse: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="pulse"
+                    placeholder="1"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="minDuration">
+                  <Form.Label>Minimum Duration: (Sec) </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="minDuration"
+                    placeholder="0"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="effectiveFrom">
+                  <Form.Label>Effective From: [Own TZ]: \n Date:</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="effectiveFrom"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="time">
+                  <Form.Label>Time:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="time"
+                    placeholder="00:00:00"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="validBefore">
+                  <Form.Label>
+                  Valid Before: [Own TZ] \n Date:
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="validBefore"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="time">
+                  <Form.Label>Time: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="time"
+                    placeholder="00:00:00"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="otherAmount1">
+                  <Form.Label>Other Amount 1: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount1"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount2">
+                  <Form.Label>Other Amount 2: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount2"
+                    required
+                  />
+
+                  
+                </Form.Group>
+              </Col>
+
+              <Col md={6}>
+            
+
+                <Form.Group controlId="otherAmount3">
+                  <Form.Label>Other Amount 3: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount3"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount4">
+                  <Form.Label>Other Amount 4: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount4"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount5">
+                  <Form.Label>Other Amount 5: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount5"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount6">
+                  <Form.Label>Other Amount 6: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount6"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount7">
+                  <Form.Label>Other Amount 7: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount7"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="otherAmount8">
+                  <Form.Label>Other Amount 8: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="otherAmount8"
+                    required
+                  />
+                </Form.Group>
+
+                  {/* dropdown */}
+                  <Form.Group controlId="category">
+                  <Form.Label>Category: </Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="category"
+                    //   value={formData.userStatus}
+                   
+                  >
+                    <option value="">Choose...</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                  </Form.Control>
+                </Form.Group>
+
+
+                  {/* dropdown */}
+                  <Form.Group controlId="subCategory">
+                  <Form.Label>Sub Category: </Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="subCategory"
+                    //   value={formData.userStatus}
+                   
+                  >
+                    <option value="">Choose...</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="fixedInitialPeriod">
+                  <Form.Label>Fixed Initial Period (Sec):</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="fixedInitialPeriod"
+                    placeholder="0"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="chargeForFixedInitialPeriod">
+                  <Form.Label>Charge for Fixed Initial Period:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="chargeForFixedInitialPeriod"
+                    placeholder="0"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="defaultFixroundDigitsAfterDecimalForRateAmountedChargeAmount">
+                  <Form.Label>Round Digits after Decimal for Rate Amount: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="roundDigitsAfterDecimalForRateAmount"
+                    placeholder="0"
+                    required
+                  />
+                </Form.Group>
+
+               
+          
+              </Col>
+            </Row>
+            <Button className="mt-4" variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Box>
+      </Modal>
+    </div>
+
+    :
+
+    null
+
+}
 
 
             </CardBody>
