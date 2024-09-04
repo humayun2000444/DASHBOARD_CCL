@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from "react";
-import { useContact } from "./ContactContext";
+import React, { useEffect, useState } from "react";
 import CallState from "./CallState";
-const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
+import { useContact } from "./ContactContext";
+const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls }) => {
   const redColor = {
     color: "#F23557",
   };
   const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
 
   const { contacts } = useContact(); // Get contacts from context
-
 
   const [outBoundDisplayNames, setOutBoundDisplayNames] = useState({});
   const [inBoundDisplayNames, setInBoundDisplayNames] = useState({});
@@ -57,13 +56,11 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
   };
 
   const handleCall = (singleCall) => {
-    if(singleCall.direction === "outbound"){
+    if (singleCall.direction === "outbound") {
       CallState.setPhoneNumber(singleCall.callerDestination);
-    }
-    else
-      CallState.setPhoneNumber(singleCall.callerIdNumber);
+    } else CallState.setPhoneNumber(singleCall.callerIdNumber);
 
-   handleOutgoingCalls();
+    handleOutgoingCalls();
   };
 
   const handleMouseLeave = () => {
@@ -110,83 +107,6 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
     (a, b) => new Date(b.startStamp) - new Date(a.startStamp)
   );
 
-  // return (
-  //   <div className="calls__history" onMouseLeave={handleMouseLeave}>
-  //     {callHistory?.map((singleCall, i) => (
-  //       <div
-  //         key={singleCall.id}
-  //         onMouseOver={() => handleMouseHover(singleCall.id)}
-  //       >
-  //         <div className="calls__history--users">
-  //           <div style={{ backgroundColor: colors[i % colors.length] }}>
-  //             <i className="fa-solid fa-user"></i>
-  //           </div>
-  //           <div>
-  //             <p style={singleCall.duration === null ? redColor : null}>
-  //               {/*{outBoundDisplayNames[singleCall.id]}*/}
-  //               {singleCall.direction === "outbound" ? outBoundDisplayNames[singleCall.id] : inBoundDisplayNames[singleCall.id] }
-  //             </p>
-  //             <p style={singleCall.duration === null ? redColor : null}>
-  //               {singleCall.direction === "outbound" ? singleCall.callerDestination : singleCall.callerIdNumber }
-  //             </p>
-  //           </div>
-  //         </div>
-  //         <div className="calls__history--status">
-  //           <div>
-  //             {singleCall.duration === null
-  //               ? singleCall.direction !== "local" && (
-  //                   <i className="fa-solid fa-phone-slash"></i>
-  //                 )
-  //               : singleCall.direction !== "local" && (
-  //                   <i className="fa-solid fa-phone"></i>
-  //                 )}
-  //
-  //             {singleCall.direction !== "local" &&
-  //               singleCall.duration !== null && (
-  //                 <i
-  //                   className="fa-solid fa-arrow-right"
-  //                   style={
-  //                     singleCall.direction === "outbound"
-  //                       ? { transform: "rotate(-45deg)" }
-  //                       : { transform: "rotate(135deg)" }
-  //                   }
-  //                 ></i>
-  //               )}
-  //
-  //             {singleCall.direction === "local" && (
-  //               <i className="fa-solid fa-arrow-right-arrow-left"></i>
-  //             )}
-  //           </div>
-  //           <p
-  //             style={
-  //               singleCall.duration === null
-  //                 ? { ...redColor, textTransform: "capitalize" }
-  //                 : { textTransform: "capitalize" }
-  //             }
-  //           >
-  //             {singleCall.duration === null
-  //               ? singleCall.status
-  //               : formatDuration(singleCall.duration)}
-  //           </p>
-  //         </div>
-  //         <div className="calls__history--time">
-  //           {singleCall.isHovered ? (
-  //             // <button>
-  //             //   <i className="fa-solid fa-phone"></i>
-  //             // </button>
-  //             <button onClick={() => handleCall(singleCall)}>
-  //               <i className="fa-solid fa-phone"></i>
-  //             </button>
-  //           ) : (
-  //             <p style={singleCall.duration === null ? redColor : null}>
-  //               {formatDate(singleCall.startStamp)}
-  //             </p>
-  //           )}
-  //         </div>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
   return (
     <div className="calls__history" onMouseLeave={handleMouseLeave}>
       {sortedCallHistory?.map((singleCall, i) => (
@@ -215,11 +135,11 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
             <div>
               {singleCall.duration === null
                 ? singleCall.direction !== "local" && (
-                <i className="fa-solid fa-phone-slash"></i>
-              )
+                    <i className="fa-solid fa-phone-slash"></i>
+                  )
                 : singleCall.direction !== "local" && (
-                <i className="fa-solid fa-phone"></i>
-              )}
+                    <i className="fa-solid fa-phone"></i>
+                  )}
 
               {singleCall.direction !== "local" &&
                 singleCall.duration !== null && (
@@ -267,4 +187,3 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls}) => {
 };
 
 export default CallsHistory;
-

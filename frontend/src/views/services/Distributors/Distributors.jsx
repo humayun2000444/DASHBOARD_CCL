@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { CardBody } from "reactstrap";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import { Form, Button } from "react-bootstrap";
-import Select from "react-select";
-import DistributorsModal from "./DistributorsModal";
-import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
 import toast from "react-hot-toast";
+import Select from "react-select";
+import { CardBody } from "reactstrap";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import Pagination from "../Pagination/Pagination";
+import DistributorsModal from "./DistributorsModal";
+import NidModal from "./NidModal";
 
 const Distributors = () => {
   const [partners, setPartners] = useState([]);
@@ -225,6 +225,10 @@ const Distributors = () => {
     );
   };
 
+  const [openNidModal, setOpenNidModal] = useState(false);
+  const handleOpenNidModal = () => setOpenNidModal(true);
+  const handleCloseNidModal = () => setOpenNidModal(false);
+
   return (
     <div>
       <DistributorsModal
@@ -235,6 +239,11 @@ const Distributors = () => {
         handleChange={handleChange}
         title={selectedPartnerId ? "Update Partner" : "Add Partner"}
         buttonText={selectedPartnerId ? "Update" : "Save"}
+      />
+
+      <NidModal
+        openNidModal={openNidModal}
+        handleCloseNidModal={handleCloseNidModal}
       />
 
       <Card>
@@ -253,6 +262,12 @@ const Distributors = () => {
                   />
                   <Button style={{ padding: "7px 30px" }} type="submit">
                     Find
+                  </Button>
+                  <Button
+                    style={{ padding: "7px 30px", marginLeft: "1rem" }}
+                    onClick={handleOpenNidModal}
+                  >
+                    Info
                   </Button>
                 </Form>
               </div>
