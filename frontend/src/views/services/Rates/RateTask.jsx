@@ -521,7 +521,7 @@ const handleSubmit = (e) => {
                   />
                 </Form.Group>
                 <Form.Group controlId="effectiveFrom">
-                  <Form.Label>Effective From: [Own TZ]: \n Date:</Form.Label>
+                  <Form.Label>Effective From: [Own TZ]: <br/> Date:</Form.Label>
                   <Form.Control
                     type="date"
                     name="effectiveFrom"
@@ -540,7 +540,7 @@ const handleSubmit = (e) => {
 
                 <Form.Group controlId="validBefore">
                   <Form.Label>
-                  Valid Before: [Own TZ] \n Date:
+                  Valid Before: [Own TZ] <br/> Date:
                   </Form.Label>
                   <Form.Control
                     type="date"
