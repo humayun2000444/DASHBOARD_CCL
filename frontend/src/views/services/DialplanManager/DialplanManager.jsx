@@ -101,12 +101,12 @@ const DialplanManager = () => {
   apiData?.map((item,index) => <>
   <tr>
   
-    <td>{item?.otherAmount6}</td>
-    <td>{item?.otherAmount7}</td>
-    <td>{item?.otherAmount8}</td>
-    <td>{item?.surchargeTime}</td>
-    <td>{item?.surchargeAmount}</td>
-    <td>{item?.field2}</td>
+    <td>{item?.id}</td>
+    <td>{item?.callSource}</td>
+    <td>{item?.prefix}</td>
+    <td>{item?.dialplanName}</td>
+    <td>{item?.description}</td>
+    <td>{item?.priority}</td>
     <td ><span style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Edit</span><span style={{color: '#034af3', textDecoration: 'underline', cursor:'pointer'}}>Delete</span></td>
     
   </tr>
