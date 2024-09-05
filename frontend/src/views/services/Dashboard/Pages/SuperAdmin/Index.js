@@ -18,7 +18,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 import { Col, Row } from "react-bootstrap";
 
-import axios from 'axios';
+import axios from "axios";
 const SuperAdmin = () => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState({});
@@ -190,15 +190,17 @@ const SuperAdmin = () => {
   };
 
   const [systemInfo, setSystemInfo] = useState({
-    disk: undefined
+    disk: undefined,
   });
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://iptsp.cosmocom.net:4000/systeminfo');
+        const response = await axios.get(
+          "http://iptsp.cosmocom.net:4000/systeminfo"
+        );
         setSystemInfo(response.data);
       } catch (error) {
-        console.error('Error fetching system information:', error);
+        console.error("Error fetching system information:", error);
       }
     };
 
@@ -206,13 +208,35 @@ const SuperAdmin = () => {
   }, []);
 
   const metrics = [
-    { title: "CPU usage", value: systemInfo.cpu?.usage || 'Loading...' },
-    { title: "Memory usage", value: systemInfo.memory?.usage || 'Loading...' },
-    { title: "Disk usage", value: systemInfo.disk?.usage || 'Loading...' },
+    { title: "CPU usage", value: systemInfo.cpu?.usage || "Loading..." },
+    { title: "Memory usage", value: systemInfo.memory?.usage || "Loading..." },
+    { title: "Disk usage", value: systemInfo.disk?.usage || "Loading..." },
     { title: "Registered users", value: "0", extraIcons: true },
     { title: "Answer Seizure Ratio (ASR)", value: "0%" },
     { title: "Average Call Duration (ACD)", value: "00:00:18.5" },
   ];
+
+  // const handleClick = () => {
+  //   // Open a new browser window with specific dimensions and features
+  //   window.open(
+  //     "https://www.google.com", // URL to open
+  //     "_blank", // Open in a new window or tab
+  //     "noopener,noreferrer,width=800,height=600,left=200,top=100" // Features like size and position
+  //   );
+  // };
+
+  const handleClick = () => {
+    // Assuming your app is running on localhost:3000 or another base URL
+    const baseUrl = window.location.origin; // e.g., http://localhost:3000
+    const path = "/CDRs"; // The path you want to open
+
+    // Open a new browser window with the specific route
+    window.open(
+      `${baseUrl}${path}`,
+      "_blank",
+      "noopener,noreferrer,width=800,height=600,left=200,top=100"
+    );
+  };
 
   return (
     <React.Fragment>
@@ -229,6 +253,7 @@ const SuperAdmin = () => {
       <Card>
         <CardBody>
           <h2 className="mb-4">Real time statistic</h2>
+          <button onClick={handleClick}>Open New Window</button>
           <div className="row">
             <div className="col-md-3 mb-3">
               <div className="count-card count-primary counter-h-112 bg-gray shadow border-0">
@@ -377,18 +402,18 @@ const SuperAdmin = () => {
               </div>
               <table class="table mt-5">
                 <thead class="thead-light">
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">COUNTRY</th>
-                  <th scope="col">MESSAGE - COUNT</th>
-                </tr>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">COUNTRY</th>
+                    <th scope="col">MESSAGE - COUNT</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Bangladesh</td>
-                  <td>2169</td>
-                </tr>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Bangladesh</td>
+                    <td>2169</td>
+                  </tr>
                 </tbody>
               </table>
             </CardBody>
@@ -506,18 +531,18 @@ const SuperAdmin = () => {
               </div>
               <table class="table mt-5">
                 <thead class="thead-light">
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">COUNTRY</th>
-                  <th scope="col">Internal Call - COUNT</th>
-                </tr>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">COUNTRY</th>
+                    <th scope="col">Internal Call - COUNT</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Bangladesh</td>
-                  <td>2169</td>
-                </tr>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Bangladesh</td>
+                    <td>2169</td>
+                  </tr>
                 </tbody>
               </table>
             </CardBody>
@@ -676,19 +701,19 @@ const SuperAdmin = () => {
               <div style={{ height: "300px", overflowY: "scroll" }}>
                 <Table borderless responsive className="mt-3">
                   <thead style={{ backgroundColor: "#EEF3F4" }}>
-                  <tr>
-                    <th>Consultant ID</th>
-                    <th>Consultant Name</th>
-                    <th>Total In Flow</th>
-                    <th>Total Out Flow</th>
-                    <th>Total Balance</th>
-                    <th></th>
-                  </tr>
+                    <tr>
+                      <th>Consultant ID</th>
+                      <th>Consultant Name</th>
+                      <th>Total In Flow</th>
+                      <th>Total Out Flow</th>
+                      <th>Total Balance</th>
+                      <th></th>
+                    </tr>
                   </thead>
                   <tbody>
-                  {consultants?.map((con, i) => (
-                    <tr key={i}>
-                      <td className="cursor-pointer hyperlink-hover">
+                    {consultants?.map((con, i) => (
+                      <tr key={i}>
+                        <td className="cursor-pointer hyperlink-hover">
                           <span
                             onClick={() => {
                               history.push(
@@ -698,13 +723,13 @@ const SuperAdmin = () => {
                           >
                             {con?.consultantViewId}
                           </span>
-                      </td>
-                      <td>{con?.consultantName}</td>
-                      <td>{con?.credit}</td>
-                      <td>{con?.debit}</td>
-                      <td>{con?.balance}</td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td>{con?.consultantName}</td>
+                        <td>{con?.credit}</td>
+                        <td>{con?.debit}</td>
+                        <td>{con?.balance}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

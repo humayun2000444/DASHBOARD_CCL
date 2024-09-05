@@ -20,8 +20,10 @@ import PrivateRoute from "./PrivateRoute.js";
 // Authentication Checking
 
 const tokenForRouting = JSON.parse(localStorage.getItem("userInfo"));
+
 const adminChecking =
   tokenForRouting && tokenForRouting.roles[0].name !== "ROLE_ADMIN";
+
 const token2 = localStorage.getItem("userInfo");
 let isAuth = token2 != null ? true : false;
 
@@ -1006,7 +1008,9 @@ const RatePlan = lazy(() => import("./views/services/RatePlan/RatePlan.jsx"));
 
 // Rate Plan Assignment Component Here
 
-const RatePlanAssignment = lazy(() => import("./views/services/RatePlan/RatePlanAssignment.jsx"));
+const RatePlanAssignment = lazy(() =>
+  import("./views/services/RatePlan/RatePlanAssignment.jsx")
+);
 
 const Sales = lazy(() => import("./views/services/Sales/Sales.jsx"));
 
@@ -1058,9 +1062,9 @@ const RateTask = lazy(() => import("./views/services/Rates/RateTask.jsx"));
 
 // Dial Plan Manager Component Here
 
-const DialPlanManager = lazy(() => import("./views/services/DialplanManager/DialplanManager.jsx"));
-
-
+const DialPlanManager = lazy(() =>
+  import("./views/services/DialplanManager/DialplanManager.jsx")
+);
 
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
@@ -1112,92 +1116,55 @@ class AppRouter extends React.Component {
                 <Switch>
                   <AppRoute exact path="/" component={analyticsDashboard} />
                   {/* emon code */}
+
+                  <AppRoute path="/siptrunk" component={Siptrunk} />
+
+                  {/* WEBRTC */}
+                  <AppRoute path="/calls" component={Calls} />
+                  <AppRoute path="/callPackages" component={CallPackeges} />
+                  {/* END WEBRTC */}
+
+                  <AppRoute path="/sales" component={Sales} />
+                  <AppRoute path="/ratePlan" component={RatePlan} />
                   <AppRoute
-                    exact
-                    path="/addAdmissionManager/:id"
-                    component={AdmissionManager}
+                    path="/ratePlanAssignment"
+                    component={RatePlanAssignment}
                   />
-                  {adminChecking && (
-                    <AppRoute path="/siptrunk" component={Siptrunk} />
-                  )}
+                  <AppRoute path="/addRole" component={AddRole} />
+                  <AppRoute path="/permissions" component={AddPermission} />
+                  <AppRoute path="/rolePermission" component={RolePermission} />
+                  <AppRoute path="/roleMenu" component={RoleMenu} />
+                  <AppRoute path="/users" component={Users} />
+                  <AppRoute path="/retailClients" component={RetailClients} />
+                  <AppRoute path="/gateways" component={Gateways} />
+                  <AppRoute path="/routingPlan" component={RoutingPlan} />
+                  <AppRoute path="/registers" component={Registrars} />
+                  <AppRoute
+                    path="/wholesaleClients"
+                    component={WholeSaleClinets}
+                  />
 
-                  {adminChecking && (
-                    <AppRoute path="/calls" component={Calls} />
-                  )}
+                  <AppRoute
+                    path="/callshopClients"
+                    component={CallShopClients}
+                  />
 
-                  {adminChecking && (
-                    <AppRoute path="/callPackages" component={CallPackeges} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/sales" component={Sales} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/ratePlan" component={RatePlan} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/ratePlanAssignment" component={RatePlanAssignment} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/addRole" component={AddRole} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/permissions" component={AddPermission} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute
-                      path="/rolePermission"
-                      component={RolePermission}
-                    />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/roleMenu" component={RoleMenu} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/users" component={Users} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/retailClients" component={RetailClients} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/gateways" component={Gateways} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/routingPlan" component={RoutingPlan} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/registers" component={Registrars} />
-                  )}
-                  {adminChecking && (
-                    <AppRoute
-                      path="/wholesaleClients"
-                      component={WholeSaleClinets}
-                    />
-                  )}
-                  {adminChecking && (
-                    <AppRoute
-                      path="/callshopClients"
-                      component={CallShopClients}
-                    />
-                  )}
-                  {adminChecking && (
-                    <AppRoute path="/distributors" component={Distributors} />
-                  )}
+                  <AppRoute path="/distributors" component={Distributors} />
 
-                  {adminChecking && (
-                    <AppRoute path="/smsRouting" component={SmsRouting} />
-                  )}
+                  <AppRoute path="/smsRouting" component={SmsRouting} />
 
-                  {adminChecking && <AppRoute path="/CDRs" component={CDR} />}
+                  <AppRoute path="/CDRs" component={CDR} />
 
-                  {adminChecking && <AppRoute path="/rates" component={Rates} />}
+                  <AppRoute path="/rates" component={Rates} />
 
-                  {adminChecking && <AppRoute path="/rateTask" component={RateTask} />}
+                  <AppRoute path="/rateTask" component={RateTask} />
 
-                  {adminChecking && <AppRoute path="/dialplanManager" component={DialPlanManager} />}
+                  <AppRoute
+                    path="/dialplanManager"
+                    component={DialPlanManager}
+                  />
 
-                  {adminChecking && (
-                    <AppRoute path="/balance" component={Balance} />
-                  )}
+                  <AppRoute path="/balance" component={Balance} />
 
                   <AppRoute
                     exact
