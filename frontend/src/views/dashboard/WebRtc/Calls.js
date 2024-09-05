@@ -88,11 +88,6 @@ export default function Calls() {
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
     if (newStatus === "idle") {
-      if (ringtonePlaying) {
-        ringtoneRef.current.pause();
-        ringtoneRef.current.currentTime = 0;
-        setRingtonePlaying(false);
-      }
       setToasterIncoming(false);
       setToasterOngoing(false);
       setToasterOngoing2(false);
@@ -250,6 +245,13 @@ export default function Calls() {
   useEffect(() => {
     if (incomingCallStatus === "incomingcall") {
       handleIncomingCallToast();
+    }
+    if(incomingCallStatus === "idle"){
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
     }
   }, [incomingCallStatus]);
   const attachMediaStreams = (peerConnection) => {
