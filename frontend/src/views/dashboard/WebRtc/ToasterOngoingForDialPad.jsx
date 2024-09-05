@@ -153,18 +153,33 @@ const ToasterOngoing = ({ phoneNumber, onEndCall }) => {
   // Get the callerName from CallState
   const callerName = CallState.getIncomingUser();
   if(!phoneNumber) phoneNumber = CallState.getPhoneNumber();
+  // useEffect(() => {
+  //   // Find contact where the phone matches the callerName
+  //   const contact = contacts.find(contact => contact.phone === phoneNumber);
+  //   if (contact) {
+  //     // If the callerName matches a contact's phone, use the firstName + lastName
+  //     setDisplayName(`${contact.firstName} ${contact.lastName}`);
+  //   } else {
+  //     // If no match, use the callerName
+  //     setDisplayName(phoneNumber);
+  //   }
+  // }, [contacts, phoneNumber]);
   useEffect(() => {
-    // Find contact where the phone matches the callerName
-    const contact = contacts.find(contact => contact.phone === phoneNumber);
-    if (contact) {
-      // If the callerName matches a contact's phone, use the firstName + lastName
-      setDisplayName(`${contact.firstName} ${contact.lastName}`);
+    // Check if contacts is an array before using find
+    if (Array.isArray(contacts)) {
+      const contact = contacts.find(contact => contact.phone === phoneNumber);
+      if (contact) {
+        // If the callerName matches a contact's phone, use the firstName + lastName
+        setDisplayName(`${contact.firstName} ${contact.lastName}`);
+      } else {
+        // If no match, use the phone number as displayName
+        setDisplayName(phoneNumber);
+      }
     } else {
-      // If no match, use the callerName
+      // If contacts is not available, use phone number
       setDisplayName(phoneNumber);
     }
   }, [contacts, phoneNumber]);
-
   const handleMute = () => {
     setIsMuted(!isMuted);
   };
