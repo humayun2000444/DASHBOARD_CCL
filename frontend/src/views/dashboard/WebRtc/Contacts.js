@@ -269,7 +269,18 @@ const Contacts = () => {
     setOutgoingCallStatus(CallState.getOutgoingCallStatus());
   };
 
-
+  useEffect(() => {
+    if (incomingCallStatus === "incomingcall") {
+      handleIncomingCallToast();
+    }
+    if(incomingCallStatus === "idle"){
+      if (ringtonePlaying) {
+        ringtoneRef.current.pause();
+        ringtoneRef.current.currentTime = 0;
+        setRingtonePlaying(false);
+      }
+    }
+  }, [incomingCallStatus]);
 
 
 
