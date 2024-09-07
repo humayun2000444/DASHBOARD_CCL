@@ -1060,11 +1060,19 @@ const Rates = lazy(() => import("./views/services/Rates/Rates.jsx"));
 
 const RateTask = lazy(() => import("./views/services/Rates/RateTask.jsx"));
 
-// Dial Plan Manager Component Here
+// Dial Plan  Component Here
 
-const DialPlanManager = lazy(() =>
-  import("./views/services/DialplanManager/DialplanManager.jsx")
+const Dialplan = lazy(() =>
+  import("./views/services/DialplanManager/Dialplan.jsx")
 );
+
+// Dialplan Details Component Here
+
+const DialplanDetails = lazy(() =>
+  import("./views/services/DialplanManager/DialplanDetails.jsx")
+);
+
+
 
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
@@ -1160,8 +1168,13 @@ class AppRouter extends React.Component {
                   <AppRoute path="/rateTask" component={RateTask} />
 
                   <AppRoute
-                    path="/dialplanManager"
-                    component={DialPlanManager}
+                    path="/dialplan"
+                    component={Dialplan}
+                  />
+
+                  <AppRoute
+                    path="/dialplanDetails"
+                    component={DialplanDetails}
                   />
 
                   <AppRoute path="/balance" component={Balance} />

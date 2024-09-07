@@ -30,9 +30,9 @@ const DialplanManager = () => {
 
     <span className='mr-2'>Dashboard</span>
     <span><i class="fas fa-chevron-right"></i></span>
-    <span className='ml-2'>Dialplan Manager</span>
+    <span className='ml-2'>Dialplan</span>
 
-    <h1 className='mt-3'>Dialplan Manager</h1>
+    <h1 className='mt-3'>Dialplan</h1>
 
     {/* filter section */}
 
@@ -54,7 +54,7 @@ const DialplanManager = () => {
                 <div className='col-3'>
 
                 <Select
-             placeholder="Dialplan Manager"
+             placeholder="Dialplan Name"
            />
 
                 </div>
