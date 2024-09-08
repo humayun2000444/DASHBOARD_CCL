@@ -5,7 +5,7 @@ const url = "http://192.168.0.205:5070/";
 const getRateTaskServices = {
   fetchAllRateTask: async (payload) => {
     try {
-      const response = await axios.post(url + "ratetask");
+      const response = await axios.post(url + "rate-task");
       return response.data;
     } catch (error) {
       console.error("Error fetching contacts:", error);

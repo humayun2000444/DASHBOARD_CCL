@@ -11,12 +11,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Row, Col, Form, Button } from "react-bootstrap";
+import axios from 'axios';
+
 const RateTask = () => {
 
 
 const [apiData,setApiData] = useState([]);
 const [primaryData,setPrimaryData] = useState([]);
 const [open,setOpen] = useState(false);
+const [loadData,setLoadData] = useState(true);
 
 const style = {
   position: "absolute",
@@ -38,6 +41,7 @@ const fetchingRateTask = async ()=>{
   console.log(data);
   setApiData(data);
   setPrimaryData(data);
+  setLoadData(false);
   
     
   } catch (error) {
@@ -48,8 +52,12 @@ const fetchingRateTask = async ()=>{
 
 useEffect(()=>{
 
-  fetchingRateTask();
-},[])
+  
+    fetchingRateTask();
+   
+  
+  
+},[loadData])
 
 console.log(open)
 
@@ -94,9 +102,18 @@ const handleSubmit = (e) => {
     formValues[key] = value;
   });
 
-  console.log(formValues); 
+  try{
+    axios.post(`http://192.168.0.205:5070/new-task`,formValues)
+    .then(res => console.log(res));
+    setLoadData(true);
+  }
+  catch(e){
+    setLoadData(true);
+  }
+  }
+  // console.log(formValues); 
 
-}
+
 
 
 
