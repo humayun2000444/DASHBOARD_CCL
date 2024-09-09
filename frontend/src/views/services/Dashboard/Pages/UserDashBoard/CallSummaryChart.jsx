@@ -65,22 +65,6 @@ const CallSummaryChart = () => {
     ],
   };
 
-  //   const [systemInfo, setSystemInfo] = useState({
-  //     disk: undefined,
-  //   });
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get("http://103.95.96.98:4000/systeminfo");
-  //         // setSystemInfo(response.data);
-  //       } catch (error) {
-  //         console.error("Error fetching system information:", error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, []);
-
   return (
     <div>
       <Card style={{ marginTop: "20px" }}>
