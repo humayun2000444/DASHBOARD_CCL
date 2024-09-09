@@ -43,7 +43,7 @@ const BalanceMonitor = () => {
           <div className='col-6'>
 
             <div className='mb-3 d-flex'>
-            <span className='mr-4' style={{fontSize: '16px', fontWeight: '400'}}>Application</span>
+            <span className='mr-4 mt-2' style={{fontSize: '16px', fontWeight: '400'}}>Application</span>
             <Select
                  className='w-50'
                  placeholder="Select"

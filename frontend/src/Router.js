@@ -17,6 +17,7 @@ import { permissionList } from "./constants/AuthorizationConstant";
 import { userTypes } from "./constants/userTypeConstant";
 import PrivateRoute from "./PrivateRoute.js";
 
+
 // Authentication Checking
 
 const tokenForRouting = JSON.parse(localStorage.getItem("userInfo"));
@@ -1078,6 +1079,14 @@ const BalanceMonitor = lazy(() =>
   import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
 );
 
+// Payment Report Component Here
+
+const PaymentReport = lazy(() =>
+  import("./views/services/PaymentReport/PaymentReport.jsx")
+);
+
+
+
 
 
 // Balance Component
@@ -1186,6 +1195,11 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/balanceMonitor"
                     component={BalanceMonitor}
+                  />
+
+                  <AppRoute
+                    path="/paymentReport"
+                    component={PaymentReport}
                   />
 
                   <AppRoute path="/balance" component={Balance} />
