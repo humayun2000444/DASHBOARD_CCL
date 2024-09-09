@@ -1072,6 +1072,12 @@ const DialplanDetails = lazy(() =>
   import("./views/services/DialplanManager/DialplanDetails.jsx")
 );
 
+// Balance Monitor Component Here
+
+const BalanceMonitor = lazy(() =>
+  import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
+);
+
 
 
 // Balance Component
@@ -1175,6 +1181,11 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/dialplanDetails"
                     component={DialplanDetails}
+                  />
+
+                  <AppRoute
+                    path="/balanceMonitor"
+                    component={BalanceMonitor}
                   />
 
                   <AppRoute path="/balance" component={Balance} />
