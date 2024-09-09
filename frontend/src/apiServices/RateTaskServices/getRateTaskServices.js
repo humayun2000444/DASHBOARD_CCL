@@ -12,6 +12,16 @@ const getRateTaskServices = {
       throw error;
     }
   },
+
+  createRateTask: async (payload) => {
+    try {
+      const response = await axios.post(url + "new-task",payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+      throw error;
+    }
+  },
 };
 
 export default getRateTaskServices;

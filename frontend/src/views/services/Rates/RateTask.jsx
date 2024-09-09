@@ -102,16 +102,22 @@ const handleSubmit = (e) => {
     formValues[key] = value;
   });
 
-  try{
-    axios.post(`http://192.168.0.205:5070/new-task`,formValues)
-    .then(res => console.log(res));
+ 
+
+  const createTask = async () => {
+    try {
+      const response = await getRateTaskServices.createRateTask(formValues);
+    console.log(response);
     setLoadData(true);
+    } catch (error) {
+      console.log(error);
+      setLoadData(true);
+    }
   }
-  catch(e){
-    setLoadData(true);
+  createTask();
+
   }
-  }
-  // console.log(formValues); 
+  
 
 
 
