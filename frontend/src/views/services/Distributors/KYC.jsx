@@ -10,7 +10,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import FileUploader from "./FileUploader";
 
-const NidInfo = () => {
+const KYC = () => {
   // Initialize form with default values
   const defaultValues = {
     firstName: "",
@@ -28,26 +28,14 @@ const NidInfo = () => {
   const {
     handleSubmit,
     control,
-    setValue,
-    watch,
+
     formState: { errors },
   } = useForm({
     defaultValues,
   });
 
-  // Object to store form data
-  const [formData, setFormData] = React.useState(defaultValues);
-
-  // Watch form values and update formData state
-  React.useEffect(() => {
-    const subscription = watch((value) => {
-      setFormData(value);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   const onSubmit = (data) => {
-    console.log(formData);
+    console.log(data);
   };
 
   // Conditional styling for validation errors
@@ -288,7 +276,7 @@ const NidInfo = () => {
           </Typography>
 
           <div>
-            <FileUploader />
+            <FileUploader dataType={"image"} />
           </div>
         </div>
 
@@ -306,7 +294,7 @@ const NidInfo = () => {
           </Typography>
 
           <div>
-            <FileUploader />
+            <FileUploader dataType={"image"} />
           </div>
         </div>
       </div>
@@ -325,7 +313,7 @@ const NidInfo = () => {
           </Typography>
 
           <div>
-            <FileUploader />
+            <FileUploader dataType={"image"} />
           </div>
         </div>
 
@@ -343,7 +331,7 @@ const NidInfo = () => {
           </Typography>
 
           <div>
-            <FileUploader />
+            <FileUploader dataType={"image"} />
           </div>
         </div>
       </div>
@@ -359,4 +347,4 @@ const NidInfo = () => {
   );
 };
 
-export default NidInfo;
+export default KYC;
