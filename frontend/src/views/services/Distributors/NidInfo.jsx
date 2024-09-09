@@ -8,6 +8,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import FileUploader from "./FileUploader";
 
 const NidInfo = () => {
   // Initialize form with default values
@@ -46,7 +47,7 @@ const NidInfo = () => {
   }, [watch]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(formData);
   };
 
   // Conditional styling for validation errors
@@ -78,6 +79,7 @@ const NidInfo = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <TextField
+              variant="standard"
               {...field}
               label="First Name"
               sx={{ width: "100%", ...getTextFieldStyles("firstName") }}
@@ -89,6 +91,7 @@ const NidInfo = () => {
           control={control}
           render={({ field }) => (
             <TextField
+              variant="standard"
               {...field}
               label="Last Name - Surname"
               sx={{ width: "100%", ...getTextFieldStyles("lastName") }}
@@ -108,6 +111,7 @@ const NidInfo = () => {
           }}
           render={({ field }) => (
             <TextField
+              variant="standard"
               {...field}
               label="Email"
               sx={{ width: "100%", ...getTextFieldStyles("email") }}
@@ -120,6 +124,7 @@ const NidInfo = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <TextField
+              variant="standard"
               {...field}
               label="Phone Number"
               sx={{ width: "100%", ...getTextFieldStyles("phoneNumber") }}
@@ -142,12 +147,7 @@ const NidInfo = () => {
                   <DatePicker
                     {...field}
                     label="Birth Date"
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        sx={{ ...getTextFieldStyles("birthDate") }}
-                      />
-                    )}
+                    sx={{ border: "none" }}
                   />
                 )}
               />
@@ -161,6 +161,7 @@ const NidInfo = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <TextField
+                variant="standard"
                 {...field}
                 select
                 label="Gender"
@@ -185,6 +186,7 @@ const NidInfo = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <TextField
+                variant="standard"
                 {...field}
                 select
                 label="Country"
@@ -220,6 +222,7 @@ const NidInfo = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <TextField
+                variant="standard"
                 {...field}
                 select
                 label="Document Type"
@@ -244,6 +247,7 @@ const NidInfo = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <TextField
+              variant="standard"
               {...field}
               label="Card Number"
               sx={{ width: "100%", ...getTextFieldStyles("cardNumber") }}
@@ -261,101 +265,89 @@ const NidInfo = () => {
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <DatePicker
-                    {...field}
-                    label="Card Expiry Date"
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        sx={{ ...getTextFieldStyles("cardExpiryDate") }}
-                      />
-                    )}
-                  />
+                  <DatePicker {...field} label="Card Expiry Date" />
                 )}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
       </div>
-      <div className="d-flex flex-column" style={{ gap: "1rem" }}>
-        <Typography
-          id="modal-modal-title"
-          variant="h6"
-          component="h2"
-          sx={{ fontSize: "1.2rem", fontWeight: "500" }}
-        >
-          Photos Of Documents
-        </Typography>
+
+      <div className="d-flex" style={{ gap: "1rem" }}>
         <div
-          className="d-flex align-items-center justify-content-between px-3"
-          style={{ border: "2px solid #164677", borderRadius: "5px" }}
+          className="d-flex flex-column"
+          style={{ gap: "1rem", width: "100%" }}
         >
-          <div className="d-flex align-items-center" style={{ gap: ".8rem" }}>
-            <div style={{ fontSize: "2.8rem" }}>
-              <i class="fa-solid fa-id-card"></i>
-            </div>
-            <div>
-              <p className="mb-0" style={{ fontSize: "1.3rem" }}>
-                Photo of Id Card
-              </p>
-              <p className="mb-0">
-                Please upload the photo of front page of your card.
-              </p>
-            </div>
-          </div>
-          <div className="d-flex align-items-center" style={{ gap: ".8rem" }}>
-            <i
-              class="fa-solid fa-cloud-arrow-up"
-              style={{ fontSize: "1.5rem" }}
-            ></i>
-            <button
-              style={{
-                fontSize: "1.3rem",
-                border: "none",
-                outline: "none",
-                backgroundColor: "transparent",
-              }}
-            >
-              Upload
-            </button>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: "1.2rem", fontWeight: "500" }}
+          >
+            Photos Of Documents
+          </Typography>
+
+          <div>
+            <FileUploader />
           </div>
         </div>
+
         <div
-          className="d-flex align-items-center justify-content-between px-3"
-          style={{ border: "2px solid #164677", borderRadius: "5px" }}
+          className="d-flex flex-column"
+          style={{ gap: "1rem", width: "100%" }}
         >
-          <div className="d-flex align-items-center" style={{ gap: ".8rem" }}>
-            <div style={{ fontSize: "2.8rem" }}>
-              <i class="fa-solid fa-id-card"></i>
-            </div>
-            <div>
-              <p className="mb-0" style={{ fontSize: "1.3rem" }}>
-                Photo of Id Card
-              </p>
-              <p className="mb-0">
-                Please upload the photo of back page of your card.
-              </p>
-            </div>
-          </div>
-          <div className="d-flex align-items-center" style={{ gap: ".8rem" }}>
-            <i
-              class="fa-solid fa-cloud-arrow-up"
-              style={{ fontSize: "1.5rem" }}
-            ></i>
-            <button
-              className="mb-0"
-              style={{
-                fontSize: "1.3rem",
-                border: "none",
-                outline: "none",
-                backgroundColor: "transparent",
-              }}
-            >
-              Upload
-            </button>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: "1.2rem", fontWeight: "500" }}
+          >
+            TIN Documents
+          </Typography>
+
+          <div>
+            <FileUploader />
           </div>
         </div>
       </div>
+      <div className="d-flex" style={{ gap: "1rem" }}>
+        <div
+          className="d-flex flex-column"
+          style={{ gap: "1rem", width: "100%" }}
+        >
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: "1.2rem", fontWeight: "500" }}
+          >
+            BIN Documents
+          </Typography>
+
+          <div>
+            <FileUploader />
+          </div>
+        </div>
+
+        <div
+          className="d-flex flex-column"
+          style={{ gap: "1rem", width: "100%" }}
+        >
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: "1.2rem", fontWeight: "500" }}
+          >
+            Trade Liscense
+          </Typography>
+
+          <div>
+            <FileUploader />
+          </div>
+        </div>
+      </div>
+
       <Button
         variant="contained"
         type="submit"
