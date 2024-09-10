@@ -1,15 +1,14 @@
 //  refector
 
-import React, { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { CardBody } from "reactstrap";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Form, Button } from "react-bootstrap";
-import UserFormModal from "./UserFormModal";
-import userServices from "../../../apiServices/UserServices/UserServices";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
+import { CardBody } from "reactstrap";
 import roleServices from "../../../apiServices/RoleServices/RoleServices";
+import userServices from "../../../apiServices/UserServices/UserServices";
+import UserFormModal from "./UserFormModal";
 
 const UserManagement = () => {
   const initalState = {

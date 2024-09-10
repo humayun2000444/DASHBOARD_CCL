@@ -1,5 +1,6 @@
 import React from "react";
 
+const username = localStorage.getItem("username");
 const AccountDetails = () => {
   return (
     <div>
@@ -34,7 +35,7 @@ const AccountDetails = () => {
                   padding: "12px 0 6px 0",
                 }}
               >
-                09646 400100
+                {username}
               </div>
               <div
                 style={{

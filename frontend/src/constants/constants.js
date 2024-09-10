@@ -7,3 +7,4 @@ export const rootUrl = `https://iptsp.cosmocom.net:8001/AUTHENTICATION/`;
 // export const rootUrl = `http://192.168.0.205:5070/`;
 // export const root = `http://iptsp.cosmocom.net:`;
 export const root = `https://iptsp.cosmocom.net:`;
+export const cclRootUrl = `http://192.168.0.203:5070/`;

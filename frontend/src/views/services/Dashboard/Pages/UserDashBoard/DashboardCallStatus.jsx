@@ -1,7 +1,10 @@
+import React, { useEffect, useState } from "react";
+
 import CallIcon from "@mui/icons-material/Call";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import CallMissedIcon from "@mui/icons-material/CallMissed";
 import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import userDashboardServices from "../../../../../apiServices/DashboardServices/userDashboardServices.js";
 
 const styles = {
   cardWrapper: {
@@ -43,6 +46,8 @@ const styles = {
   },
 };
 
+const username = localStorage.getItem("username");
+
 const CallStatusCard = ({ label, value, Icon }) => {
   return (
     <div style={styles.card}>
@@ -59,8 +64,35 @@ const CallStatusCard = ({ label, value, Icon }) => {
 };
 
 const DashboardCallStatus = () => {
+  const [totalCallData, setTotalCallData] = useState(null);
+  const token = localStorage.getItem("authToken");
+  const callerIdNumber = "09646999999";
+  const domainName = "103.95.96.100";
+
+  const fetchData = async () => {
+    try {
+      const data = await userDashboardServices.fetchTotalCallForUser(
+        token,
+        callerIdNumber,
+        domainName
+      );
+      setTotalCallData(data);
+      console.log(data); // Handle the fetched data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const callStatuses = [
-    { label: "Total calls", value: 312302, Icon: CallIcon },
+    {
+      label: "Total calls",
+      value: totalCallData,
+      Icon: CallIcon,
+    },
     { label: "Outgoing calls", value: 39874, Icon: CallMadeIcon },
     { label: "Incoming calls", value: 55874, Icon: CallReceivedIcon },
     { label: "Missed calls", value: 4572, Icon: CallMissedIcon },

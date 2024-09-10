@@ -1,22 +1,18 @@
-import React, { Suspense, lazy } from "react";
-import { Router, Switch, Route } from "react-router-dom";
-import StudentList from "./views/services/Students/StudentList.js";
 import { jwtDecode } from "jwt-decode"; ////
-import { history } from "./history";
+import React, { Suspense, lazy } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import Spinner from "./components/core/spinner/Loading-spinner";
+import { history } from "./history";
 import { ContextLayout } from "./utility/context/Layout";
+import StudentList from "./views/services/Students/StudentList.js";
 
 import { ToastProvider } from "react-toast-notifications";
-import "./assets/CoustomStyle/style.css";
 import "./assets/CoustomStyle/pageView.css";
-import AdmissionGetData from "./views/Test/AdmissionGetData";
+import "./assets/CoustomStyle/style.css";
 
-import { permissionList } from "./constants/AuthorizationConstant";
 import { userTypes } from "./constants/userTypeConstant";
-import PrivateRoute from "./PrivateRoute.js";
-
+import PaymentEntry from "./views/services/PaymentEntry/PaymentEntry.jsx";
 
 // Authentication Checking
 
@@ -1075,6 +1071,8 @@ const DialplanDetails = lazy(() =>
 
 // Balance Monitor Component Here
 
+// Balance Monitor Component Here
+
 const BalanceMonitor = lazy(() =>
   import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
 );
@@ -1084,10 +1082,6 @@ const BalanceMonitor = lazy(() =>
 const PaymentReport = lazy(() =>
   import("./views/services/PaymentReport/PaymentReport.jsx")
 );
-
-
-
-
 
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
@@ -1182,25 +1176,17 @@ class AppRouter extends React.Component {
 
                   <AppRoute path="/rateTask" component={RateTask} />
 
-                  <AppRoute
-                    path="/dialplan"
-                    component={Dialplan}
-                  />
+                  <AppRoute path="/dialplan" component={Dialplan} />
 
                   <AppRoute
                     path="/dialplanDetails"
                     component={DialplanDetails}
                   />
 
-                  <AppRoute
-                    path="/balanceMonitor"
-                    component={BalanceMonitor}
-                  />
+                  <AppRoute path="/balanceMonitor" component={BalanceMonitor} />
+                  <AppRoute path="/paymentEntry" component={PaymentEntry} />
 
-                  <AppRoute
-                    path="/paymentReport"
-                    component={PaymentReport}
-                  />
+                  <AppRoute path="/paymentReport" component={PaymentReport} />
 
                   <AppRoute path="/balance" component={Balance} />
 
