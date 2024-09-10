@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://192.168.0.205:5070/";
+const url = "http://192.168.0.110:5070/";
 
 const getRateTaskServices = {
   fetchAllRateTask: async (payload) => {
