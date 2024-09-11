@@ -12,7 +12,6 @@ import "./assets/CoustomStyle/pageView.css";
 import "./assets/CoustomStyle/style.css";
 
 import { userTypes } from "./constants/userTypeConstant";
-import PaymentEntry from "./views/services/PaymentEntry/PaymentEntry.jsx";
 
 // Authentication Checking
 
@@ -1075,6 +1074,9 @@ const DialplanDetails = lazy(() =>
 
 const BalanceMonitor = lazy(() =>
   import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
+);
+const PaymentEntry = lazy(() =>
+  import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
 
 // Payment Report Component Here
