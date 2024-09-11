@@ -1178,10 +1178,16 @@ class AppRouter extends React.Component {
                   <AppRoute path="/rates" component={Rates} />
                   <AppRoute path="/rateTask" component={RateTask} />
 
+                  <AppRoute path="/dialplan" component={Dialplan} />
+
                   <AppRoute
                     path="/dialplanDetails"
                     component={DialplanDetails}
                   />
+
+                  <AppRoute path="/balanceMonitor" component={BalanceMonitor} />
+                  <AppRoute path="/paymentEntry" component={PaymentEntry} />
+                  <AppRoute path="/paymentReport" component={PaymentReport} />
 
                   <AppRoute path="/balance" component={Balance} />
                   <AppRoute
