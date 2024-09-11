@@ -1066,6 +1066,10 @@ const DialPlanManager = lazy(() =>
   import("./views/services/DialplanManager/DialplanManager.jsx")
 );
 
+const CallScreen = lazy(() =>
+  import("./views/dashboard/WebRtc/CallScreen.jsx")
+);
+
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
 
@@ -1116,14 +1120,16 @@ class AppRouter extends React.Component {
                 <Switch>
                   <AppRoute exact path="/" component={analyticsDashboard} />
                   {/* emon code */}
-
                   <AppRoute path="/siptrunk" component={Siptrunk} />
-
                   {/* WEBRTC */}
                   <AppRoute path="/calls" component={Calls} />
                   <AppRoute path="/callPackages" component={CallPackeges} />
+                  <AppRoute
+                    path="/call-screen"
+                    component={CallScreen}
+                    fullLayout
+                  />
                   {/* END WEBRTC */}
-
                   <AppRoute path="/sales" component={Sales} />
                   <AppRoute path="/ratePlan" component={RatePlan} />
                   <AppRoute
@@ -1143,29 +1149,20 @@ class AppRouter extends React.Component {
                     path="/wholesaleClients"
                     component={WholeSaleClinets}
                   />
-
                   <AppRoute
                     path="/callshopClients"
                     component={CallShopClients}
                   />
-
                   <AppRoute path="/distributors" component={Distributors} />
-
                   <AppRoute path="/smsRouting" component={SmsRouting} />
-
                   <AppRoute path="/CDRs" component={CDR} />
-
                   <AppRoute path="/rates" component={Rates} />
-
                   <AppRoute path="/rateTask" component={RateTask} />
-
                   <AppRoute
                     path="/dialplanManager"
                     component={DialPlanManager}
                   />
-
                   <AppRoute path="/balance" component={Balance} />
-
                   <AppRoute
                     exact
                     path="/admissionManagerList"

@@ -216,28 +216,6 @@ const SuperAdmin = () => {
     { title: "Average Call Duration (ACD)", value: "00:00:18.5" },
   ];
 
-  // const handleClick = () => {
-  //   // Open a new browser window with specific dimensions and features
-  //   window.open(
-  //     "https://www.google.com", // URL to open
-  //     "_blank", // Open in a new window or tab
-  //     "noopener,noreferrer,width=800,height=600,left=200,top=100" // Features like size and position
-  //   );
-  // };
-
-  const handleClick = () => {
-    // Assuming your app is running on localhost:3000 or another base URL
-    const baseUrl = window.location.origin; // e.g., http://localhost:3000
-    const path = "/CDRs"; // The path you want to open
-
-    // Open a new browser window with the specific route
-    window.open(
-      `${baseUrl}${path}`,
-      "_blank",
-      "noopener,noreferrer,width=800,height=600,left=200,top=100"
-    );
-  };
-
   return (
     <React.Fragment>
       <div className="d-flex justify-content-between flex-wrap">
@@ -253,7 +231,7 @@ const SuperAdmin = () => {
       <Card>
         <CardBody>
           <h2 className="mb-4">Real time statistic</h2>
-          <button onClick={handleClick}>Open New Window</button>
+
           <div className="row">
             <div className="col-md-3 mb-3">
               <div className="count-card count-primary counter-h-112 bg-gray shadow border-0">

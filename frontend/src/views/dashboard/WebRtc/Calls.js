@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import getWebRtcServices from "../../../apiServices/WebRtcServices/getWebRtcServices";
 import "../../../assets/scss/pages/Calls.scss";
@@ -10,6 +10,8 @@ import ToasterOngoing from "./ToasterOngoing";
 import ToasterOngoing2 from "./ToasterOngoingForDialPad";
 import WebSocketClient from "./WebSocketClient";
 import ringtone from "./static/whatsapp.mp3";
+import IncomingCallModal from "./IncomingCallModal";
+import CallScreen from "./CallScreen";
 export default function Calls() {
   let [phoneNumber, setPhoneNumber] = useState("");
   const [callHistory, setCallHistory] = useState([]);
@@ -25,8 +27,6 @@ export default function Calls() {
   const [toasterIncoming, setToasterIncoming] = useState(false);
   const [toasterOngoing, setToasterOngoing] = useState(false);
   const [toasterOngoing2, setToasterOngoing2] = useState(false);
-
-
 
   const ringtoneRef = useRef(new Audio(ringtone));
   const [ringtonePlaying, setRingtonePlaying] = useState(false);
@@ -84,7 +84,6 @@ export default function Calls() {
     }
   };
 
-
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
     if (newStatus === "idle") {
@@ -95,8 +94,8 @@ export default function Calls() {
   };
 
   const handleOutgoingCall = async () => {
-    if ((phoneNumber||CallState.getPhoneNumber()) && webSocketClient) {
-      if(!phoneNumber) phoneNumber = CallState.getPhoneNumber();
+    if ((phoneNumber || CallState.getPhoneNumber()) && webSocketClient) {
+      if (!phoneNumber) phoneNumber = CallState.getPhoneNumber();
       try {
         // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -246,7 +245,7 @@ export default function Calls() {
     if (incomingCallStatus === "incomingcall") {
       handleIncomingCallToast();
     }
-    if(incomingCallStatus === "idle"){
+    if (incomingCallStatus === "idle") {
       if (ringtonePlaying) {
         ringtoneRef.current.pause();
         ringtoneRef.current.currentTime = 0;
@@ -317,8 +316,113 @@ export default function Calls() {
     };
   }, []);
 
+  const [open, setOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    console.log("Opening modal...");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    console.log("Closing modal manually...");
+    setOpen(false);
+  };
+
+  // const handleAccept = useCallback(() => {
+  //   const queryParams = new URLSearchParams({
+  //     name: encodeURIComponent("Syed Easin"),
+  //     number: encodeURIComponent("01400374808"),
+  //   }).toString();
+
+  //   const callWindow = window.open(
+  //     `/call-screen?${queryParams}`,
+  //     "_blank",
+  //     "width=800,height=600"
+  //   );
+
+  //   if (callWindow) {
+  //     console.log("Popup allowed, closing modal...");
+  //     setOpen(false);
+  //   } else {
+  //     console.error("Popup blocked, modal not closed.");
+  //     alert("Please allow popups for this website to accept the call.");
+  //   }
+  // }, []);
+
+  const [callWindow, setCallWindow] = useState(null);
+
+  const handleAccept = useCallback(() => {
+    const queryParams = new URLSearchParams({
+      name: encodeURIComponent("Syed Easin"),
+      number: encodeURIComponent("01400374808"),
+    }).toString();
+
+    const windowReference = window.open(
+      `/call-screen?${queryParams}`,
+      "_blank",
+      "width=800,height=600"
+    );
+
+    if (windowReference) {
+      console.log("Popup allowed, closing modal...");
+      setCallWindow(windowReference);
+      setOpen(false);
+    } else {
+      console.error("Popup blocked, modal not closed.");
+      alert("Please allow popups for this website to accept the call.");
+    }
+  }, []);
+
+  const handleEndCall = useCallback(() => {
+    if (callWindow) {
+      callWindow.close();
+      setCallWindow(null);
+    }
+  }, [callWindow]);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter" && open) {
+        console.log("Enter key pressed, handling accept");
+        event.preventDefault();
+        event.stopPropagation();
+        handleAccept();
+      }
+    };
+
+    if (open) {
+      console.log("Adding keydown event listener");
+      window.addEventListener("keydown", handleKeyPress);
+    } else {
+      console.log("Removing keydown event listener");
+      window.removeEventListener("keydown", handleKeyPress);
+    }
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [open, handleAccept]);
+
+  const caller = {
+    name: "Syed Easin",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png",
+    number: "01400374808",
+  };
+
   return (
     <div className="calls__container">
+      <IncomingCallModal
+        open={open}
+        onClose={handleClose}
+        onAccept={handleAccept}
+        caller={caller}
+      />
+      <div style={{ display: "none" }}>
+        <CallScreen caller={caller} />
+      </div>
+
       {toasterIncoming && (
         <ToasterIncoming
           onHangup={handleDecline}
@@ -343,7 +447,7 @@ export default function Calls() {
           setToasterOngoing={setToasterOngoing2}
         />
       )}
-      {/*<button onClick={handleIncomingCall}>Simulate Incoming Call</button>*/}
+      {/* <button onClick={handleModalOpen}>Incoming Call</button> */}
       <Dialpad
         phoneNumber={phoneNumber}
         callStatus={outgoingCallStatus}
@@ -352,7 +456,11 @@ export default function Calls() {
         handleCall={handleOutgoingCall}
         handleHangup={handleHangup}
       />
-      <CallsHistory callHistory={callHistory} setCallHistory={setCallHistory} handleOutgoingCalls={handleOutgoingCall} />
+      <CallsHistory
+        callHistory={callHistory}
+        setCallHistory={setCallHistory}
+        handleOutgoingCalls={handleOutgoingCall}
+      />
       <audio id="remoteAudio" autoPlay></audio>
     </div>
   );
