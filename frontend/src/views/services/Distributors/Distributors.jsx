@@ -12,6 +12,7 @@ import partnerServices from "../../../apiServices/PartnerServices/PartnerService
 import Pagination from "../Pagination/Pagination";
 import DistributorsModal from "./DistributorsModal";
 import NidModal from "./NidModal";
+import NidModal2 from "./NidModal2";
 
 const Distributors = () => {
   const [partners, setPartners] = useState([]);
@@ -229,6 +230,10 @@ const Distributors = () => {
   const handleOpenNidModal = () => setOpenNidModal(true);
   const handleCloseNidModal = () => setOpenNidModal(false);
 
+  const [openNidModal2, setOpenNidModal2] = useState(false);
+  const handleOpenNidModal2 = () => setOpenNidModal2(true);
+  const handleCloseNidModal2 = () => setOpenNidModal2(false);
+
   return (
     <div>
       <DistributorsModal
@@ -244,6 +249,10 @@ const Distributors = () => {
       <NidModal
         openNidModal={openNidModal}
         handleCloseNidModal={handleCloseNidModal}
+      />
+      <NidModal2
+        openNidModal2={openNidModal2}
+        handleCloseNidModal2={handleCloseNidModal2}
       />
 
       <Card>
@@ -268,6 +277,12 @@ const Distributors = () => {
                     onClick={handleOpenNidModal}
                   >
                     Info
+                  </Button>
+                  <Button
+                    style={{ padding: "7px 30px", marginLeft: "1rem" }}
+                    onClick={handleOpenNidModal2}
+                  >
+                    Info2
                   </Button>
                 </Form>
               </div>

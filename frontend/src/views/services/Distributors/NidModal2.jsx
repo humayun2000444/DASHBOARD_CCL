@@ -2,9 +2,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import KYC from "./KYC";
+import PartnerPrefix from "./PartnerPrefix";
 
-const NidModal = ({ openNidModal, handleCloseNidModal }) => {
+const NidModal2 = ({ openNidModal2, handleCloseNidModal2 }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -18,8 +18,8 @@ const NidModal = ({ openNidModal, handleCloseNidModal }) => {
   };
   return (
     <Modal
-      open={openNidModal}
-      onClose={handleCloseNidModal}
+      open={openNidModal2}
+      onClose={handleCloseNidModal2}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -32,10 +32,10 @@ const NidModal = ({ openNidModal, handleCloseNidModal }) => {
         >
           Personal Details
         </Typography>
-        <KYC />
+        <PartnerPrefix />
       </Box>
     </Modal>
   );
 };
 
-export default NidModal;
+export default NidModal2;

@@ -1,7 +1,10 @@
+import React, { useEffect, useState } from "react";
+
 import CallIcon from "@mui/icons-material/Call";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import CallMissedIcon from "@mui/icons-material/CallMissed";
 import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
 
 const styles = {
   cardWrapper: {
@@ -43,6 +46,8 @@ const styles = {
   },
 };
 
+const username = localStorage.getItem("username");
+
 const CallStatusCard = ({ label, value, Icon }) => {
   return (
     <div style={styles.card}>
@@ -59,11 +64,53 @@ const CallStatusCard = ({ label, value, Icon }) => {
 };
 
 const DashboardCallStatus = () => {
+  const [totalCallData, setTotalCallData] = useState(null);
+  const [outgoingCallData, setOutgoingCallData] = useState(null);
+  const [incomingCallData, setTIncomingCallData] = useState(null);
+  const [missedCallData, setMissedCallData] = useState(null);
+
+  const token = localStorage.getItem("authToken");
+  const callerIdNumber = "09646999999";
+  const domainName = "103.95.96.100";
+
+  const fetchData = async () => {
+    try {
+      const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
+        token
+      );
+      const outgoingCall =
+        await adminDashboardServices.fetchOutgoingCallForAdmin(token);
+      const incomingCall =
+        await adminDashboardServices.fetchIncomingCallForAdmin(token);
+      const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
+        token
+      );
+      setTotalCallData(totalCall);
+      setOutgoingCallData(outgoingCall);
+      setTIncomingCallData(incomingCall);
+      setMissedCallData(missedCall);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const callStatuses = [
-    { label: "Total calls", value: 312302, Icon: CallIcon },
-    { label: "Outgoing calls", value: 39874, Icon: CallMadeIcon },
-    { label: "Incoming calls", value: 55874, Icon: CallReceivedIcon },
-    { label: "Missed calls", value: 4572, Icon: CallMissedIcon },
+    {
+      label: "Total calls",
+      value: totalCallData,
+      Icon: CallIcon,
+    },
+    { label: "Outgoing calls", value: outgoingCallData, Icon: CallMadeIcon },
+    {
+      label: "Incoming calls",
+      value: incomingCallData,
+      Icon: CallReceivedIcon,
+    },
+    { label: "Missed calls", value: missedCallData, Icon: CallMissedIcon },
   ];
 
   return (

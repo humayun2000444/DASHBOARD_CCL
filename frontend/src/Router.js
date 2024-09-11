@@ -1,21 +1,17 @@
-import React, { Suspense, lazy } from "react";
-import { Router, Switch, Route } from "react-router-dom";
-import StudentList from "./views/services/Students/StudentList.js";
 import { jwtDecode } from "jwt-decode"; ////
-import { history } from "./history";
+import React, { Suspense, lazy } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import Spinner from "./components/core/spinner/Loading-spinner";
+import { history } from "./history";
 import { ContextLayout } from "./utility/context/Layout";
+import StudentList from "./views/services/Students/StudentList.js";
 
 import { ToastProvider } from "react-toast-notifications";
-import "./assets/CoustomStyle/style.css";
 import "./assets/CoustomStyle/pageView.css";
-import AdmissionGetData from "./views/Test/AdmissionGetData";
+import "./assets/CoustomStyle/style.css";
 
-import { permissionList } from "./constants/AuthorizationConstant";
 import { userTypes } from "./constants/userTypeConstant";
-import PrivateRoute from "./PrivateRoute.js";
 
 // Authentication Checking
 
@@ -1060,10 +1056,33 @@ const Rates = lazy(() => import("./views/services/Rates/Rates.jsx"));
 
 const RateTask = lazy(() => import("./views/services/Rates/RateTask.jsx"));
 
-// Dial Plan Manager Component Here
+// Dial Plan  Component Here
 
-const DialPlanManager = lazy(() =>
-  import("./views/services/DialplanManager/DialplanManager.jsx")
+const Dialplan = lazy(() =>
+  import("./views/services/DialplanManager/Dialplan.jsx")
+);
+
+// Dialplan Details Component Here
+
+const DialplanDetails = lazy(() =>
+  import("./views/services/DialplanManager/DialplanDetails.jsx")
+);
+
+// Balance Monitor Component Here
+
+// Balance Monitor Component Here
+
+const BalanceMonitor = lazy(() =>
+  import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
+);
+const PaymentEntry = lazy(() =>
+  import("./views/services/PaymentEntry/PaymentEntry.jsx")
+);
+
+// Payment Report Component Here
+
+const PaymentReport = lazy(() =>
+  import("./views/services/PaymentReport/PaymentReport.jsx")
 );
 
 const CallScreen = lazy(() =>
@@ -1158,10 +1177,12 @@ class AppRouter extends React.Component {
                   <AppRoute path="/CDRs" component={CDR} />
                   <AppRoute path="/rates" component={Rates} />
                   <AppRoute path="/rateTask" component={RateTask} />
+
                   <AppRoute
-                    path="/dialplanManager"
-                    component={DialPlanManager}
+                    path="/dialplanDetails"
+                    component={DialplanDetails}
                   />
+
                   <AppRoute path="/balance" component={Balance} />
                   <AppRoute
                     exact

@@ -188,7 +188,9 @@ const UserDashBoard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://iptsp.cosmocom.net:4000/systeminfo");
+        const response = await axios.get(
+          "http://iptsp.cosmocom.net:4000/systeminfo"
+        );
         setSystemInfo(response.data);
       } catch (error) {
         console.error("Error fetching system information:", error);
