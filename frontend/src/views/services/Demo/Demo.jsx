@@ -16,7 +16,7 @@ import { Select } from "antd";
 const Demo = () => {
   const dispatch = useDispatch();
 
-  const role = useSelector((state) => state.roleDataReducer.roles);
+  const role = useSelector((state) => state.roleDataReducer.authRoles);
 
   const [formType, setFormType] = useState([]);
 
@@ -185,7 +185,7 @@ className='ms-2'
     defaultValue="lucy"
     style={{
       width: '25%',
-   
+
     }}
     onChange={handleChange}
   >

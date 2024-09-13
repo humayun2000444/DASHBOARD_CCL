@@ -33,7 +33,7 @@ const AnalyticsDashboard = () => {
   //  });
 
   const token = JSON.parse(localStorage.getItem("userInfo"));
-  const userRole = token.roles[0];
+  const userRole = token.authRoles[0];
 
   return (
     <>

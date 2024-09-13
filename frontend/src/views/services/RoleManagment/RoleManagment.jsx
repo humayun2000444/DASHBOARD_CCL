@@ -9,7 +9,7 @@ import roleServices from "../../../apiServices/RoleServices/RoleServices";
 import RoleForm from "./RoleForm";
 
 const RoleManagment = () => {
-  const [roles, setRoles] = useState([]);
+  const [authRoles, setRoles] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({ role: "", description: "" });
   const [selectedRoleId, setSelectedRoleId] = useState(null);
@@ -147,7 +147,7 @@ const RoleManagment = () => {
                 </TableRow>
               </TableHead>
               <tbody>
-                {roles.map((row, i) => (
+                {authRoles.map((row, i) => (
                   <tr key={row.id}>
                     <td style={{ padding: "2px 16px" }}>{i + 1}</td>
                     <td style={{ padding: "2px 16px", minWidth: "220px" }}>

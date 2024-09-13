@@ -1,25 +1,25 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import AccountDetails from "../UserDashBoard/AccountDetails";
-// import { Paper, Typography, IconButton, Box } from "@material-ui/core";
-// import RefreshIcon from "@material-ui/icons/Refresh";
-// import FullscreenIcon from "@material-ui/icons/Fullscreen";
-// import { Card, CardBody, Table } from "reactstrap";
+import { Paper, Typography, IconButton, Box } from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import { Card, CardBody, Table } from "reactstrap";
 
-// import "../../../../../assets/scss/pages/dashboard-analytics.scss";
+import "../../../../../assets/scss/pages/dashboard-analytics.scss";
 
-// import Chart from "react-apexcharts";
-// import ReactApexChart from "react-apexcharts";
-// import ReactECharts from "echarts-for-react";
+import Chart from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
+import ReactECharts from "echarts-for-react";
 
-// import { Link, useHistory } from "react-router-dom";
-// import Select from "react-select";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { Link, useHistory } from "react-router-dom";
+import Select from "react-select";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
 // import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
-// import { Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
-// import axios from "axios";
+import axios from "axios";
 // const SuperAdmin = () => {
 //   const [open, setOpen] = useState(false);
 //   const [options, setOptions] = useState({});

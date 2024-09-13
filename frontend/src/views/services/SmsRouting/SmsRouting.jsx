@@ -63,7 +63,7 @@ const SmsRouting = () => {
       const data = await partnerServices.fetchPartners();
       setPartners(data);
     } catch (error) {
-      console.error("Error fetching roles:", error);
+      console.error("Error fetching authRoles:", error);
     }
   };
 

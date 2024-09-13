@@ -19,11 +19,11 @@ const UserManagement = () => {
     password: "",
     confirmPassword: "",
     userStatus: "",
-    roles: [],
+    authRoles: [],
   };
   const [passwordError, setPasswordError] = useState("");
   const [users, setUsers] = useState([]);
-  const [roles, setRoles] = useState([]);
+  const [authRoles, setRoles] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState(initalState);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -46,7 +46,7 @@ const UserManagement = () => {
       const data = await roleServices.fetchRoles();
       setRoles(data);
     } catch (error) {
-      console.error("Error fetching roles:", error);
+      console.error("Error fetching authRoles:", error);
     }
   };
 
@@ -91,7 +91,7 @@ const UserManagement = () => {
 
     const userData = {
       ...formData,
-      roles: formData.roles.map((role) => ({ name: role.value })),
+      authRoles: formData.authRoles.map((role) => ({ name: role.value })),
     };
 
     try {
@@ -117,7 +117,7 @@ const UserManagement = () => {
         phoneNo: data.phoneNo,
         email: data.email,
         userStatus: data.userStatus,
-        roles: data.roles.map((role) => ({
+        authRoles: data.authRoles.map((role) => ({
           value: role.name,
           label: role.name,
         })),
@@ -137,7 +137,7 @@ const UserManagement = () => {
     }
   };
 
-  const adminRoleOptions = roles.map((role) => ({
+  const adminRoleOptions = authRoles.map((role) => ({
     value: role.name,
     label: role.name,
   }));
@@ -225,7 +225,7 @@ const UserManagement = () => {
                       {row.firstName} {row.lastName}
                     </td>
                     <td style={{ padding: "2px 16px", minWidth: "220px" }}>
-                      {row.roles.map((role) => (
+                      {row.authRoles.map((role) => (
                         <span key={role.name}> {role.name}</span>
                       ))}
                     </td>{" "}

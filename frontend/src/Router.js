@@ -18,7 +18,7 @@ import { userTypes } from "./constants/userTypeConstant";
 const tokenForRouting = JSON.parse(localStorage.getItem("userInfo"));
 
 const adminChecking =
-  tokenForRouting && tokenForRouting.roles[0].name !== "ROLE_ADMIN";
+  tokenForRouting && tokenForRouting.authRoles[0].name !== "ROLE_ADMIN";
 
 const token2 = localStorage.getItem("userInfo");
 let isAuth = token2 != null ? true : false;

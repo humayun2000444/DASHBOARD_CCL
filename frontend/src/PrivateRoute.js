@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 
 const PrivateRoute = ({ component: Component, role, ...rest }) => {
   const token = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(token.roles);
+  console.log(token.authRoles);
   return (
     <Route
       {...rest}

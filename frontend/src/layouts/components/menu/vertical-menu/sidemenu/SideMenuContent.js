@@ -8,10 +8,10 @@ import SideMenuGroup from "./SideMenuGroup";
 // import { FormattedMessage } from "react-intl"
 import { history } from "../../../../../history";
 
-const getInitialState = (roles) => {
+const getInitialState = (authRoles) => {
   const username = localStorage.getItem("username");
 
-  if (roles.name === "ROLE_BTRC") {
+  if (authRoles.name === "ROLE_BTRC") {
     return {
       menu: [
         {
@@ -32,7 +32,7 @@ const getInitialState = (roles) => {
       currentActiveGroup: [],
       tempArr: [],
     };
-  } else if (roles.name === "ROLE_WEBRTC") {
+  } else if (authRoles.name === "ROLE_WEBRTC") {
     return {
       menu: [
         {
@@ -76,7 +76,7 @@ const getInitialState = (roles) => {
       currentActiveGroup: [],
       tempArr: [],
     };
-  } else if (roles.name === "ROLE_USER") {
+  } else if (authRoles.name === "ROLE_USER") {
     return {
       menu: [
         {
@@ -1311,8 +1311,8 @@ class SideMenuContent extends React.Component {
 
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const initialState =
-      userInfo && userInfo.roles && userInfo.roles[0]
-        ? getInitialState(userInfo.roles[0])
+      userInfo && userInfo.authRoles && userInfo.authRoles[0]
+        ? getInitialState(userInfo.authRoles[0])
         : {
             menu: [],
             flag: true,
