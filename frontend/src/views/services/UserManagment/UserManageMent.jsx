@@ -29,7 +29,7 @@ const UserManagement = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const authToken = "Bearer " + userInfo.token;
+  // const authToken = "Bearer " + userInfo.token;
 
   const fetchUsers = async () => {
     try {
