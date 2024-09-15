@@ -1204,7 +1204,7 @@ class AppRouter extends React.Component {
                   <AppRoute path="/paymentEntry" component={PaymentEntry} />
                   {/* CallHistory Route  */}
                   <AppRoute
-                    path="/usercallhistory"
+                    path="/userCallHistory"
                     component={UserCallHistory}
                   />
                   <AppRoute

@@ -103,6 +103,7 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls }) => {
     }
     return formattedDuration.trim();
   };
+
   const sortedCallHistory = [...callHistory].sort(
     (a, b) => new Date(b.startStamp) - new Date(a.startStamp)
   );
