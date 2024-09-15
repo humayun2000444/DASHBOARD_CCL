@@ -1,5 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
 
 const rows = [
   {
@@ -100,6 +101,25 @@ const columns = [
 ];
 
 const DashboardCdrTable = () => {
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchCDRData = async () => {
+      setLoading(true); // Start loading before fetching data
+      try {
+        const data = await CDRServices.fetchAllCDRData();
+        console.log(data);
+        setTableData(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false); // Stop loading after data is fetched
+      }
+    };
+    fetchCDRData();
+  }, []);
+
   return (
     <div
       style={{

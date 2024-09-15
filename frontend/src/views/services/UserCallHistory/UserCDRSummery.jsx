@@ -10,7 +10,6 @@ import { Card, CardBody } from "reactstrap";
 const UserCDRSummery = () => {
   // Extract didNumber from the URL
   const { didNumber } = useParams();
-
   // Use useLocation to access the state passed from the UserCallHistory component
   const location = useLocation();
   const { tableHeaders, item } = location.state || {};

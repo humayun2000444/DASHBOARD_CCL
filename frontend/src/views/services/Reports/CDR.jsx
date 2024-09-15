@@ -557,20 +557,6 @@ const CDR = () => {
             </div>
           </div>
 
-          <span
-            style={{
-              color: "rgb(95, 95, 95)",
-              fontWeight: "400px",
-              fontSize: "10.2px",
-            }}
-          >
-            <span style={{ textDecoration: "underline" }}>Note:</span>{" "}
-            Destination and Caller ID (CID) Name fields support the use of an
-            asterisk ('*') as a wildcard character.
-          </span>
-
-          {/* Filter Buttons */}
-
           <div className="d-flex justify-content-end">
             <button className="btn btn-primary mr-4" style={buttonStyle}>
               <span className="fas fa-tools fa-fw mr-1"></span>ADVANCED

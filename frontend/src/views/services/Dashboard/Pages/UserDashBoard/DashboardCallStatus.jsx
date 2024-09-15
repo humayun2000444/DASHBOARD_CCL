@@ -69,6 +69,7 @@ const DashboardCallStatus = () => {
   const [incomingCallData, setTIncomingCallData] = useState(null);
   const [missedCallData, setMissedCallData] = useState(null);
 
+  console.log("total call", totalCallData);
   const token = localStorage.getItem("authToken");
   const callerIdNumber = "09646999999";
   const domainName = "103.95.96.100";

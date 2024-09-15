@@ -1,12 +1,12 @@
 import axios from "axios";
-import { cclRootUrl } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
+import { cclRootUrl, root } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
 
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
   fetchTotalCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}/getTotalCallForAdmin`,
+        `${cclRootUrl}admin/getTotalCall`,
         {}, // Empty body if not needed
         {
           headers: {
@@ -25,7 +25,7 @@ const adminDashboardServices = {
   fetchOutgoingCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}/getOutgoingCallForAdmin`,
+        `${cclRootUrl}admin/getOutgoingCall`,
         {},
         {
           headers: {
@@ -44,7 +44,7 @@ const adminDashboardServices = {
   fetchIncomingCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}/getIncomingCallForAdmin`,
+        `${cclRootUrl}admin/getIncomingCall`,
         {},
         {
           headers: {
@@ -63,7 +63,7 @@ const adminDashboardServices = {
   fetchMissedCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}/getMissedCallForAdmin`,
+        `${cclRootUrl}admin/getMissedCall`,
         {},
         {
           headers: {

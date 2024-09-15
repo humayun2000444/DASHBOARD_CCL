@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "https://iptsp.cosmocom.net:8001/FREESWITCH/";
+const url = "http://iptsp.cosmocom.net:5070/";
 
 const CDRServices = {
   fetchAllCDRData: async () => {
