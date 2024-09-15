@@ -110,7 +110,7 @@ function AddUserModal({
                     onChange={(selectedOptions) =>
                       setFormData((prevState) => ({
                         ...prevState,
-                        roles: selectedOptions,
+                        authRoles: selectedOptions,
                       }))
                     }
                   /> */}
@@ -122,14 +122,14 @@ function AddUserModal({
                   <Select
                     defaultValue={[]}
                     isMulti
-                    name="roles"
+                    name="authRoles"
                     options={adminRole}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(selectedOptions) =>
                       setFormData((prevState) => ({
                         ...prevState,
-                        roles: selectedOptions,
+                        authRoles: selectedOptions,
                       }))
                     }
                   />

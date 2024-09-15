@@ -41,7 +41,7 @@ const RolePermission = (props) => {
   const dispatch = useDispatch();
   const { addToast } = useToasts();
   const history = useHistory();
-  const [roles, setRoles] = useState([]);
+  const [authRoles, setRoles] = useState([]);
   const [progress, setProgress] = useState(false);
 
   const permissions = JSON.parse(localStorage.getItem("permissions"));
@@ -82,7 +82,7 @@ const RolePermission = (props) => {
     });
   };
 
-  const roleName = roles?.map((role) => ({ label: role.name, value: role.id }));
+  const roleName = authRoles?.map((role) => ({ label: role.name, value: role.id }));
 
   // onChange role
   const selectRole = (label, value) => {
@@ -271,7 +271,7 @@ const RolePermission = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  roleList: state.roleDataReducer.roles,
+  roleList: state.roleDataReducer.authRoles,
 });
 
 export default connect(mapStateToProps)(RolePermission);

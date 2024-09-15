@@ -32,7 +32,7 @@ import remove from "../../../../helpers/remove";
 import ButtonForFunction from "../../Components/ButtonForFunction";
 
 const Roles = (props) => {
-  const roles = props.roleList[0];
+  const authRoles = props.roleList[0];
 
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
@@ -129,7 +129,7 @@ const Roles = (props) => {
             <b>
               {" "}
               Total <span className="badge badge-primary">
-                {roles?.length}
+                {authRoles?.length}
               </span>{" "}
               Roles Found{" "}
             </b>
@@ -169,10 +169,10 @@ const Roles = (props) => {
                       permission={2}
                       name={"Submit"}
                     >
-                    
+
                     </ButtonForFunction>
 
-                    
+
 
                   </FormGroup>
 
@@ -234,7 +234,7 @@ const Roles = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  roleList: state.roleDataReducer.roles,
+  roleList: state.roleDataReducer.authRoles,
 });
 
 export default connect(mapStateToProps)(Roles);

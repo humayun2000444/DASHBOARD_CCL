@@ -15,7 +15,7 @@ const UpdateUserModal = ({
   adminRole,
   setUserData,
 }) => {
-  console.log(userData.roles);
+  console.log(userData.authRoles);
   return (
     <div>
       <Modal
@@ -110,29 +110,29 @@ const UpdateUserModal = ({
                     onChange={(selectedOptions) =>
                       setFormData((prevState) => ({
                         ...prevState,
-                        roles: selectedOptions,
+                        authRoles: selectedOptions,
                       }))
                     }
                   /> */}
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group controlId="roles">
+                <Form.Group controlId="authRoles">
                   <Form.Label>Role:</Form.Label>
                   <Select
-                    defaultValue={userData.roles.map((role) => ({
+                    defaultValue={userData.authRoles.map((role) => ({
                       value: role.name,
                       label: role.name,
                     }))}
                     isMulti
-                    name="roles"
+                    name="authRoles"
                     options={adminRole}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(selectedOptions) =>
                       setUserData((prevState) => ({
                         ...prevState,
-                        roles: selectedOptions,
+                        authRoles: selectedOptions,
                       }))
                     }
                   />

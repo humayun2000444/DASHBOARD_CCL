@@ -104,18 +104,18 @@ const UserFormModal = ({
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group controlId="roles">
+                <Form.Group controlId="authRoles">
                   <Form.Label>Role:</Form.Label>
                   <Select
-                    defaultValue={formData.roles}
+                    defaultValue={formData.authRoles}
                     isMulti
-                    name="roles"
+                    name="authRoles"
                     options={adminRole}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(selectedOptions) =>
                       handleChange({
-                        target: { name: "roles", value: selectedOptions },
+                        target: { name: "authRoles", value: selectedOptions },
                       })
                     }
                   />
