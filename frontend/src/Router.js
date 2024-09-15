@@ -1071,18 +1071,29 @@ const DialplanDetails = lazy(() =>
 // Balance Monitor Component Here
 
 // Balance Monitor Component Here
-
 const BalanceMonitor = lazy(() =>
   import("./views/services/BalanceMonitor/BalanceMonitor.jsx")
 );
+
+// Payment Report Component Here
+const PaymentReport = lazy(() =>
+  import("./views/services/PaymentReport/PaymentReport.jsx")
+);
+
+//Easin Code//
+// Payment Entry Component Here
 const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
 
-// Payment Report Component Here
-
-const PaymentReport = lazy(() =>
-  import("./views/services/PaymentReport/PaymentReport.jsx")
+const UserCallHistory = lazy(() =>
+  import("./views/services/UserCallHistory/UserCallHistory.jsx")
+);
+const UserCDRSummery = lazy(() =>
+  import("./views/services/UserCallHistory/UserCDRSummery.jsx")
+);
+const RechargeBalance = lazy(() =>
+  import("./views/services/RechargeBalance/RechargeBalance.jsx")
 );
 
 // Balance Component
@@ -1186,8 +1197,24 @@ class AppRouter extends React.Component {
                   />
 
                   <AppRoute path="/balanceMonitor" component={BalanceMonitor} />
-                  <AppRoute path="/paymentEntry" component={PaymentEntry} />
                   <AppRoute path="/paymentReport" component={PaymentReport} />
+
+                  {/* Easin Code */}
+                  {/* PaymentEntry Route  */}
+                  <AppRoute path="/paymentEntry" component={PaymentEntry} />
+                  {/* CallHistory Route  */}
+                  <AppRoute
+                    path="/usercallhistory"
+                    component={UserCallHistory}
+                  />
+                  <AppRoute
+                    path="/userCDRSummery/:didNumber"
+                    component={UserCDRSummery}
+                  />
+                  <AppRoute
+                    path="/rechargeBalance"
+                    component={RechargeBalance}
+                  />
 
                   <AppRoute path="/balance" component={Balance} />
 
