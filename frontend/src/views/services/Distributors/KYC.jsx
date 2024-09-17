@@ -18,9 +18,9 @@ const KYC = () => {
     email: "",
     phoneNumber: "",
     birthDate: null,
-    gender: "Male",
-    country: "Bangladesh",
-    documentType: "Identity Card",
+    gender: "",
+    country: "",
+    documentType: "",
     cardNumber: "",
     cardExpiryDate: null,
   };
@@ -71,18 +71,21 @@ const KYC = () => {
               {...field}
               label="First Name"
               sx={{ width: "100%", ...getTextFieldStyles("firstName") }}
+              error={!!errors.firstName}
             />
           )}
         />
         <Controller
           name="lastName"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <TextField
               variant="standard"
               {...field}
               label="Last Name - Surname"
               sx={{ width: "100%", ...getTextFieldStyles("lastName") }}
+              error={!!errors.lastName}
             />
           )}
         />
@@ -103,6 +106,7 @@ const KYC = () => {
               {...field}
               label="Email"
               sx={{ width: "100%", ...getTextFieldStyles("email") }}
+              error={!!errors.email}
             />
           )}
         />
@@ -116,6 +120,7 @@ const KYC = () => {
               {...field}
               label="Phone Number"
               sx={{ width: "100%", ...getTextFieldStyles("phoneNumber") }}
+              error={!!errors.phoneNumber}
             />
           )}
         />
@@ -133,16 +138,29 @@ const KYC = () => {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <DatePicker
-                    {...field}
                     label="Birth Date"
-                    sx={{ border: "none" }}
+                    slotProps={{ textField: { variant: "filled" } }}
+                    {...field}
+                    error={!!errors.birthDate}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        background: "none",
+                      },
+                      "&:hover & .MuiInputBase-root": {
+                        background: "none",
+                      },
+                      "& .MuiInputBase-root.MuiFilledInput-root::before": {
+                        borderColor: errors["birthDate"] ? "red" : undefined,
+                      },
+                    }}
                   />
                 )}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
-        <div>
+
+        <div style={{ marginTop: "8px" }}>
           <Controller
             name="gender"
             control={control}
@@ -154,6 +172,7 @@ const KYC = () => {
                 select
                 label="Gender"
                 sx={{ width: "27ch", ...getTextFieldStyles("gender") }}
+                error={!!errors.gender}
               >
                 {[
                   { value: "Male", label: "Male" },
@@ -167,7 +186,7 @@ const KYC = () => {
             )}
           />
         </div>
-        <div>
+        <div style={{ marginTop: "8px" }}>
           <Controller
             name="country"
             control={control}
@@ -179,6 +198,7 @@ const KYC = () => {
                 select
                 label="Country"
                 sx={{ width: "35ch", ...getTextFieldStyles("country") }}
+                error={!!errors.country}
               >
                 {[
                   { value: "Bangladesh", label: "Bangladesh" },
@@ -202,8 +222,8 @@ const KYC = () => {
           />
         </div>
       </div>
-      <div className="d-flex" style={{ gap: "10px" }}>
-        <div>
+      <div className="d-flex justify-content-between">
+        <div style={{ marginTop: "8px" }}>
           <Controller
             name="documentType"
             control={control}
@@ -214,7 +234,8 @@ const KYC = () => {
                 {...field}
                 select
                 label="Document Type"
-                sx={{ width: "27ch", ...getTextFieldStyles("documentType") }}
+                sx={{ width: "30ch", ...getTextFieldStyles("documentType") }}
+                error={!!errors.documentType}
               >
                 {[
                   { value: "Identity Card", label: "Identity Card" },
@@ -229,31 +250,52 @@ const KYC = () => {
             )}
           />
         </div>
-        <Controller
-          name="cardNumber"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              variant="standard"
-              {...field}
-              label="Card Number"
-              sx={{ width: "100%", ...getTextFieldStyles("cardNumber") }}
-            />
-          )}
-        />
+        <div style={{ marginTop: "8px" }}>
+          <Controller
+            name="cardNumber"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                {...field}
+                label="Card Number"
+                sx={{ width: "30ch", ...getTextFieldStyles("cardNumber") }}
+                error={!!errors.cardNumber}
+              />
+            )}
+          />
+        </div>
         <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer
               components={["DatePicker"]}
-              sx={{ paddingTop: "0", overflow: "none" }}
+              sx={{ paddingTop: "0", overflow: "none", width: "100%" }}
             >
               <Controller
                 name="cardExpiryDate"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <DatePicker {...field} label="Card Expiry Date" />
+                  <DatePicker
+                    label="Card expiry date"
+                    slotProps={{ textField: { variant: "filled" } }}
+                    {...field}
+                    error={!!errors.cardExpiryDate}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        background: "none",
+                      },
+                      "&:hover & .MuiInputBase-root": {
+                        background: "none",
+                      },
+                      "& .MuiInputBase-root.MuiFilledInput-root::before": {
+                        borderColor: errors["cardExpiryDate"]
+                          ? "red"
+                          : undefined,
+                      },
+                    }}
+                  />
                 )}
               />
             </DemoContainer>
