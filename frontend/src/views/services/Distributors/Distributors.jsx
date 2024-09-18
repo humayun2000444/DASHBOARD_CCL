@@ -10,13 +10,17 @@ import Select from "react-select";
 import { CardBody } from "reactstrap";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import Pagination from "../Pagination/Pagination";
+import DistributorEditModal from "./DistributorEditModal";
 import DistributorsModal from "./DistributorsModal";
-import NidModal from "./NidModal";
-import NidModal2 from "./NidModal2";
 
 const Distributors = () => {
-  const [partners, setPartners] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [partners, setPartners] = useState([
+    // { idPartner: "1" }
+  ]);
+  const [modalOpen, setModalOpen] = useState({
+    openType: "",
+    open: false,
+  });
   const [formData, setFormData] = useState({
     partnerName: "",
     telephone: "",
@@ -76,15 +80,32 @@ const Distributors = () => {
   };
 
   const handleOpenModal = (partnerId = null) => {
-    setPartnerId(partnerId);
-    setModalOpen(true);
-    if (partnerId) {
-      fetchPartnerData(partnerId);
+    if (partnerId === null) {
+      setModalOpen({
+        openType: "Add Partner",
+        open: true,
+      });
+    } else {
+      setModalOpen({
+        openType: "Update Partner",
+        open: true,
+      });
     }
+    setPartnerId(partnerId);
+
+    // if (partnerId) {
+    //   fetchPartnerData(partnerId);
+    // }
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
+    console.log("Clicked");
+    setModalOpen((prev) => {
+      return {
+        ...prev,
+        open: false,
+      };
+    });
     setFormData({
       partnerName: "",
       telephone: "",
@@ -226,35 +247,29 @@ const Distributors = () => {
     );
   };
 
-  const [openNidModal, setOpenNidModal] = useState(false);
-  const handleOpenNidModal = () => setOpenNidModal(true);
-  const handleCloseNidModal = () => setOpenNidModal(false);
-
-  const [openNidModal2, setOpenNidModal2] = useState(false);
-  const handleOpenNidModal2 = () => setOpenNidModal2(true);
-  const handleCloseNidModal2 = () => setOpenNidModal2(false);
-
   return (
     <div>
-      <DistributorsModal
-        open={modalOpen}
-        handleClose={handleCloseModal}
-        handleSubmit={handleSubmit}
-        formData={formData}
-        handleChange={handleChange}
-        title={selectedPartnerId ? "Update Partner" : "Add Partner"}
-        buttonText={selectedPartnerId ? "Update" : "Save"}
-      />
+      {modalOpen.openType === "Add Partner" && (
+        <DistributorsModal
+          open={modalOpen.open}
+          handleClose={handleCloseModal}
+          handleSubmit={handleSubmit}
+          formData={formData}
+          handleChange={handleChange}
+          title={"Add Partner"}
+          buttonText={"Save"}
+        />
+      )}
 
-      <NidModal
-        openNidModal={openNidModal}
-        handleCloseNidModal={handleCloseNidModal}
-      />
-      <NidModal2
-        openNidModal2={openNidModal2}
-        handleCloseNidModal2={handleCloseNidModal2}
-      />
-
+      {modalOpen.openType === "Update Partner" && (
+        <DistributorEditModal
+          open={modalOpen.open}
+          title={"Update Partner"}
+          buttonText={"Update"}
+          handleClose={handleCloseModal}
+          handleSubmit={handleSubmit}
+        />
+      )}
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">
@@ -272,7 +287,7 @@ const Distributors = () => {
                   <Button style={{ padding: "7px 30px" }} type="submit">
                     Find
                   </Button>
-                  <Button
+                  {/* <Button
                     style={{ padding: "7px 30px", marginLeft: "1rem" }}
                     onClick={handleOpenNidModal}
                   >
@@ -283,7 +298,7 @@ const Distributors = () => {
                     onClick={handleOpenNidModal2}
                   >
                     Info2
-                  </Button>
+                  </Button> */}
                 </Form>
               </div>
               <div className="col-md-2"></div>

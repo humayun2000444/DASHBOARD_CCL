@@ -213,7 +213,7 @@ const KYC = () => {
               {...field}
               select
               label="ID Partner"
-              sx={{ width: "27ch", ...getTextFieldStyles("idPartner") }}
+              sx={{ width: "100%", ...getTextFieldStyles("idPartner") }}
               error={!!errors.idPartner}
             >
               {[
@@ -292,7 +292,7 @@ const KYC = () => {
                 {...field}
                 select
                 label="Gender"
-                sx={{ width: "27ch", ...getTextFieldStyles("gender") }}
+                sx={{ width: "42ch", ...getTextFieldStyles("gender") }}
                 error={!!errors.gender}
               >
                 {[
@@ -318,7 +318,7 @@ const KYC = () => {
                 {...field}
                 select
                 label="Country"
-                sx={{ width: "35ch", ...getTextFieldStyles("country") }}
+                sx={{ width: "42ch", ...getTextFieldStyles("country") }}
                 error={!!errors.country}
               >
                 {[

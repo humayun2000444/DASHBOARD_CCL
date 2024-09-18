@@ -1,29 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@mui/material/styles";
-import Modal from "@mui/material/Modal";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import { useTheme } from "@mui/material/styles";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 import { Button } from "react-bootstrap";
-import {
-  TextField,
-  MenuItem,
-  Switch,
-  Select,
-  FormControlLabel,
-  InputLabel,
-  FormControl,
-  Grid,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import SwipeableViews from "react-swipeable-views";
 export const WholeSaleClientModal = ({
   open,
   handleClose,
@@ -398,16 +397,6 @@ export const WholeSaleClientModal = ({
   );
 };
 
-WholeSaleClientModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  formData: PropTypes.object,
-  handleChange: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  buttonText: PropTypes.string.isRequired,
-};
-
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
@@ -428,17 +417,11 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
   );
 }
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 export default WholeSaleClientModal;
