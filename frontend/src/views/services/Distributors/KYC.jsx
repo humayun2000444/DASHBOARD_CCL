@@ -139,7 +139,6 @@ const KYC = () => {
   const fetchPartners = async () => {
     try {
       const data = await partnerServices.fetchPartners();
-      console.log(data);
     } catch (error) {
       console.error("Error fetching partners:", error);
     }

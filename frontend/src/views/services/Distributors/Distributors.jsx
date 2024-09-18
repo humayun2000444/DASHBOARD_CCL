@@ -11,7 +11,6 @@ import { CardBody } from "reactstrap";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import Pagination from "../Pagination/Pagination";
 import DistributorEditModal from "./DistributorEditModal";
-import DistributorsModal from "./DistributorsModal";
 
 const Distributors = () => {
   const [partners, setPartners] = useState([
@@ -80,18 +79,18 @@ const Distributors = () => {
   };
 
   const handleOpenModal = (partnerId = null) => {
-    if (partnerId === null) {
+    if (partnerId) {
       setModalOpen({
-        openType: "Add Partner",
+        openType: "Update",
         open: true,
       });
     } else {
       setModalOpen({
-        openType: "Update Partner",
+        openType: "Add",
         open: true,
       });
     }
-    setPartnerId(partnerId);
+    // setPartnerId(partnerId);
 
     // if (partnerId) {
     //   fetchPartnerData(partnerId);
@@ -106,24 +105,6 @@ const Distributors = () => {
         open: false,
       };
     });
-    setFormData({
-      partnerName: "",
-      telephone: "",
-      email: "",
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      alternateNameInvoice: "",
-      alternateNameOther: "",
-      vatRegistrationNo: "",
-      invoiceAddress: "",
-      customerPrePaid: "",
-      partnerType: "",
-    });
-    setPartnerId(null);
   };
 
   const handleChange = (e) => {
@@ -249,27 +230,12 @@ const Distributors = () => {
 
   return (
     <div>
-      {modalOpen.openType === "Add Partner" && (
-        <DistributorsModal
-          open={modalOpen.open}
-          handleClose={handleCloseModal}
-          handleSubmit={handleSubmit}
-          formData={formData}
-          handleChange={handleChange}
-          title={"Add Partner"}
-          buttonText={"Save"}
-        />
-      )}
-
-      {modalOpen.openType === "Update Partner" && (
-        <DistributorEditModal
-          open={modalOpen.open}
-          title={"Update Partner"}
-          buttonText={"Update"}
-          handleClose={handleCloseModal}
-          handleSubmit={handleSubmit}
-        />
-      )}
+      <DistributorEditModal
+        open={modalOpen.open}
+        title={modalOpen.openType === "Update" ? "Update" : "Add"}
+        handleClose={handleCloseModal}
+        handleSubmit={handleSubmit}
+      />
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">

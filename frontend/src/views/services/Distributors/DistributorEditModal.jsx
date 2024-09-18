@@ -1,11 +1,11 @@
+import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Modal from "@mui/material/Modal";
 import { useTheme } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-// import TabPanel from "@mui/lab/TabPanel";
-import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
@@ -55,7 +55,10 @@ const DistributorEditModal = ({ open, handleClose, title, buttonText }) => {
           p: 4,
         }}
       >
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6" component="h2">
+            {title}
+          </Typography>
           <IconButton
             onClick={handleClose}
             style={{
@@ -85,9 +88,9 @@ const DistributorEditModal = ({ open, handleClose, title, buttonText }) => {
                 },
               }}
             >
-              <Tab label="Update Partner" {...a11yProps(0)} />
-              <Tab label="Rout" {...a11yProps(1)} />
-              <Tab label="Assign DID" {...a11yProps(2)} />
+              <Tab label="Details" {...a11yProps(0)} />
+              <Tab label="Route" {...a11yProps(1)} />
+              <Tab label="DID" {...a11yProps(2)} />
               <Tab label="KYC" {...a11yProps(3)} />
             </Tabs>
           </AppBar>
