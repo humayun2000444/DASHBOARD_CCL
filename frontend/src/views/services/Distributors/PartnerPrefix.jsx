@@ -1,9 +1,9 @@
 // PartnerPrefix.js
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import FileUploader from "./FileUploader";
 import PartnerPrefixForm from "./PartnerPrefixForm";
 import PartnerPrefixTable from "./PartnerPrefixTable";
+import FileUploader from "./FileUploader";
 
 const PartnerPrefix = () => {
   const [allPartnerPrefixes, setAllPartnerPrefixes] = useState([]);
