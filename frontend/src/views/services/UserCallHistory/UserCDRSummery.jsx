@@ -69,8 +69,8 @@ const UserCDRSummery = () => {
                 <th align="right">Destination Number</th>
                 <th align="right">Time</th>
                 <th align="right">Duration</th>
-                <th align="right">Call Status</th>
-                <th align="right">Hangup Cause</th>
+                <th align="right">Direction</th>
+                <th align="right">Status</th>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -81,7 +81,7 @@ const UserCDRSummery = () => {
                   <TableCell>{row?.startStamp}</TableCell>
                   <TableCell> {row?.duration}</TableCell>
                   <TableCell> {row?.direction}</TableCell>
-                  <TableCell> {row?.hangupCause}</TableCell>
+                  <TableCell> {row?.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
