@@ -5,6 +5,7 @@ import CallMadeIcon from "@mui/icons-material/CallMade";
 import CallMissedIcon from "@mui/icons-material/CallMissed";
 import CallReceivedIcon from "@mui/icons-material/CallReceived";
 import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
+import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
 
 const styles = {
   cardWrapper: {
@@ -74,22 +75,63 @@ const DashboardCallStatus = () => {
   const callerIdNumber = "09646999999";
   const domainName = "103.95.96.100";
 
+  const userToken = JSON.parse(localStorage.getItem("userInfo"));
+  const role = userToken.authRoles[0].name;
+  const username = localStorage.getItem("username");
+
   const fetchData = async () => {
     try {
-      const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
-        token
-      );
-      const outgoingCall =
-        await adminDashboardServices.fetchOutgoingCallForAdmin(token);
-      const incomingCall =
-        await adminDashboardServices.fetchIncomingCallForAdmin(token);
-      const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
-        token
-      );
-      setTotalCallData(totalCall);
-      setOutgoingCallData(outgoingCall);
-      setTIncomingCallData(incomingCall);
-      setMissedCallData(missedCall);
+      if (role === "ROLE_ADMIN") {
+        const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
+          token
+        );
+        const outgoingCall =
+          await adminDashboardServices.fetchOutgoingCallForAdmin(token);
+        const incomingCall =
+          await adminDashboardServices.fetchIncomingCallForAdmin(token);
+        const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
+          token
+        );
+        setTotalCallData(totalCall);
+        setOutgoingCallData(outgoingCall);
+        setTIncomingCallData(incomingCall);
+        setMissedCallData(missedCall);
+      } else if (role === "ROLE_USER") {
+        const data = await CDRServices.fetchPartnerPrefixes(username);
+        const allPrefixArr = data.map((item) => {
+          return item.prefix;
+        });
+
+        const totalCall = await adminDashboardServices.fetchTotalCallForUser({
+          callerIdNumber: [...allPrefixArr],
+          startStamp: "2023-07-21T18:50:16Z",
+          endStamp: "2026-09-01T18:50:16Z",
+        });
+        const outgoingCall =
+          await adminDashboardServices.fetchOutgoingCallForUser({
+            callerIdNumber: [...allPrefixArr],
+            startStamp: "2023-07-21T18:50:16Z",
+            endStamp: "2026-09-01T18:50:16Z",
+          });
+        const incomingCall =
+          await adminDashboardServices.fetchIncomingCallForUser({
+            callerIdNumber: [...allPrefixArr],
+            startStamp: "2023-07-21T18:50:16Z",
+            endStamp: "2026-09-01T18:50:16Z",
+          });
+        const missedCall = await adminDashboardServices.fetchMissedCallForUser({
+          callerIdNumber: [...allPrefixArr],
+          startStamp: "2023-07-21T18:50:16Z",
+          endStamp: "2026-09-01T18:50:16Z",
+        });
+
+        console.log(totalCall);
+        console.log(outgoingCall);
+        setTotalCallData(totalCall);
+        setOutgoingCallData(outgoingCall);
+        setTIncomingCallData(incomingCall);
+        setMissedCallData(missedCall);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }

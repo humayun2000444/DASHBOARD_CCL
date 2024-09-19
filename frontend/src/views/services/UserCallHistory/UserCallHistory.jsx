@@ -148,6 +148,7 @@ const UserCallHistory = () => {
         id,
         userInfo.token
       );
+      console.log(data);
       setPartnerPrefix(data);
     } catch (error) {
       console.error("Error fetching partner data:", error);

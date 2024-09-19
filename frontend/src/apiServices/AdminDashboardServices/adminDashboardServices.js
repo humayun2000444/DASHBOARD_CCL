@@ -1,5 +1,5 @@
 import axios from "axios";
-import { cclRootUrl, root } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
+import { cclRootUrl, root2 } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
 
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
@@ -59,7 +59,7 @@ const adminDashboardServices = {
     }
   },
 
-  // Fetch Missed Calls for Admin
+  // Fetch Missed Calls for User
   fetchMissedCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
@@ -70,6 +70,62 @@ const adminDashboardServices = {
             Authorization: `Bearer ${token}`,
           },
         }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching Missed calls:", error);
+      throw error;
+    }
+  },
+
+  // Fetch Total Calls for User
+  fetchTotalCallForUser: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root2}5070/user/DashBoard/getTotalCall`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching Total calls:", error);
+      throw error;
+    }
+  },
+
+  // Fetch Outgoing Calls for User
+  fetchOutgoingCallForUser: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root2}5070/user/DashBoard/getIncomingCall`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching Incoming calls:", error);
+      throw error;
+    }
+  },
+
+  // Fetch Incoming Calls for User
+  fetchIncomingCallForUser: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root2}5070/user/DashBoard/getOutgoingCall`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching Outgoing calls:", error);
+      throw error;
+    }
+  },
+
+  // Fetch Missed Calls for Admin
+  fetchMissedCallForUser: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root2}5070/user/DashBoard/getMissedCall`,
+        payload
       );
       return response.data;
     } catch (error) {
