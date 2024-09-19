@@ -14,7 +14,7 @@ export const ContactProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch(root + '/FREESWITCH/contact/get-contacts', {
+      const response = await fetch(root + '8001/FREESWITCH/contact/get-contacts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

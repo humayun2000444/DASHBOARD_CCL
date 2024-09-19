@@ -1,11 +1,11 @@
 import axios from "axios";
-import { cclRootUrl } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
+import { root2 } from "../../constants/constants";
 
 const userDashboardServices = {
   fetchTotalCallForUser: async (token, callerIdNumber, domainName) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}getTotalCallForUser`,
+        `${root2}5070/getTotalCallForUser`,
         {
           callerIdNumber,
           domainName,

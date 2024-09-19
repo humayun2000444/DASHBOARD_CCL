@@ -1,12 +1,12 @@
 import axios from "axios";
-import { cclRootUrl, root, root2 } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
+import { root2, root} from "../../constants/constants"; // Assuming root2 is the base API URL
 
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
   fetchTotalCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}admin/getTotalCall`,
+        `${root2}5070/admin/getTotalCall`,
         {}, // Empty body if not needed
         {
           headers: {
@@ -25,7 +25,7 @@ const adminDashboardServices = {
   fetchOutgoingCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}admin/getOutgoingCall`,
+        `${root2}5070/admin/getOutgoingCall`,
         {},
         {
           headers: {
@@ -44,7 +44,7 @@ const adminDashboardServices = {
   fetchIncomingCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}admin/getIncomingCall`,
+        `${root2}5070/admin/getIncomingCall`,
         {},
         {
           headers: {
@@ -63,7 +63,7 @@ const adminDashboardServices = {
   fetchMissedCallForAdmin: async (token) => {
     try {
       const response = await axios.post(
-        `${cclRootUrl}admin/getMissedCall`,
+        `${root2}5070/admin/getMissedCall`,
         {},
         {
           headers: {
@@ -96,7 +96,7 @@ const adminDashboardServices = {
   fetchOutgoingCallForUser: async (payload) => {
     try {
       const response = await axios.post(
-        `${root2}5070/user/DashBoard/getIncomingCall`,
+        `${root2}5070/user/DashBoard/getOutgoingCall`,
         payload
       );
       return response.data;
@@ -110,7 +110,7 @@ const adminDashboardServices = {
   fetchIncomingCallForUser: async (payload) => {
     try {
       const response = await axios.post(
-        `${root2}5070/user/DashBoard/getOutgoingCall`,
+        `${root2}5070/user/DashBoard/getIncomingCall`,
         payload
       );
       return response.data;

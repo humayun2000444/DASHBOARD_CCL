@@ -76,6 +76,7 @@ const AccountDetails = () => {
                   fontSize: "14px",
                 }}
               >
+                <span>Account Type </span>
                 <span
                   style={{
                     color: "#064E3B",
@@ -90,7 +91,7 @@ const AccountDetails = () => {
                     ? "Prepaid"
                     : "Postpaid"}
                 </span>
-                <span>Account Type</span>
+
               </div>
             </div>
           </div>
