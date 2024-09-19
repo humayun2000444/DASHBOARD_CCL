@@ -1085,6 +1085,7 @@ const PaymentReport = lazy(() =>
 const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
+const AssignDid = lazy(() => import("./views/services/DIDPool/AssignDid.jsx"));
 const DidPool = lazy(() => import("./views/services/DIDPool/DidPool.jsx"));
 const RetailPartner = lazy(() =>
   import("./views/services/RetailPartner/RetailPartner.jsx")
@@ -1212,6 +1213,7 @@ class AppRouter extends React.Component {
                   />
                   <AppRoute path="/retailPartner" component={RetailPartner} />
                   <AppRoute path="/didPool" component={DidPool} />
+                  <AppRoute path="/AssignDid/:poolName" component={AssignDid} />
 
                   <AppRoute
                     path="/userCDRSummery/:didNumber"
