@@ -1,13 +1,13 @@
 // UserCDRSummery.js
+import { TableCell } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import CDRServices from "../../../apiServices/CDRServices/CDRServices";
-import { TableCell } from "@mui/material";
 
 const UserCDRSummery = () => {
   // Extract didNumber from the URL
@@ -28,6 +28,43 @@ const UserCDRSummery = () => {
 
     fetchData();
   }, []);
+
+  const getDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(2);
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const getTime = (timestamp) => {
+    const date = new Date(timestamp);
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes}:${seconds}${ampm}`;
+  };
+
+  const formatDuration = (durationInSeconds) => {
+    const hours = Math.floor(durationInSeconds / 3600);
+    const minutes = Math.floor((durationInSeconds % 3600) / 60);
+    const seconds = durationInSeconds % 60;
+
+    let formattedDuration = "";
+    if (hours > 0) {
+      formattedDuration += `${hours}h `;
+    }
+    if (minutes > 0) {
+      formattedDuration += `${minutes}min `;
+    }
+    if (seconds > 0 || (hours === 0 && minutes === 0)) {
+      formattedDuration += `${seconds}s`;
+    }
+    return formattedDuration.trim();
+  };
 
   return (
     <div>
@@ -67,6 +104,7 @@ const UserCDRSummery = () => {
               <TableRow style={{ textAlign: "center" }}>
                 {/* <th>Caller Number</th> */}
                 <th align="right">Destination Number</th>
+                <th align="right">Date</th>
                 <th align="right">Time</th>
                 <th align="right">Duration</th>
                 <th align="right">Direction</th>
@@ -78,8 +116,9 @@ const UserCDRSummery = () => {
                 <TableRow key={row?.callerIdNumber}>
                   {/* <TableCell>{row?.callerIdNumber}</TableCell> */}
                   <TableCell>{row?.callerDestination}</TableCell>
-                  <TableCell>{row?.startStamp}</TableCell>
-                  <TableCell> {row?.duration}</TableCell>
+                  <TableCell>{getDate(row?.startStamp)}</TableCell>
+                  <TableCell>{getTime(row?.startStamp)}</TableCell>
+                  <TableCell>{formatDuration(row?.duration)}</TableCell>
                   <TableCell> {row?.direction}</TableCell>
                   <TableCell> {row?.status}</TableCell>
                 </TableRow>
