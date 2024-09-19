@@ -1,5 +1,5 @@
 import axios from "axios";
-import { cclRootUrl, root2 } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
+import { cclRootUrl, root, root2 } from "../../constants/constants"; // Assuming cclRootUrl is the base API URL
 
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
@@ -120,7 +120,7 @@ const adminDashboardServices = {
     }
   },
 
-  // Fetch Missed Calls for Admin
+  // Fetch Missed Calls for User
   fetchMissedCallForUser: async (payload) => {
     try {
       const response = await axios.post(
@@ -130,6 +130,26 @@ const adminDashboardServices = {
       return response.data;
     } catch (error) {
       console.error("Error fetching Missed calls:", error);
+      throw error;
+    }
+  },
+
+  //Fetch partner Details for User
+  fetchPartnerDetailsUser: async (token, payload) => {
+    console.log(token);
+    try {
+      const response = await axios.post(
+        `${root}8001/AUTHENTICATION/getUserByEmail`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching  Parner Details:", error);
       throw error;
     }
   },

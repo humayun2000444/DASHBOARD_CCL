@@ -70,7 +70,6 @@ const DashboardCallStatus = () => {
   const [incomingCallData, setTIncomingCallData] = useState(null);
   const [missedCallData, setMissedCallData] = useState(null);
 
-  console.log("total call", totalCallData);
   const token = localStorage.getItem("authToken");
   const callerIdNumber = "09646999999";
   const domainName = "103.95.96.100";
@@ -124,9 +123,6 @@ const DashboardCallStatus = () => {
           startStamp: "2023-07-21T18:50:16Z",
           endStamp: "2026-09-01T18:50:16Z",
         });
-
-        console.log(totalCall);
-        console.log(outgoingCall);
         setTotalCallData(totalCall);
         setOutgoingCallData(outgoingCall);
         setTIncomingCallData(incomingCall);
