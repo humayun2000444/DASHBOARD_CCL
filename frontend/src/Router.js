@@ -143,153 +143,153 @@ const EmployeeList = lazy(() =>
 const EmployeeProfile = lazy(() =>
   import("./views/services/Configuration/Employees/EmployeeProfile.jsx")
 );
-const AddUniversityType = lazy(() =>
-  import("./views/services/University/AddUniversityType.jsx")
-);
-const AddUniversityCountry = lazy(() =>
-  import("./views/services/University/AddUniversityCountry.jsx")
-);
-const AddUniversityState = lazy(() =>
-  import("./views/services/University/AddUniversityState.jsx")
-);
-const AddUniversity = lazy(() =>
-  import("./views/services/University/AddUniversity.jsx")
-);
-const AddProviderUniversity = lazy(() =>
-  import("./views/services/University/ProviderUniversity/AddProviderUniversity")
-);
-const AddProviderUniversityCampus = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityCampus"
-  )
-);
-const AddProviderUniversityFinancial = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityFinancial"
-  )
-);
-const AddProviderUniversityFeatures = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityFeatures"
-  )
-);
-const AddProviderUniversityGallery = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityGallery"
-  )
-);
-const AddProviderUniversityApplicationDocument = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityApplicationDocument"
-  )
-);
-const AddProviderUniversityTemplateDocument = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityTemplateDocument"
-  )
-);
-const AddProviderUniversityCommission = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityCommission"
-  )
-);
-const AddProviderUniversityTestScore = lazy(() =>
-  import(
-    "./views/services/University/ProviderUniversity/AddProviderUniversityTestScore"
-  )
-);
+// const AddUniversityType = lazy(() =>
+//   import("./views/services/University/AddUniversityType.jsx")
+// );
+// const AddUniversityCountry = lazy(() =>
+//   import("./views/services/University/AddUniversityCountry.jsx")
+// );
+// const AddUniversityState = lazy(() =>
+//   import("./views/services/University/AddUniversityState.jsx")
+// );
+// const AddUniversity = lazy(() =>
+//   import("./views/services/University/AddUniversity.jsx")
+// );
+// const AddProviderUniversity = lazy(() =>
+//   import("./views/services/University/ProviderUniversity/AddProviderUniversity")
+// );
+// const AddProviderUniversityCampus = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityCampus"
+//   )
+// );
+// const AddProviderUniversityFinancial = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityFinancial"
+//   )
+// );
+// const AddProviderUniversityFeatures = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityFeatures"
+//   )
+// );
+// const AddProviderUniversityGallery = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityGallery"
+//   )
+// );
+// const AddProviderUniversityApplicationDocument = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityApplicationDocument"
+//   )
+// );
+// const AddProviderUniversityTemplateDocument = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityTemplateDocument"
+//   )
+// );
+// const AddProviderUniversityCommission = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityCommission"
+//   )
+// );
+// const AddProviderUniversityTestScore = lazy(() =>
+//   import(
+//     "./views/services/University/ProviderUniversity/AddProviderUniversityTestScore"
+//   )
+// );
 
 // university create form
-const UniversityForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityForm")
-);
+// const UniversityForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityForm")
+// );
 
-const UniversityCampusForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityCampusForm")
-);
+// const UniversityCampusForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityCampusForm")
+// );
 
-const UniversityFinancialForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityFinancialForm")
-);
+// const UniversityFinancialForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityFinancialForm")
+// );
 
-const UniversityFeaturesForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityFeaturesForm")
-);
+// const UniversityFeaturesForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityFeaturesForm")
+// );
 
-const UniversityTestScoreForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityTestScoreForm")
-);
+// const UniversityTestScoreForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityTestScoreForm")
+// );
 
-const UniversityApplicationDocumentForm = lazy(() =>
-  import(
-    "./views/services/University/UniCreateForm/UniversityApplicationDocumentForm"
-  )
-);
+// const UniversityApplicationDocumentForm = lazy(() =>
+//   import(
+//     "./views/services/University/UniCreateForm/UniversityApplicationDocumentForm"
+//   )
+// );
 
-const UniversityTemplateDocumentForm = lazy(() =>
-  import(
-    "./views/services/University/UniCreateForm/UniversityTemplateDocumentForm"
-  )
-);
+// const UniversityTemplateDocumentForm = lazy(() =>
+//   import(
+//     "./views/services/University/UniCreateForm/UniversityTemplateDocumentForm"
+//   )
+// );
 
-const UniversityCommissionForm = lazy(() =>
-  import("./views/services/University/UniCreateForm/UniversityCommissionForm")
-);
+// const UniversityCommissionForm = lazy(() =>
+//   import("./views/services/University/UniCreateForm/UniversityCommissionForm")
+// );
 
-const AddUniversityCampus = lazy(() =>
-  import("./views/services/University/AddUniversityCampus.jsx")
-);
+// const AddUniversityCampus = lazy(() =>
+//   import("./views/services/University/AddUniversityCampus.jsx")
+// );
 const EditDepartment = lazy(() =>
   import("./views/services/UniversitySubjects/EditDepartment")
 );
 const EditSubDepartment = lazy(() =>
   import("./views/services/UniversitySubjects/EditSubDepartment")
 );
-const AddUniversityFinancial = lazy(() =>
-  import("./views/services/University/AddUniversityFinancial.jsx")
-);
-const AddUniversityFeatures = lazy(() =>
-  import("./views/services/University/AddUniversityFeatures.jsx")
-);
-const UniversityList = lazy(() =>
-  import("./views/services/University/UniversityList.jsx")
-);
-const UniversityDetails = lazy(() =>
-  import("./views/services/University/UniversityDetails.jsx")
-);
-const CampusList = lazy(() =>
-  import("./views/services/University/CampusList.jsx")
-);
-const CampusDetails = lazy(() =>
-  import("./views/services/University/CampusDetails.jsx")
-);
-const AssignMultipleSubject = lazy(() =>
-  import("./views/services/University/AssignMultipleSubject")
-);
-const CampusSubjectList = lazy(() =>
-  import("./views/services/University/CampusSubjectList.jsx")
-);
-const AddUniversityGallery = lazy(() =>
-  import("./views/services/University/AddUniversityGallery.jsx")
-);
-const AddUniversityTemplateDocument = lazy(() =>
-  import("./views/services/University/AddUniversityTemplateDocument")
-);
-const AddUniversityApplicationDocument = lazy(() =>
-  import("./views/services/University/AddUniversityApplicationDocument")
-);
-const UniversityRecquiredDocument = lazy(() =>
-  import("./views/services/University/UniversityRecquiredDocument")
-);
+// const AddUniversityFinancial = lazy(() =>
+//   import("./views/services/University/AddUniversityFinancial.jsx")
+// );
+// const AddUniversityFeatures = lazy(() =>
+//   import("./views/services/University/AddUniversityFeatures.jsx")
+// );
+// const UniversityList = lazy(() =>
+//   import("./views/services/University/UniversityList.jsx")
+// );
+// const UniversityDetails = lazy(() =>
+//   import("./views/services/University/UniversityDetails.jsx")
+// );
+// const CampusList = lazy(() =>
+//   import("./views/services/University/CampusList.jsx")
+// );
+// const CampusDetails = lazy(() =>
+//   import("./views/services/University/CampusDetails.jsx")
+// );
+// const AssignMultipleSubject = lazy(() =>
+//   import("./views/services/University/AssignMultipleSubject")
+// );
+// const CampusSubjectList = lazy(() =>
+//   import("./views/services/University/CampusSubjectList.jsx")
+// );
+// const AddUniversityGallery = lazy(() =>
+//   import("./views/services/University/AddUniversityGallery.jsx")
+// );
+// const AddUniversityTemplateDocument = lazy(() =>
+//   import("./views/services/University/AddUniversityTemplateDocument")
+// );
+// const AddUniversityApplicationDocument = lazy(() =>
+//   import("./views/services/University/AddUniversityApplicationDocument")
+// );
+// const UniversityRecquiredDocument = lazy(() =>
+//   import("./views/services/University/UniversityRecquiredDocument")
+// );
 
 // intake
-const Intake = lazy(() => import("./views/services/University/Intake.js"));
-const AddNewIntakes = lazy(() =>
-  import("./views/services/University/AddNewIntakes.jsx")
-);
-const UpdateIntake = lazy(() =>
-  import("./views/services/University/UpdateIntake.jsx")
-);
+// const Intake = lazy(() => import("./views/services/University/Intake.js"));
+// const AddNewIntakes = lazy(() =>
+//   import("./views/services/University/AddNewIntakes.jsx")
+// );
+// const UpdateIntake = lazy(() =>
+//   import("./views/services/University/UpdateIntake.jsx")
+// );
 
 // consultant
 const ConsultantList = lazy(() =>
@@ -415,84 +415,84 @@ const SubjectProfile = lazy(() =>
 const Settings = lazy(() => import("./views/services/Settings/Settings"));
 
 // university subject
-const UniversitySubjectList = lazy(() =>
-  import("./views/services/University/Subjects/UniversitySubjectList")
-);
-const AddUniversitySubject = lazy(() =>
-  import("./views/services/University/Subjects/AddUniversitySubject")
-);
-const AddUniversitySubjectFee = lazy(() =>
-  import("./views/services/University/Subjects/AddUniversitySubjectFee")
-);
-const AddUniversitySubjectDeliveryPattern = lazy(() =>
-  import(
-    "./views/services/University/Subjects/AddUniversitySubjectDeliveryPattern"
-  )
-);
-const AddUniversitySubjectRequirements = lazy(() =>
-  import(
-    "./views/services/University/Subjects/AddUniversitySubjectRequirements"
-  )
-);
-const AddUniversitySubjectDocumentRequirement = lazy(() =>
-  import(
-    "./views/services/University/Subjects/AddUniversitySubjectDocumentRequirement"
-  )
-);
+// const UniversitySubjectList = lazy(() =>
+//   import("./views/services/University/Subjects/UniversitySubjectList")
+// );
+// const AddUniversitySubject = lazy(() =>
+//   import("./views/services/University/Subjects/AddUniversitySubject")
+// );
+// const AddUniversitySubjectFee = lazy(() =>
+//   import("./views/services/University/Subjects/AddUniversitySubjectFee")
+// );
+// const AddUniversitySubjectDeliveryPattern = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/AddUniversitySubjectDeliveryPattern"
+//   )
+// );
+// const AddUniversitySubjectRequirements = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/AddUniversitySubjectRequirements"
+//   )
+// );
+// const AddUniversitySubjectDocumentRequirement = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/AddUniversitySubjectDocumentRequirement"
+//   )
+// );
 
 // copy and save university subject
-const CopyUniversitySubject = lazy(() =>
-  import(
-    "./views/services/University/Subjects/CopySubject/CopyUniversitySubject"
-  )
-);
-const CopyUniversitySubjectFee = lazy(() =>
-  import(
-    "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectFee"
-  )
-);
-const CopyUniversitySubjectDeliveryPattern = lazy(() =>
-  import(
-    "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectDeliveryPattern"
-  )
-);
-const CopyUniversitySubjectRequirements = lazy(() =>
-  import(
-    "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectRequirements"
-  )
-);
-const CopyUniversitySubjectDocumentRequirement = lazy(() =>
-  import(
-    "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectDocumentRequirement"
-  )
-);
+// const CopyUniversitySubject = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/CopySubject/CopyUniversitySubject"
+//   )
+// );
+// const CopyUniversitySubjectFee = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectFee"
+//   )
+// );
+// const CopyUniversitySubjectDeliveryPattern = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectDeliveryPattern"
+//   )
+// );
+// const CopyUniversitySubjectRequirements = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectRequirements"
+//   )
+// );
+// const CopyUniversitySubjectDocumentRequirement = lazy(() =>
+//   import(
+//     "./views/services/University/Subjects/CopySubject/CopyUniversitySubjectDocumentRequirement"
+//   )
+// );
 
 // university profile subject
-const AddUniProfileSubject = lazy(() =>
-  import(
-    "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubject"
-  )
-);
-const AddUniProfileSubjectFee = lazy(() =>
-  import(
-    "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectFee"
-  )
-);
-const AddUniProfileSubjectDeliveryPattern = lazy(() =>
-  import(
-    "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectDeliveryPattern"
-  )
-);
-const AddUniProfileSubjectRequirements = lazy(() =>
-  import(
-    "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectRequirements.js"
-  )
-);
-const AddUniProfileSubjectDocumentRequirement = lazy(() =>
-  import(
-    "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectDocumentRequirement"
-  )
-);
+// const AddUniProfileSubject = lazy(() =>
+//   import(
+//     "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubject"
+//   )
+// );
+// const AddUniProfileSubjectFee = lazy(() =>
+//   import(
+//     "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectFee"
+//   )
+// );
+// const AddUniProfileSubjectDeliveryPattern = lazy(() =>
+//   import(
+//     "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectDeliveryPattern"
+//   )
+// );
+// const AddUniProfileSubjectRequirements = lazy(() =>
+//   import(
+//     "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectRequirements.js"
+//   )
+// );
+// const AddUniProfileSubjectDocumentRequirement = lazy(() =>
+//   import(
+//     "./views/services/University/UniversityProfileSubjectAdd/AddUniProfileSubjectDocumentRequirement"
+//   )
+// );
 
 // country List
 const AddCountry = lazy(() => import("./views/services/Country/AddCountry"));
@@ -777,9 +777,9 @@ const ExamTestTypeAttribute = lazy(() =>
   import("./views/services/Configuration/ExamTestType/ExamTestTypeAttribute")
 );
 
-const UpdateUniversityInformation = lazy(() =>
-  import("./views/services/University/UpdateUniversityInformation")
-);
+// const UpdateUniversityInformation = lazy(() =>
+//   import("./views/services/University/UpdateUniversityInformation")
+// );
 
 const StudentType = lazy(() =>
   import("./views/services/Students/StudentType.js")
@@ -950,12 +950,12 @@ const StudentDeclarationForm = lazy(() =>
   import("./views/services/Students/CreateForms/StudentDeclarationForm")
 );
 
-const UniversityCommission = lazy(() =>
-  import("./views/services/University/UniversityCommission")
-);
-const UniversityTestScore = lazy(() =>
-  import("./views/services/University/UniversityTestScore")
-);
+// const UniversityCommission = lazy(() =>
+//   import("./views/services/University/UniversityCommission")
+// );
+// const UniversityTestScore = lazy(() =>
+//   import("./views/services/University/UniversityTestScore")
+// );
 
 // All Notification Page
 const Notifications = lazy(() =>
@@ -1291,15 +1291,15 @@ class AppRouter extends React.Component {
                     path="/staffProfile/:id"
                     component={EmployeeProfile}
                   />
-                  <AppRoute
+                  {/* <AppRoute
                     path="/universityTypes"
                     component={AddUniversityType}
-                  />
-                  <AppRoute
+                  /> */}
+                  {/* <AppRoute
                     path="/universityCountry"
                     component={AddUniversityCountry}
-                  />
-                  <AppRoute
+                  /> */}
+                  {/* <AppRoute
                     path="/universityState"
                     component={AddUniversityState}
                   />
@@ -1330,14 +1330,14 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/addProviderUniversityCommission/:providerProfileId/:univerId"
                     component={AddProviderUniversityCommission}
-                  />
+                  /> */}
                   {/* end code emon */}
                   {/* intake */}
-                  <AppRoute path="/intake" component={Intake} />
+                  {/* <AppRoute path="/intake" component={Intake} />
                   <AppRoute path="/addNewIntakes" component={AddNewIntakes} />
-                  <AppRoute path="/updateIntake/:id" component={UpdateIntake} />
+                  <AppRoute path="/updateIntake/:id" component={UpdateIntake} /> */}
                   {/* university create form */}
-                  <AppRoute
+                  {/* <AppRoute
                     path="/createUniversity"
                     component={UniversityForm}
                   />
@@ -1368,7 +1368,7 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/createUniversityCommission/:univerId"
                     component={UniversityCommissionForm}
-                  />
+                  /> */}
                   {/* Country */}
                   <AppRoute path="/country" component={AddCountry} />
                   {/* State */}
@@ -1446,7 +1446,7 @@ class AppRouter extends React.Component {
                     path="/associateAddSuccess"
                     component={AssociateAddSuccess}
                   />
-                  <AppRoute
+                  {/* <AppRoute
                     path="/addUniversityCampus/:univerId"
                     component={AddUniversityCampus}
                   />
@@ -1465,8 +1465,8 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/addUniversityFeatures/:univerId"
                     component={AddUniversityFeatures}
-                  />
-                  <AppRoute
+                  /> */}
+                  {/* <AppRoute
                     path="/addProviderUniversityFeatures/:providerProfileId/:univerId"
                     component={AddProviderUniversityFeatures}
                   />
@@ -1507,9 +1507,9 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/assignMultipleSubject/:id"
                     component={AssignMultipleSubject}
-                  />
+                  /> */}
                   {/* University Subject starts here */}
-                  <AppRoute
+                  {/* <AppRoute
                     path="/universitySubjectList/:id"
                     component={UniversitySubjectList}
                   />
@@ -1532,9 +1532,9 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/addUniversitySubjectDocumentRequirement/:id/:subjId"
                     component={AddUniversitySubjectDocumentRequirement}
-                  />
+                  /> */}
                   {/* copy and add university subject */}
-                  <AppRoute
+                  {/* <AppRoute
                     path="/copyAndAddUniversitySubject/:id/:subjId/:newSubId?"
                     component={CopyUniversitySubject}
                   />
@@ -1553,10 +1553,10 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/copyAndAddUniversitySubjectDocumentRequirement/:id/:subjId/:newSubId"
                     component={CopyUniversitySubjectDocumentRequirement}
-                  />
+                  /> */}
                   {/* University Subject ends here */}
                   {/* university profile subject add starts here */}
-                  <AppRoute
+                  {/* <AppRoute
                     path="/addUniProfileSubject/:id/:subjId?"
                     component={AddUniProfileSubject}
                   />
@@ -1575,7 +1575,7 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/addUniProfileSubjectDocumentRequirement/:id/:subjId"
                     component={AddUniProfileSubjectDocumentRequirement}
-                  />
+                  /> */}
                   {/* university profile subject add ends here */}
                   <AppRoute path="/documentlist" component={DocumentList} />
                   <AppRoute
@@ -1845,10 +1845,10 @@ class AppRouter extends React.Component {
                   {/* Degree Paths */}
                   <AppRoute path="/degreeList" component={DegreeList} />
                   <AppRoute path="/examTestType" component={ExamTestType} />
-                  <AppRoute
+                  {/* <AppRoute
                     path="/updateUniversityInformation/:id"
                     component={UpdateUniversityInformation}
-                  />
+                  /> */}
                   <AppRoute path="/studentTypeList" component={StudentType} />
                   <AppRoute path="/countryList" component={CountryList} />
                   {/* Comission paths */}
@@ -2000,7 +2000,7 @@ class AppRouter extends React.Component {
                     path="/studentDeclarations/:idVal"
                     component={StudentDeclarationForm}
                   />
-                  <AppRoute
+                  {/* <AppRoute
                     path="/addUniversityCommission/:univerId"
                     component={UniversityCommission}
                   />
@@ -2011,7 +2011,7 @@ class AppRouter extends React.Component {
                   <AppRoute
                     path="/addProviderUniversityTestScore/:providerProfileId/:univerId"
                     component={AddProviderUniversityTestScore}
-                  />
+                  /> */}
                   {/* login history path */}
                   <AppRoute path="/loginHistory" component={LoginHistory} />
                   <AppRoute

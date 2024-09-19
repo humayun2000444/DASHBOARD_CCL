@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { CardBody } from "reactstrap";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Form, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
+import { CardBody } from "reactstrap";
 import permissionServices from "../../../apiServices/PermissionServices/PermissionServices";
 import { WholeSaleClientModal } from "./WholeSaleClientModal";
 
