@@ -1085,7 +1085,10 @@ const PaymentReport = lazy(() =>
 const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
-
+const DidPool = lazy(() => import("./views/services/DIDPool/DidPool.jsx"));
+const RetailPartner = lazy(() =>
+  import("./views/services/RetailPartner/RetailPartner.jsx")
+);
 const UserCallHistory = lazy(() =>
   import("./views/services/UserCallHistory/UserCallHistory.jsx")
 );
@@ -1207,6 +1210,9 @@ class AppRouter extends React.Component {
                     path="/userCallHistory"
                     component={UserCallHistory}
                   />
+                  <AppRoute path="/retailPartner" component={RetailPartner} />
+                  <AppRoute path="/didPool" component={DidPool} />
+
                   <AppRoute
                     path="/userCDRSummery/:didNumber"
                     component={UserCDRSummery}
