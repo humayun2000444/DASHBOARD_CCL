@@ -28,7 +28,7 @@ const CDR = () => {
   const filterLabelStyle = {
     width: "150px",
     height: "43px",
-    backgroundColor: "#174678",
+    backgroundColor: "#1D94AB",
     color: "white",
     padding: "7px 8px",
     textAlign: "end",

@@ -295,7 +295,7 @@ const ProviderRegisterJWT = () => {
 
           <div
             className="col-md-6 float-right"
-            style={{ color: "#164677", fontSize: "13px", fontWeight: "400" }}
+            style={{ color: "#1D94AB", fontSize: "13px", fontWeight: "400" }}
           >
             UAPP © services Higher Education Group.
           </div>

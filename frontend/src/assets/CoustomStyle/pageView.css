@@ -117,7 +117,7 @@
   width: 200px;
   color: #fff;
   font-weight: 600;
-  background-color: #164677;
+  background-color: #1d94ab;
   border-radius: 50%;
   display: inline-block;
   font-size: 20px;
@@ -195,7 +195,7 @@
 
 .progress-month .nav .nav-item .nav-link:hover,
 .progress-month .nav .nav-item .nav-link.active {
-  color: #164677;
+  color: #1d94ab;
 }
 
 .main-chart {
@@ -231,7 +231,7 @@
 }
 
 .Unconditionals-text span {
-  color: #164677;
+  color: #1d94ab;
   font-size: 13px;
 }
 
@@ -303,7 +303,7 @@
 .uapp-msg-head .msg-sender-name {
   font-weight: 800;
   font-size: 15px;
-  color: #164677;
+  color: #1d94ab;
 }
 .uapp-msg-head .msg-send-time {
   font-size: 12px;
@@ -396,15 +396,15 @@
 
 .uapp-employee-search .dropdown .dropdown-toggle.btn-secondary {
   background: #fff !important;
-  color: #164677;
-  border: 1px solid #164677 !important;
+  color: #1d94ab;
+  border: 1px solid #1d94ab !important;
   border-radius: 83px;
 }
 
 .uapp-employee-search .dropdown .dropdown-toggle.btn-secondary:hover {
-  background: #164677 !important;
+  background: #1d94ab !important;
   color: #fff;
-  border: 1px solid #164677 !important;
+  border: 1px solid #1d94ab !important;
 }
 
 .uapp-employee-search .dropdown .dropdown-menu::before {
@@ -420,17 +420,17 @@
 
 .uapp-employee-search .dropdown .dropdown-toggle.btn-secondary:focus,
 .uapp-employee-search .dropdown .dropdown-toggle.btn-secondary:active {
-  background: #164677 !important;
+  background: #1d94ab !important;
   color: #fff !important;
-  border: 1px solid #164677 !important;
+  border: 1px solid #1d94ab !important;
 }
 
 .thead-uapp-bg {
   /*  background-color: #d6d6d69e;
   border-color: #d6d6d69e;
   color: #262c49;*/
-  background-color: #164677;
-  border-color: #164677;
+  background-color: #1d94ab;
+  border-color: #1d94ab;
   color: #fff;
 }
 
@@ -497,8 +497,8 @@
 }
 
 .btn-uapp-add {
-  background: #164677 !important;
-  border: 1px solid #164677 !important;
+  background: #1d94ab !important;
+  border: 1px solid #1d94ab !important;
 }
 
 .btn-uapp-danger {
@@ -508,7 +508,7 @@
 }
 
 .uapp-card-bg {
-  background: #164677;
+  background: #1d94ab;
 }
 
 .hyperlink-hover span {
@@ -693,7 +693,7 @@
 .edit1-adm i {
   line-height: 30px;
   font-size: 15px;
-  color: #164677;
+  color: #1d94ab;
 }
 /* profile pic version 2 ends here */
 
@@ -902,10 +902,10 @@
     color:#a5afb1;
   } */
 .notice-titel h6 {
-  color: #164677;
+  color: #1d94ab;
 }
 .card-widget {
-  border: 1px solid #164677;
+  border: 1px solid #1d94ab;
   padding: 5px;
 }
 .notice-description {
@@ -1012,7 +1012,7 @@
   width: 100% !important;
 }
 flexbox-container2 h4 {
-  color: #164677;
+  color: #1d94ab;
 }
 
 @media (max-width: 767px) {
@@ -1096,7 +1096,7 @@ flexbox-container2 h4 {
 }
 
 .notification-footer-style:hover {
-  background-color: #164677 !important;
+  background-color: #1d94ab !important;
   color: white;
   font-weight: 700;
   cursor: pointer;
@@ -1191,13 +1191,13 @@ flexbox-container2 h4 {
 }
 
 .notification-div .title {
-  color: #164677;
+  color: #1d94ab;
   font-size: 20px;
   display: block;
 }
 
 .std-uni-stl {
-  color: #164677;
+  color: #1d94ab;
 }
 /* .std-sub-stl{
   color: ;

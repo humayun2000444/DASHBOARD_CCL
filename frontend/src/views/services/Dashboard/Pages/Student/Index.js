@@ -267,13 +267,13 @@ const Student = () => {
                   </div>
 
                   <div className="necessary-link-student-dashboard">
-                    <Link style={{ textDecorationColor: "#164677" }}>
+                    <Link style={{ textDecorationColor: "#1D94AB" }}>
                       <span className="consultant-role-student-dashboard2">
                         beleagroxana@yahoo.com
                       </span>
                     </Link>
                     <br />
-                    <Link style={{ textDecorationColor: "#164677" }}>
+                    <Link style={{ textDecorationColor: "#1D94AB" }}>
                       <span className="consultant-role-student-dashboard2">
                         07340 543526
                       </span>
@@ -300,7 +300,7 @@ const Student = () => {
               <div>
                 <li style={{ listStyleType: "none" }}>
                   <img src={arrowright} className="img-fluid" />
-                  <Link style={{ textDecorationColor: "#164677" }}>
+                  <Link style={{ textDecorationColor: "#1D94AB" }}>
                     {" "}
                     <span className="video-info-style-student-dashboard">
                       FAQ
@@ -310,7 +310,7 @@ const Student = () => {
 
                 <li style={{ listStyleType: "none" }}>
                   <img src={arrowright} className="img-fluid" />
-                  <Link style={{ textDecorationColor: "#164677" }}>
+                  <Link style={{ textDecorationColor: "#1D94AB" }}>
                     {" "}
                     <span className="video-info-style-student-dashboard">
                       BLOG
@@ -320,7 +320,7 @@ const Student = () => {
 
                 <li style={{ listStyleType: "none" }}>
                   <img src={arrowright} className="img-fluid" />
-                  <Link style={{ textDecorationColor: "#164677" }}>
+                  <Link style={{ textDecorationColor: "#1D94AB" }}>
                     {" "}
                     <span className="video-info-style-student-dashboard">
                       CONTACT

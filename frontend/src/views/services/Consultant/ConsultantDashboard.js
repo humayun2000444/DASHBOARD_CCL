@@ -489,7 +489,7 @@ const ConsultantDashboard = () => {
                     >
                       <img src={poundicon} className="img-fluid mr-4" />
 
-                      <span style={{ color: "#164677" }}>
+                      <span style={{ color: "#1D94AB" }}>
                         {showBal ? balance : "Balance"}
                       </span>
                     </button>
@@ -599,7 +599,7 @@ const ConsultantDashboard = () => {
                       </Table>
                     </div>
                   ) : (
-                    <p style={{ color: "#164677", textAlign: "center" }}>
+                    <p style={{ color: "#1D94AB", textAlign: "center" }}>
                       No Application Yet
                     </p>
                   )}
@@ -622,7 +622,7 @@ const ConsultantDashboard = () => {
                         <>
                           <div className="text-center">
                             <span
-                              style={{ fontWeight: "500", color: "#164677" }}
+                              style={{ fontWeight: "500", color: "#1D94AB" }}
                             >
                               Current Applications: {target?.currentApplication}
                             </span>
@@ -643,15 +643,15 @@ const ConsultantDashboard = () => {
                                     target?.targetApplication
                               }
                               hideText={true}
-                              colors={["#164677", "#164677"]}
-                              textColor={"#164677"}
+                              colors={["#1D94AB", "#1D94AB"]}
+                              textColor={"#1D94AB"}
                               arcWidth={0.3}
                               animate={false}
                             />
                           </div>
                         </>
                       ) : (
-                        <p style={{ color: "#164677", textAlign: "center" }}>
+                        <p style={{ color: "#1D94AB", textAlign: "center" }}>
                           No Application Yet
                         </p>
                       )}
@@ -660,14 +660,14 @@ const ConsultantDashboard = () => {
 
                   {target == null ? (
                     <div className="text-center">
-                      <span style={{ color: "#164677", textAlign: "center" }}>
+                      <span style={{ color: "#1D94AB", textAlign: "center" }}>
                         No Commission Group Assigned
                       </span>
                     </div>
                   ) : (
                     <div
                       className="text-center py-4 custom-border-style"
-                      style={{ backgroundColor: "#164677", color: "#fff" }}
+                      style={{ backgroundColor: "#1D94AB", color: "#fff" }}
                     >
                       <div>
                         <span className="target-app-style">

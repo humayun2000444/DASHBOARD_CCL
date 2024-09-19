@@ -164,12 +164,12 @@ export default function ContactModal({
             <Button
               onClick={() => handleSubmit(type)}
               sx={{
-                backgroundColor: "#164677",
+                backgroundColor: "#1D94AB",
                 padding: "6px 12px 4px 12px",
                 color: "#fff",
                 fontWeight: "500",
                 "&:hover": {
-                  backgroundColor: "#164677",
+                  backgroundColor: "#1D94AB",
                   color: "#fff",
                 },
               }}

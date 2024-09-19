@@ -47,7 +47,7 @@ const AssignDid = () => {
                 style={{
                   marginRight: "10px",
                   padding: "7px 12px",
-                  backgroundColor: "#164677", // Blue background
+                  backgroundColor: "#1D94AB", // Blue background
                   color: "#fff",
                 }}
                 onClick={toggleModal}

@@ -538,7 +538,7 @@ const KYC = () => {
       <Button
         variant="contained"
         type="submit"
-        sx={{ width: "100px", backgroundColor: "#164677" }}
+        sx={{ width: "100px", backgroundColor: "#1D94AB" }}
       >
         Submit
       </Button>

@@ -478,7 +478,7 @@ class NavbarUser extends React.PureComponent {
                   
                 
                  <Media body>
-                    <Media style={{color: '#164677'}} heading className=" media-heading" tag="h6" onClick={()=>this.redirect(data)}>
+                    <Media style={{color: '#1D94AB'}} heading className=" media-heading" tag="h6" onClick={()=>this.redirect(data)}>
                       {data?.title}
                     </Media>
                     <p className="notification-text">

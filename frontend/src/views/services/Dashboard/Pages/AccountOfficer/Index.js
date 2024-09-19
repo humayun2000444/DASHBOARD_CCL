@@ -527,7 +527,7 @@ const AccountOfficer = () => {
               <div>
                 <div>
                   <span>
-                    <Icon.PhoneCall color="#164677" />
+                    <Icon.PhoneCall color="#1D94AB" />
                   </span>
                   <span
                     style={{ marginLeft: "10px" }}
@@ -538,7 +538,7 @@ const AccountOfficer = () => {
                 </div>
                 <div>
                   <span>
-                    <Icon.Search color="#164677" />
+                    <Icon.Search color="#1D94AB" />
                   </span>
                   <span
                     style={{ marginLeft: "10px" }}
@@ -549,7 +549,7 @@ const AccountOfficer = () => {
                 </div>
                 <div>
                   <span>
-                    <Icon.Map color="#164677" />
+                    <Icon.Map color="#1D94AB" />
                   </span>
                   <span
                     style={{ marginLeft: "10px" }}
@@ -676,7 +676,7 @@ const AccountOfficer = () => {
 
           <div style={{ marginTop: "100px", marginLeft: "100px" }}>
             <div>
-              <span style={{ color: "#164677" }} className="inv-span-styles">
+              <span style={{ color: "#1D94AB" }} className="inv-span-styles">
                 Bank Details
               </span>
             </div>

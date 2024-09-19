@@ -89,7 +89,7 @@ const StudentDashboard = () => {
       {applicationinfo.map((appInfo, i) => (
         <Row>
           <Col md="12">
-            <Card style={{ borderLeft: "6px solid #164677" }} className="p-2">
+            <Card style={{ borderLeft: "6px solid #1D94AB" }} className="p-2">
               <div key={i} className="row">
                 <div className="col-md-2 my-auto">
                   <div className="text-center">
@@ -177,7 +177,7 @@ const StudentDashboard = () => {
                     permission={6}
                   /> */}
                   <span
-                    style={{ color: "#164677", cursor: "pointer" }}
+                    style={{ color: "#1D94AB", cursor: "pointer" }}
                     className="font-weight-bold"
                     onClick={() =>
                       handleRedirectToAppDetails(

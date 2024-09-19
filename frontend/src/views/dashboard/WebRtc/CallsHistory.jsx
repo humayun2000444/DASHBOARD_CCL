@@ -5,7 +5,7 @@ const CallsHistory = ({ callHistory, setCallHistory, handleOutgoingCalls }) => {
   const redColor = {
     color: "#F23557",
   };
-  const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
+  const colors = ["#1D94AB", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
 
   const { contacts } = useContact(); // Get contacts from context
 

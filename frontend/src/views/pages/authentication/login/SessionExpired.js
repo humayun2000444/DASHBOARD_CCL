@@ -19,12 +19,12 @@ const SessionExpired = () => {
       <div className="w-75 mx-auto">
         <div className="d-flex justify-content-between position-session-page">
           <div>
-            <h1 style={{ color: "#164677", fontSize: "50px" }}>
+            <h1 style={{ color: "#1D94AB", fontSize: "50px" }}>
               Session Expired
             </h1>
             <p
               style={{
-                color: "#164677",
+                color: "#1D94AB",
                 fontSize: "18px",
                 fontWeight: "500",
                 lineHeight: "20px",

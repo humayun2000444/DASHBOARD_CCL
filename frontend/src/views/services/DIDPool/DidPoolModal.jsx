@@ -116,7 +116,7 @@ const DidPoolModal = ({ show, handleClose, poolData, onSave }) => {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: "#164677",
+                  backgroundColor: "#1D94AB",
                   "&:hover": {
                     backgroundColor: "#123a5a",
                   },

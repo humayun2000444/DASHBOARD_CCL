@@ -1,51 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory } from "react-router-dom";
+import Select from "react-select";
+import ReactToPrint from "react-to-print";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Table,
-  TabContent,
-  TabPane,
-  Nav,
-  NavLink,
-  NavItem,
-  UncontrolledTooltip,
-  ButtonGroup,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
 } from "reactstrap";
-import Select from "react-select";
-import { Link, useHistory } from "react-router-dom";
-import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
 import * as XLSX from "xlsx/xlsx.mjs";
-import ReactToPrint from "react-to-print";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import get from "../../../helpers/get";
-import Pagination from "../Pagination/Pagination";
-import { userTypes } from "../../../constants/userTypeConstant";
-import post from "../../../helpers/post";
-import { AddPhotoAlternateSharp } from "@material-ui/icons";
-import { useToasts } from "react-toast-notifications";
 import Assets from "../../../assets/img/Asset 12Icon.svg";
-import Loader from "../Search/Loader/Loader";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+import { userTypes } from "../../../constants/userTypeConstant";
+import get from "../../../helpers/get";
 import ButtonLoader from "../Components/ButtonLoader";
-import * as Icon from "react-feather";
+import Pagination from "../Pagination/Pagination";
+import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
+import Loader from "../Search/Loader/Loader";
 
 const List = () => {
   const current_user = JSON.parse(localStorage.getItem("current_user"));
@@ -952,7 +937,7 @@ const List = () => {
                     <div>
                       <span
                         className="inv-span-styles"
-                        style={{ color: "#164677", fontWeight: "500" }}
+                        style={{ color: "#1D94AB", fontWeight: "500" }}
                       >
                         TC ID 332
                       </span>
@@ -961,7 +946,7 @@ const List = () => {
                     <br />
                     <div>
                       <span>
-                        <Icon.PhoneCall color="#164677" />
+                        <Icon.PhoneCall color="#1D94AB" />
                       </span>
                       <span
                         style={{ marginLeft: "10px" }}
@@ -972,7 +957,7 @@ const List = () => {
                     </div>
                     <div>
                       <span>
-                        <Icon.Search color="#164677" />
+                        <Icon.Search color="#1D94AB" />
                       </span>
                       <span
                         style={{ marginLeft: "10px" }}
@@ -983,7 +968,7 @@ const List = () => {
                     </div>
                     <div>
                       <span>
-                        <Icon.Map color="#164677" />
+                        <Icon.Map color="#1D94AB" />
                       </span>
                       <span
                         style={{ marginLeft: "10px" }}
@@ -1004,7 +989,7 @@ const List = () => {
                       <div>
                         <span
                           className="inv-span-styles"
-                          style={{ color: "#164677", fontWeight: "500" }}
+                          style={{ color: "#1D94AB", fontWeight: "500" }}
                         >
                           Date : 24/11/2022
                         </span>
@@ -1121,7 +1106,7 @@ const List = () => {
               <div style={{ marginTop: "100px", marginLeft: "100px" }}>
                 <div>
                   <span
-                    style={{ color: "#164677" }}
+                    style={{ color: "#1D94AB" }}
                     className="inv-span-styles"
                   >
                     Bank Details

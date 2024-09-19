@@ -33,14 +33,14 @@ const PartnerPrefix = () => {
           type="submit"
           sx={{
             width: "130px",
-            backgroundColor: "#164677",
+            backgroundColor: "#1D94AB",
             marginTop: "10px",
             height: "40px",
           }}
         >
           Submit
         </Button>
-        <FileUploader dataType="csv"/>
+        <FileUploader dataType="csv" />
       </div>
     </div>
   );
