@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import {root} from "../../../constants/constants";
 
 const ContactContext = createContext();
 
@@ -13,7 +14,7 @@ export const ContactProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch('https://iptsp.cosmocom.net:8001/FREESWITCH/contact/get-contacts', {
+      const response = await fetch(root + '/FREESWITCH/contact/get-contacts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
