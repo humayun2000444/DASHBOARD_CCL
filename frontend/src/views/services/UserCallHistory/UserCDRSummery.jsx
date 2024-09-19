@@ -112,7 +112,7 @@ const UserCDRSummery = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {callHistory.map((row, i) => (
+              {callHistory?.map((row, i) => (
                 <TableRow key={row?.callerIdNumber}>
                   {/* <TableCell>{row?.callerIdNumber}</TableCell> */}
                   <TableCell>{row?.callerDestination}</TableCell>
