@@ -7,6 +7,11 @@ import TableRow from "@mui/material/TableRow";
 import React, { useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
 import CDRServices from "../../../apiServices/CDRServices/CDRServices";
+import CDRDateSelect from "./CDRDateSelect";
+import CDRInputDouble from "./CDRInputDouble";
+import CDRInputSingle from "./CDRInputSingle";
+import CDRSelectDouble from "./CDRSelectDouble";
+import CDRSelectSingle from "./CDRSelectSingle";
 
 const CDR = () => {
   const pageTitleStyle = {
@@ -261,325 +266,65 @@ const CDR = () => {
 
           {/* Filter Section */}
 
-          <div className="row">
-            <div className="col-lg-3 col-md-6 col-sm-12">
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Direction</p>
-                </div>
-                <select
-                  class="form-select mt-2 mr-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected></option>
-                  {directionArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "57px",
-                  }}
-                >
-                  <option selected></option>
-                  <option value="a-leg">a-leg</option>
-                  <option value="b-leg">b-leg</option>
-                </select>
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div className="mr-2" style={filterLabelStyle}>
-                  <p>Start Range</p>
-                </div>
-
-                <input
-                  className="mt-2 mr-2"
-                  type="date"
-                  style={{
-                    width: "103px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                />
-
-                <input
-                  className="mt-2"
-                  type="date"
-                  style={{
-                    width: "103px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>TTA (Sec)</p>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Minimun"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mr-2 mt-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Maximum"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mt-2"
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div className="mr-2" style={filterLabelStyle}>
-                  <p>Call Center Queue</p>
-                </div>
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "26px",
-                  }}
-                >
-                  <option selected></option>
-                </select>
-              </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingBlock: "1rem 2rem",
+            }}
+          >
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <CDRSelectDouble
+                text={"direction"}
+                selectArr1={directionArray}
+                selectArr2={["a-leg", "b-leg"]}
+              />
+              <CDRSelectDouble
+                text={"order"}
+                selectArr1={orderStartArray}
+                selectArr2={["Ascending", "Descending"]}
+              />
+              <CDRDateSelect text={"start range"} />
             </div>
 
-            <div className="col-lg-3 col-md-6 col-sm-12">
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Status</p>
-                </div>
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected></option>
-                  {statusArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div className="mr-2" style={filterLabelStyle}>
-                  <p>Duration (Sec)</p>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Minimun"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mr-2 mt-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Maximum"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mt-2"
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Hangup Cause</p>
-                </div>
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected></option>
-                  {hangupCauseArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <CDRSelectSingle text={"status"} selectArr1={statusArray} />
+              <CDRSelectSingle
+                text={"hangup cause"}
+                selectArr1={hangupCauseArray}
+              />
+              <CDRSelectSingle
+                text={"Call center queue"}
+                selectArr1={["Option 1", "Option 2"]}
+              />
             </div>
 
-            <div className="col-lg-3 col-md-6 col-sm-12">
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Extension</p>
-                </div>
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected></option>
-                  {extensionArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div className="mr-2" style={filterLabelStyle}>
-                  <p>Caller Destination</p>
-                </div>
-                <input
-                  type="text"
-                  style={{
-                    width: "164px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mr-2 mt-2"
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Recording</p>
-                </div>
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "100px",
-                    height: "28px",
-                    width: "57px",
-                  }}
-                >
-                  <option selected></option>
-                  {recordingArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <CDRSelectSingle text={"Extension"} selectArr1={extensionArray} />
+              <CDRSelectSingle text={"recording"} selectArr1={recordingArray} />
+              <CDRInputSingle text={"Destination (Sec)"} />
             </div>
 
-            <div className="col-lg-3 col-md-6 col-sm-12">
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Caller ID</p>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mr-2 mt-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Number"
-                  style={{
-                    width: "75px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mt-2"
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div className="mr-2" style={filterLabelStyle}>
-                  <p>Destination (Sec)</p>
-                </div>
-                <input
-                  type="text"
-                  style={{
-                    width: "164px",
-                    height: "28px",
-                    padding: "4px 6px",
-                    borderRadius: "100px",
-                  }}
-                  className="mt-2"
-                />
-              </div>
-
-              <div className="mb-1 d-flex">
-                <div style={filterLabelStyle} className="mr-2">
-                  <p>Order</p>
-                </div>
-                <select
-                  class="form-select mt-2 mr-2"
-                  style={{
-                    borderRadius: "134px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected>Start</option>
-                  {orderStartArray?.map((singleElement, index) => (
-                    <option value={singleElement} key={index}>
-                      {singleElement}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  class="form-select mt-2"
-                  style={{
-                    borderRadius: "97px",
-                    height: "28px",
-                    width: "86px",
-                  }}
-                >
-                  <option selected>Descending</option>
-
-                  <option>Ascending</option>
-                </select>
-              </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <CDRInputDouble
+                text={"Caller Id"}
+                placeholder1={"Name"}
+                placeholder2={"Number"}
+              />
+              <CDRInputDouble
+                text={"Duration (Sec)"}
+                placeholder1={"Minimum"}
+                placeholder2={"Maximum"}
+              />
+              <CDRInputSingle text={"Caller Destination"} />
             </div>
           </div>
 
