@@ -1,17 +1,11 @@
-import CircularProgress from "@mui/material/CircularProgress";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, CardBody } from "reactstrap";
-import CDRServices from "../../../apiServices/CDRServices/CDRServices";
 import CDRDateSelect from "./CDRDateSelect";
 import CDRInputDouble from "./CDRInputDouble";
 import CDRInputSingle from "./CDRInputSingle";
 import CDRSelectDouble from "./CDRSelectDouble";
 import CDRSelectSingle from "./CDRSelectSingle";
+import CDRTable from "./CDRTable";
 
 const CDR = () => {
   const pageTitleStyle = {
@@ -28,16 +22,6 @@ const CDR = () => {
     fontSize: "12px",
     color: "#5f5f5f",
     fontFamily: "Inter, sans-serif",
-  };
-
-  const filterLabelStyle = {
-    width: "150px",
-    height: "43px",
-    backgroundColor: "#1D94AB",
-    color: "white",
-    padding: "7px 8px",
-    textAlign: "end",
-    borderRadius: "4px",
   };
 
   const directionArray = ["Inbound", "Outbound", "Local"];
@@ -117,106 +101,6 @@ const CDR = () => {
     "MOS",
     "Hangup Cause",
   ];
-
-  const tableHeaders = [
-    // "Ext.",
-    "Caller Name",
-    "Caller Number",
-    "Caller Destination",
-    "Destination",
-    "Recording",
-    "Date",
-    "Time",
-    "Direction",
-    // "TTA",
-    // "PDD",
-    // "MOS",
-    "Duration",
-    "Status",
-    "Hangup Cause",
-  ];
-
-  const [tableData, setTableData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const token = JSON.parse(localStorage.getItem("userInfo"));
-  const role = token.authRoles[0].name;
-  const username = localStorage.getItem("username");
-
-  useEffect(() => {
-    const fetchCDRData = async () => {
-      setLoading(true); // Start loading before fetching data
-      try {
-        if (role === "ROLE_ADMIN") {
-          const data = await CDRServices.fetchAllCDRData();
-          setTableData(data);
-        } else if (role === "ROLE_USER") {
-          const data = await CDRServices.fetchPartnerPrefixes(username);
-          const allPrefixArr = data.map((item) => {
-            return item.prefix;
-          });
-
-          const userCallsHistory = await CDRServices.fetchUserCallHistory({
-            callerIdNumber: [...allPrefixArr],
-            startStamp: null,
-            endStamp: null,
-            limit: 30,
-            page: 1,
-          });
-          setTableData(userCallsHistory);
-          //   {
-          //     "callerIdNumber": ["09646710720","09646896378"],
-          //     "startStamp": "2024-07-21T18:50:16Z",
-          //     "endStamp": "2024-09-01T18:50:16Z",
-          //     "limit": 50,
-          //     "page": 1
-          // }
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false); // Stop loading after data is fetched
-      }
-    };
-    fetchCDRData();
-  }, []);
-
-  const getDate = (timestamp) => {
-    const date = new Date(timestamp);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = String(date.getFullYear()).slice(2);
-
-    return `${day}/${month}/${year}`;
-  };
-
-  const getTime = (timestamp) => {
-    const date = new Date(timestamp);
-    let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes}:${seconds}${ampm}`;
-  };
-
-  const formatDuration = (durationInSeconds) => {
-    const hours = Math.floor(durationInSeconds / 3600);
-    const minutes = Math.floor((durationInSeconds % 3600) / 60);
-    const seconds = durationInSeconds % 60;
-
-    let formattedDuration = "";
-    if (hours > 0) {
-      formattedDuration += `${hours}h `;
-    }
-    if (minutes > 0) {
-      formattedDuration += `${minutes}min `;
-    }
-    if (seconds > 0 || (hours === 0 && minutes === 0)) {
-      formattedDuration += `${seconds}s`;
-    }
-    return formattedDuration.trim();
-  };
 
   return (
     <div>
@@ -339,85 +223,9 @@ const CDR = () => {
               <span className="fas fa-search fa-fw mr-1"></span>SEARCH
             </button>
           </div>
-
-          {/* Call Record Details Table Section */}
-
-          {/* <div className="mt-4">
-            <Table id="table-to-xls" className="table-sm table-bordered">
-              <TableHead className="thead-uapp-bg">
-                <TableRow style={{ textAlign: "center" }}>
-                  {tableHeaders?.map((item, index) => (
-                    <th key={index}>{item}</th>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {tableData?.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableCell>{row.callerIdName}</TableCell>
-                    <TableCell>{row.callerIdNumber}</TableCell>
-                    <TableCell>{row.callerDestination}</TableCell>
-                    <TableCell>{row.destinationNumber}</TableCell>
-                    <TableCell>
-                      {row.recordName === null ? "no" : row.recordName}
-                    </TableCell>
-                    <TableCell>{getDate(row.startStamp)}</TableCell>
-                    <TableCell>{getTime(row.startStamp)}</TableCell>
-                    <TableCell>{row.direction}</TableCell>
-                    <TableCell>{formatDuration(row.duration)}</TableCell>
-                    <TableCell>{row.status}</TableCell>
-                    <TableCell>{row.hangupCause}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div> */}
-
-          {loading ? (
-            <div className="d-flex justify-content-center">
-              <CircularProgress />
-            </div>
-          ) : (
-            // Table Section when not loading
-            <div className="mt-4">
-              <Table id="table-to-xls" className="table-sm table-bordered">
-                <TableHead className="thead-uapp-bg">
-                  <TableRow style={{ textAlign: "center" }}>
-                    <th>Caller Name</th>
-                    <th>Caller Number</th>
-                    <th>Caller Destination</th>
-                    <th>Destination</th>
-                    <th>Recording</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Direction</th>
-                    <th>Duration</th>
-                    <th>Status</th>
-                    <th>Hangup Cause</th>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {tableData?.map((row, i) => (
-                    <TableRow key={i}>
-                      <TableCell>{row.callerIdName}</TableCell>
-                      <TableCell>{row.callerIdNumber}</TableCell>
-                      <TableCell>{row.callerDestination}</TableCell>
-                      <TableCell>{row.destinationNumber}</TableCell>
-                      <TableCell>
-                        {row.recordName === null ? "no" : row.recordName}
-                      </TableCell>
-                      <TableCell>{getDate(row.startStamp)}</TableCell>
-                      <TableCell>{getTime(row.startStamp)}</TableCell>
-                      <TableCell>{row.direction}</TableCell>
-                      <TableCell>{formatDuration(row.duration)}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>{row.hangupCause}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+          <div className="mt-4">
+            <CDRTable dashboardCDR={false} />
+          </div>
         </CardBody>
       </Card>
     </div>

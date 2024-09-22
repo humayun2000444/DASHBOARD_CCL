@@ -16,8 +16,9 @@ const CDRSelectSingle = ({ text, selectArr1 }) => {
             style={{
               textTransform: "capitalize",
               fontWeight: "500",
-              marginRight: "5px",
+              marginRight: "10px",
               minWidth: "120px",
+              textAlign: "right",
             }}
           >
             {text}

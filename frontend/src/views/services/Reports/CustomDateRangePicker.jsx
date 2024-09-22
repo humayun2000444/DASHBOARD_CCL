@@ -30,7 +30,6 @@ const CustomDateRangePicker = () => {
               },
             }}
           />
-
           {/* End Date Picker */}
           <DatePicker
             placeholder="End"

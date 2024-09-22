@@ -16,8 +16,9 @@ const CDRSelectDouble = ({ text, selectArr1, selectArr2 }) => {
             style={{
               textTransform: "capitalize",
               fontWeight: "500",
-              marginRight: "5px",
+              marginRight: "10px",
               minWidth: "80px",
+              textAlign: "right",
             }}
           >
             {text}

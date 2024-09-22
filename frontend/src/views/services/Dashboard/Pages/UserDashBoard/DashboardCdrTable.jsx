@@ -1,6 +1,6 @@
-import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
+import CDRTable from "../../../Reports/CDRTable";
 
 const rows = [
   {
@@ -133,46 +133,7 @@ const DashboardCdrTable = () => {
       }}
     >
       <h4 style={{ marginBottom: "12px" }}>Call Details Records</h4>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{
-          // Table styling
-          "& .MuiDataGrid-root": {
-            backgroundColor: "#ffffff", // Light background for table
-          },
-          // Header styling
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#000", // Light grey background for headers
-            color: "#333333", // Dark text color for headers
-            fontSize: "14px", // Larger font size for headers
-            fontWeight: "600", // Bold text for headers
-          },
-          // Cell styling
-          "& .MuiDataGrid-cell": {
-            color: "#333333", // Dark text color for cells
-            fontSize: "14px", // Increase font size for cell text
-          },
-          // Row hover effect
-          "& .MuiDataGrid-row:hover": {
-            backgroundColor: "#e0e0e0", // Light grey background on row hover
-          },
-          // Selected row styling
-          "& .MuiDataGrid-row.Mui-selected": {
-            backgroundColor: "#d1eaff", // Light blue background for selected row
-            "&:hover": {
-              backgroundColor: "#c0e4ff", // Slightly darker blue on hover when selected
-            },
-          },
-        }}
-      />
+      <CDRTable dashboardCDR={true} />
     </div>
   );
 };

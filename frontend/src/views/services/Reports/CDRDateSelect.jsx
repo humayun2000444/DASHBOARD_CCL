@@ -11,9 +11,10 @@ const CDRDateSelect = ({ text }) => {
             style={{
               textTransform: "capitalize",
               fontWeight: "500",
-              marginRight: "5px",
+              marginRight: "10px",
               minWidth: "80px",
               maxWidth: "80px",
+              textAlign: "right",
             }}
           >
             {text}

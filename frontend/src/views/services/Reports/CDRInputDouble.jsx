@@ -11,8 +11,9 @@ const CDRInputDouble = ({ text, placeholder1, placeholder2 }) => {
             style={{
               textTransform: "capitalize",
               fontWeight: "500",
-              marginRight: "5px",
+              marginRight: "10px",
               minWidth: "120px",
+              textAlign: "right",
             }}
           >
             {text}
