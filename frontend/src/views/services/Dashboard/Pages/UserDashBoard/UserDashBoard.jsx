@@ -11,6 +11,7 @@ import DashboardBalance from "./DashboardBalance";
 import DashboardCallStatus from "./DashboardCallStatus";
 import DashboardCdrTable from "./DashboardCdrTable";
 import LiveCalls from "./LiveCalls";
+import FilterTabs from "../../../../../components/core/filter/FilterTabs";
 
 const UserDashBoard = () => {
   const [open, setOpen] = useState(false);
@@ -38,24 +39,6 @@ const UserDashBoard = () => {
     label: "Select Country ",
     value: "Country..",
   });
-
-  // useEffect(() => {
-  //   get(`SystemAdminDashboard/Counting`).then((res) => {
-  //     setCount(res);
-  //   });
-
-  //   get(`SystemAdminDashboard/Application`).then((res) => {
-  //     setApplications(res);
-  //   });
-
-  //   get(`SystemAdminDashboard/GetTransactions`).then((res) => {
-  //     setConsultants(res);
-  //   });
-
-  //   get(`AccountIntake/GetCurrentAccountIntake`).then((res) => {
-  //     setIntake(res);
-  //   });
-  // }, []);
 
   const showDrawer = () => {
     setOpen(true);
@@ -247,6 +230,7 @@ const UserDashBoard = () => {
             padding: "32px 28px",
           }}
         >
+          <FilterTabs/>
           <DashboardCallStatus />
           <CallSummaryChart />
           <DashboardCdrTable />

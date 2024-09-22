@@ -24,6 +24,10 @@ const styles = {
     width: "25%",
     padding: "18px 22px",
     borderRadius: "12px",
+    fontFamily:"Inter",
+    fontSize: "14px",
+    fontWeight: 400,
+    textTransform: "capitalize",
   },
   cardContext: {
     color: "#656575",
@@ -31,8 +35,9 @@ const styles = {
   },
   cardValue: {
     color: "#2D3748",
-    fontSize: "24px",
-    fontWeight: "bold",
+    fontFamily:"Inter",
+    fontSize: "28px",
+    fontWeight: "800",
   },
   iconWrapper: {
     backgroundColor: "#EFF2F1",
