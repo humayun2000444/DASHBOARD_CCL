@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -11,12 +11,18 @@ import {
   PhoneDisabled as PhoneDisabledIcon,
   MicOff as MicOffIcon,
 } from "@mui/icons-material";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import webSocketClient from "./WebSocketClient";
 
-function CallScreen({ onEndCall }) {
+export default function CallScreen({ onEndCall }) {
   const [micEnabled, setMicEnabled] = useState(true);
   const [caller, setCaller] = useState(null);
   const [callStartTime, setCallStartTime] = useState(null);
   const [callDuration, setCallDuration] = useState("00:00:00");
+
+
+
+
 
   useEffect(() => {
     // Read and decode URL parameters
@@ -42,6 +48,8 @@ function CallScreen({ onEndCall }) {
     }
   }, []);
 
+
+
   const getCallDuration = (startTime) => {
     if (!startTime) return "00:00:00";
     const now = new Date();
@@ -51,6 +59,7 @@ function CallScreen({ onEndCall }) {
     const seconds = String(duration % 60).padStart(2, "0");
     return `${hours}:${minutes}:${seconds}`;
   };
+
 
   if (!caller) {
     return (
@@ -68,6 +77,10 @@ function CallScreen({ onEndCall }) {
       </Box>
     );
   }
+  const handleCall = () => {
+
+    window.close();
+  };
 
   return (
     <Box
@@ -131,7 +144,8 @@ function CallScreen({ onEndCall }) {
         </IconButton>
 
         <IconButton
-          onClick={() => window.close()}
+          onClick={() => webSocketClient.sendHangupRequest }
+          // onClick={window.close}
           sx={{
             backgroundColor: "red",
             color: "white",
@@ -149,4 +163,4 @@ function CallScreen({ onEndCall }) {
   );
 }
 
-export default CallScreen;
+// export default CallScreen;

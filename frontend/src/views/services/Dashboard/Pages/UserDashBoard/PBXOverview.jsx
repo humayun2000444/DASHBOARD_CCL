@@ -1,6 +1,6 @@
 import { Box, Card, Typography } from "@mui/material";
 import "chart.js/auto";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
 // InfoRow component
@@ -41,9 +41,9 @@ const InfoRow = ({ label, color, value }) => {
 const PBXOverview = () => {
   // Dummy data for hardware
   const [hardwareData, setHardwareData] = useState({
-    cpu: 12.3221,
-    memory: 332.3221,
-    disk: 42.3221,
+    cpu: 0,
+    memory: 0,
+    disk: 0,
   });
 
   // Dummy data for call stats
@@ -66,6 +66,43 @@ const PBXOverview = () => {
       },
     ],
   });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://103.95.96.98:4000/systeminfo");
+        const data = await response.json();
+
+        // Update hardware data
+        setHardwareData({
+          cpu: parseFloat(data.cpu.usage) + " %",
+          memory: parseFloat(data.memory.usage) + " %",
+          disk: parseFloat(data.disk.usage) + " %",
+        });
+
+        // Update chart data with API response values
+        setChartData({
+          labels: ["CPU Usage", "Memory Usage", "Disk Usage"],
+          datasets: [
+            {
+              label: "Stats",
+              data: [
+                parseFloat(data.cpu.usage),
+                parseFloat(data.memory.usage),
+                parseFloat(data.disk.usage),
+              ],
+              backgroundColor: ["#B6C93F", "#FF2727", "#52C93F"],
+              borderColor: ["#B6C93F", "#FF2727", "#52C93F"],
+              borderWidth: 1,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Chart options
   const options = {
@@ -107,7 +144,7 @@ const PBXOverview = () => {
               marginBottom: "24px",
             }}
           >
-            PBX Overview
+            Overview
           </Typography>
 
           <Box sx={{ display: "flex", gap: "70px" }}>
