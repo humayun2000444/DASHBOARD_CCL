@@ -3,6 +3,7 @@ import { root } from "../../constants/constants";
 
 const partnerPrefixServices = {
   fetchPartnerPrefixByEmail: async (id, token) => {
+    console.log(id);
     try {
       const response = await axios.post(
         `${root}8001/FREESWITCH/get-partner-prefix-by-email`,

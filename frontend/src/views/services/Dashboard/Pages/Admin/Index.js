@@ -652,8 +652,8 @@ progress report end */}
                   <td
                     style={{
                       textDecoration: "underline",
-                      color: "#164677",
-                      textDecorationColor: "#164677",
+                      color: "#1D94AB",
+                      textDecorationColor: "#1D94AB",
                     }}
                   >
                     Details
@@ -679,8 +679,8 @@ progress report end */}
                   <td
                     style={{
                       textDecoration: "underline",
-                      color: "#164677",
-                      textDecorationColor: "#164677",
+                      color: "#1D94AB",
+                      textDecorationColor: "#1D94AB",
                     }}
                   >
                     Details
@@ -706,8 +706,8 @@ progress report end */}
                   <td
                     style={{
                       textDecoration: "underline",
-                      color: "#164677",
-                      textDecorationColor: "#164677",
+                      color: "#1D94AB",
+                      textDecorationColor: "#1D94AB",
                     }}
                   >
                     Details
@@ -733,8 +733,8 @@ progress report end */}
                   <td
                     style={{
                       textDecoration: "underline",
-                      color: "#164677",
-                      textDecorationColor: "#164677",
+                      color: "#1D94AB",
+                      textDecorationColor: "#1D94AB",
                     }}
                   >
                     Details

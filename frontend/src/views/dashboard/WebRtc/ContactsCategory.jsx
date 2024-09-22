@@ -3,14 +3,14 @@ import React from "react";
 const ContactsCategory = ({
   category,
   selectedCategory,
-  handleChangeCategory
+  handleChangeCategory,
 }) => {
   const isSelected = selectedCategory === category;
 
   return (
     <li
-      onClick={()=> handleChangeCategory(category)}
-      style={isSelected ? { backgroundColor: "#164677", color: "#fff" } : null}
+      onClick={() => handleChangeCategory(category)}
+      style={isSelected ? { backgroundColor: "#1D94AB", color: "#fff" } : null}
     >
       <span>
         {category === "All Contacts" && <i className="fa-solid fa-user"></i>}

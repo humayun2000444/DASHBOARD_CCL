@@ -102,7 +102,7 @@ const PartnerPrefixForm = ({ setAllPartnerPrefixes }) => {
       <Button
         variant="contained"
         type="submit"
-        sx={{ width: "130px", backgroundColor: "#164677" }}
+        sx={{ width: "130px", backgroundColor: "#1D94AB" }}
       >
         Add Prefix
       </Button>

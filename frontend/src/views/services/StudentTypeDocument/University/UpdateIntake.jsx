@@ -1,32 +1,15 @@
 import { FormGroup } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  ButtonGroup,
-  Button,
-  Input,
-  Col,
-  Row,
-  Table,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Form,
-} from "reactstrap";
-import Select from "react-select";
-import { useHistory, useLocation } from "react-router";
-import get from "../../../helpers/get";
-import { useToasts } from "react-toast-notifications";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
+import { Card, CardHeader, Col, Form } from "reactstrap";
 
 import put from "../../../helpers/put";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import { permissionList } from "../../../constants/AuthorizationConstant";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
 
 const UpdateIntake = () => {
   const [month, setMonth] = useState([]);
@@ -145,7 +128,7 @@ const UpdateIntake = () => {
           <FormGroup row>
             <Col md="4">
               <span>
-                <span style={{ color: "#164677", fontSize: "14px" }}>
+                <span style={{ color: "#1D94AB", fontSize: "14px" }}>
                   Intake Month
                 </span>{" "}
                 <span className="text-danger">*</span>{" "}
@@ -168,7 +151,7 @@ const UpdateIntake = () => {
           <FormGroup row className="mt-3">
             <Col md="4">
               <span>
-                <span style={{ color: "#164677", fontSize: "14px" }}>
+                <span style={{ color: "#1D94AB", fontSize: "14px" }}>
                   Intake Year
                 </span>{" "}
                 <span className="text-danger">*</span>{" "}

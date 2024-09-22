@@ -244,7 +244,7 @@ const Create = () => {
                 <h5>Balance Available to Withdraw</h5>
               </div>
               <br />
-              <h2 className="text-center" style={{ color: "#164677" }}>
+              <h2 className="text-center" style={{ color: "#1D94AB" }}>
                 &#xA3; {amount}
               </h2>
             </div>

@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
 
-const username = localStorage.getItem("username");
 const AccountDetails = () => {
+  const username = localStorage.getItem("username");
+  const token = JSON.parse(localStorage.getItem("userInfo")).token;
+
+  const [partnerDetails, setPartnerDetails] = useState(null);
+
+  const fetchPartnerDetails = async () => {
+    try {
+      const data = await adminDashboardServices.fetchPartnerDetailsUser(token, {
+        email: username,
+      });
+      setPartnerDetails(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPartnerDetails();
+  }, []);
+
+  console.log();
+  console.log(partnerDetails?.partner.customerPrePaid);
   return (
     <div>
       <div>
@@ -35,7 +57,7 @@ const AccountDetails = () => {
                   padding: "12px 0 6px 0",
                 }}
               >
-                {username}
+                {partnerDetails?.partner.partnerName}
               </div>
               <div
                 style={{
@@ -54,6 +76,7 @@ const AccountDetails = () => {
                   fontSize: "14px",
                 }}
               >
+                <span>Account Type </span>
                 <span
                   style={{
                     color: "#064E3B",
@@ -64,9 +87,11 @@ const AccountDetails = () => {
                     backgroundColor: "#D1FAE5",
                   }}
                 >
-                  Perpaid
+                  {partnerDetails?.partner.customerPrePaid === 2
+                    ? "Prepaid"
+                    : "Postpaid"}
                 </span>
-                <span>Account Type</span>
+
               </div>
             </div>
           </div>

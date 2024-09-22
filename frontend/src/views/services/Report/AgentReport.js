@@ -824,7 +824,7 @@ const AgentReport = () => {
 
                               <div className="main-chart">
                                 <div className="text-center  mb-3">
-                                  <h5 style={{ color: "#164677" }}>
+                                  <h5 style={{ color: "#1D94AB" }}>
                                     {consultantValue != 0
                                       ? currentIntake?.intakeName
                                       : null}
@@ -895,7 +895,7 @@ const AgentReport = () => {
 
                           <CardBody>
                             <div className="text-center mb-3">
-                              <h5 style={{ color: "#164677" }}>
+                              <h5 style={{ color: "#1D94AB" }}>
                                 {consultantValue !== 0
                                   ? currentIntake?.intakeName
                                   : null}

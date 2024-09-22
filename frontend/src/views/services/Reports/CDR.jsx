@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardBody } from "reactstrap";
+import CircularProgress from "@mui/material/CircularProgress";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import React, { useEffect, useState } from "react";
+import { Card, CardBody } from "reactstrap";
 import CDRServices from "../../../apiServices/CDRServices/CDRServices";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const CDR = () => {
   const pageTitleStyle = {
@@ -28,7 +28,7 @@ const CDR = () => {
   const filterLabelStyle = {
     width: "150px",
     height: "43px",
-    backgroundColor: "#174678",
+    backgroundColor: "#1D94AB",
     color: "white",
     padding: "7px 8px",
     textAlign: "end",
@@ -134,13 +134,39 @@ const CDR = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const token = JSON.parse(localStorage.getItem("userInfo"));
+  const role = token.authRoles[0].name;
+  const username = localStorage.getItem("username");
+
   useEffect(() => {
     const fetchCDRData = async () => {
       setLoading(true); // Start loading before fetching data
       try {
-        const data = await CDRServices.fetchAllCDRData();
-        console.log(data);
-        setTableData(data);
+        if (role === "ROLE_ADMIN") {
+          const data = await CDRServices.fetchAllCDRData();
+          setTableData(data);
+        } else if (role === "ROLE_USER") {
+          const data = await CDRServices.fetchPartnerPrefixes(username);
+          const allPrefixArr = data.map((item) => {
+            return item.prefix;
+          });
+
+          const userCallsHistory = await CDRServices.fetchUserCallHistory({
+            callerIdNumber: [...allPrefixArr],
+            startStamp: null,
+            endStamp: null,
+            limit: 30,
+            page: 1,
+          });
+          setTableData(userCallsHistory);
+          //   {
+          //     "callerIdNumber": ["09646710720","09646896378"],
+          //     "startStamp": "2024-07-21T18:50:16Z",
+          //     "endStamp": "2024-09-01T18:50:16Z",
+          //     "limit": 50,
+          //     "page": 1
+          // }
+        }
       } catch (error) {
         console.log(error);
       } finally {

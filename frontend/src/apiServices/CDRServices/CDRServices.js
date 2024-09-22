@@ -1,13 +1,40 @@
 import axios from "axios";
-const url = "http://iptsp.cosmocom.net:5070/";
+import { root, root2 } from "../../constants/constants";
 
 const CDRServices = {
   fetchAllCDRData: async () => {
     try {
-      const response = await axios.post(url + "admin/getCallHistory");
+      const response = await axios.post(root2 + "5070/admin/getCallHistory");
       return response.data;
     } catch (error) {
       console.error("Error fetching roles:", error);
+    }
+  },
+  fetchPartnerPrefixes: async (payload) => {
+    console.log(payload);
+    try {
+      const response = await axios.post(
+        root + "8001/FREESWITCH/get-partner-prefix-by-email",
+        {
+          id: payload,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching partner prefixes:", error);
+    }
+  },
+
+  fetchUserCallHistory: async (payload) => {
+    console.log(payload);
+    try {
+      const response = await axios.post(
+        root2 + "5070/user/getCallHistory",
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching User calls history:", error);
     }
   },
 };

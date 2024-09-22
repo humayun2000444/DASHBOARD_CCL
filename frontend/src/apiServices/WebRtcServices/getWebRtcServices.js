@@ -1,11 +1,12 @@
 import axios from "axios";
+import {root} from "../../constants/constants";
 
-const url = "https://iptsp.cosmocom.net:8001/FREESWITCH/";
+// const url = "https://iptsp.cosmocom.net:8001/FREESWITCH/";
 
 const getWebRtcServices = {
   fetchAllContacts: async (payload) => {
     try {
-      const response = await axios.post(url + "contact/get-contacts", {
+      const response = await axios.post(root + "8001/FREESWITCH/contact/get-contacts", {
         username: payload,
       });
       return response.data;
@@ -17,7 +18,7 @@ const getWebRtcServices = {
   createContact: async (payload) => {
     try {
       const response = await axios.post(
-        url + "contact/create-contact",
+        root + "8001/FREESWITCH/contact/create-contact",
         payload
       );
       return response.data;
@@ -28,7 +29,7 @@ const getWebRtcServices = {
   },
   deleteContact: async (id) => {
     try {
-      const response = await axios.post(url + "contact/delete-contact", {
+      const response = await axios.post(root + "8001/FREESWITCH/contact/delete-contact", {
         contactId: id,
       });
       return response.data;
@@ -40,7 +41,7 @@ const getWebRtcServices = {
   updateContact: async (payload) => {
     try {
       const response = await axios.post(
-        url + "contact/update-contact",
+        root + "8001/FREESWITCH/contact/update-contact",
         payload
       );
       return response.data;
@@ -51,7 +52,7 @@ const getWebRtcServices = {
   },
   getCallsHistory: async (payload) => {
     try {
-      const response = await axios.post(url + "get-call-history", payload);
+      const response = await axios.post(root + "8001/FREESWITCH/get-call-history", payload);
       return response.data;
     } catch (error) {
       console.error("Error creating contact:", error);

@@ -1,5 +1,5 @@
 import CircularProgress from "@mui/material/CircularProgress";
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import getWebRtcServices from "../../../apiServices/WebRtcServices/getWebRtcServices";
 import "../../../assets/scss/pages/Contacts.scss";
 import ContactModal from "./ContactModal";
@@ -19,12 +19,15 @@ const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   let [phoneNumber, setPhoneNumber] = useState("");
   const [webSocketClient, setWebSocketClient] = useState(null);
   // const peerConnection = new RTCPeerConnection();
-  const [outgoingCallStatus, setOutgoingCallStatus] = useState(CallState.getOutgoingCallStatus());
-  const [incomingCallStatus, setIncomingCallStatus] = useState(CallState.getIncomingCallStatus());
+  const [outgoingCallStatus, setOutgoingCallStatus] = useState(
+    CallState.getOutgoingCallStatus()
+  );
+  const [incomingCallStatus, setIncomingCallStatus] = useState(
+    CallState.getIncomingCallStatus()
+  );
   // let callStatus = CallState.getCallStatus();
   const [toasterIncoming, setToasterIncoming] = useState(false);
   const [toasterOngoing, setToasterOngoing] = useState(false);
@@ -55,7 +58,6 @@ const Contacts = () => {
     }
   };
 
-
   const handleIncomingCallStateChange = (newStatus) => {
     setIncomingCallStatus(newStatus);
     if (newStatus === "idle") {
@@ -71,8 +73,8 @@ const Contacts = () => {
   };
 
   const handleOutgoingCall = async () => {
-    if ((phoneNumber||CallState.getContactPhoneNumber()) && webSocketClient) {
-      if(!phoneNumber) phoneNumber = CallState.getContactPhoneNumber();
+    if ((phoneNumber || CallState.getContactPhoneNumber()) && webSocketClient) {
+      if (!phoneNumber) phoneNumber = CallState.getContactPhoneNumber();
       try {
         // Request microphone access
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -267,7 +269,7 @@ const Contacts = () => {
     if (incomingCallStatus === "incomingcall") {
       handleIncomingCallToast();
     }
-    if(incomingCallStatus === "idle"){
+    if (incomingCallStatus === "idle") {
       if (ringtonePlaying) {
         ringtoneRef.current.pause();
         ringtoneRef.current.currentTime = 0;
@@ -275,12 +277,6 @@ const Contacts = () => {
       }
     }
   }, [incomingCallStatus]);
-
-
-
-
-
-
 
   const [showContacts, setShowContacts] = useState(
     JSON.parse(localStorage.getItem("contacts")) ?? []
@@ -461,7 +457,7 @@ const Contacts = () => {
     );
   };
 
-  const colors = ["#164677", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
+  const colors = ["#1D94AB", "#5D0E41", "#070F2B", "#5C469C", "#028391"];
 
   return (
     <div className="contacts">
@@ -516,7 +512,7 @@ const Contacts = () => {
         </div>
         {loading ? (
           <div className="contacts__loading">
-            <CircularProgress color="primary"/>
+            <CircularProgress color="primary" />
           </div>
         ) : (
           <ul onMouseLeave={handleMouseLeave}>
@@ -537,7 +533,7 @@ const Contacts = () => {
         )}
       </div>
       <div className="contacts__add">
-        <ContactModal type="Add" handleAddContact={handleAddContact}/>
+        <ContactModal type="Add" handleAddContact={handleAddContact} />
       </div>
       <audio id="remoteAudio" autoPlay></audio>
     </div>

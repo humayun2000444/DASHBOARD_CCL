@@ -30,12 +30,12 @@ import {
 } from "reactstrap";
 
 import { useToasts } from "react-toast-notifications";
-import get from "../../../helpers/get";
-import { rootUrl } from "../../../constants/constants";
-import put from "../../../helpers/put";
-import remove from "../../../helpers/remove";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import ButtonLoader from "../Components/ButtonLoader";
+import get from "../../../../helpers/get";
+import { rootUrl } from "../../../../constants/constants";
+import put from "../../../../helpers/put";
+import remove from "../../../../helpers/remove";
+import ButtonForFunction from "../../Components/ButtonForFunction";
+import ButtonLoader from "../../Components/ButtonLoader";
 const AddUniversityCampus = (props) => {
   const [universityCampusList, setuniversityCampusList] = useState([]);
   const [universityCampusObject, setuniversityCampusObject] = useState({});

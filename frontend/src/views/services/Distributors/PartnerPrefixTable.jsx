@@ -15,21 +15,29 @@ const PartnerPrefixTable = ({ allPartnerPrefixes, handleDelete }) => {
   return (
     <TableContainer
       component={Paper}
-      style={{ marginBottom: "1rem", maxHeight: "350px" }} // Adjust maxHeight as needed
+      style={{ marginBottom: "1rem", maxHeight: "280px" }} // Adjust maxHeight as needed
     >
-      <Table>
+      <Table id="table-to-xls" className="table-sm table-bordered">
         <TableHead className="thead-uapp-bg">
-          <TableRow style={{ textAlign: "center" }}>
-            <TableCell style={{ color: "#fff", fontWeight: "bold" }}>
+          <TableRow>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
               Partner Name
             </TableCell>
-            <TableCell style={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
               Priority
             </TableCell>
-            <TableCell style={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
               DID Number
             </TableCell>
-            <TableCell style={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
               Actions
             </TableCell>
           </TableRow>
