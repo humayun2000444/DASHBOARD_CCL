@@ -41,13 +41,7 @@ const Contacts = () => {
     const password = localStorage.getItem("password");
 
     if (username && password) {
-      const client = new WebSocketClient(
-        // "wss://103.95.96.100:3000/",
-        "wss://pbx.cosmocom.net:3000/",
-        "janus-protocol",
-        handleOutgoingCallStateChange,
-        handleIncomingCallStateChange
-      );
+      const client = WebSocketClient;
       client.connect(username, password);
       setWebSocketClient(client);
 

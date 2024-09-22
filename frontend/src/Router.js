@@ -1101,7 +1101,7 @@ const RechargeBalance = lazy(() =>
 );
 
 const CallScreen = lazy(() =>
-  import("./views/dashboard/WebRtc/CallScreen.jsx")
+  import("./views/dashboard/WebRtc/CallScreen.js")
 );
 
 // Balance Component
