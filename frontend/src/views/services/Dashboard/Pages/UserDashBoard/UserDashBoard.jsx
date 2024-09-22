@@ -230,7 +230,18 @@ const UserDashBoard = () => {
             padding: "32px 28px",
           }}
         >
-          <FilterTabs/>
+          <div style={{
+            display:"flex",
+            width: "100%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom:"20px",
+          }}>
+            <div>
+              <h2>Dashboard Overview</h2>
+            </div>
+            <FilterTabs/>
+          </div>
           <DashboardCallStatus />
           <CallSummaryChart />
           <DashboardCdrTable />
