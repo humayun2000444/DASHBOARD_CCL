@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Box, ButtonGroup } from '@mui/material';
 
 const filters = ['Last 1 hour', 'Last 24 hours', 'Last 7 days', 'Last 30 days'];
 
-const FilterTabs = () => {
-  const [activeFilter, setActiveFilter] = useState(filters[0]);
-
+const FilterTabs = ({ selectedFilter, onFilterChange }) => {
   const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
+    onFilterChange(filter); // Trigger callback to update the selected filter in UserDashBoard
   };
 
   // Inline styles
@@ -44,7 +42,6 @@ const FilterTabs = () => {
     },
   };
 
-
   return (
     <Box sx={styles.container}>
       <ButtonGroup
@@ -52,9 +49,9 @@ const FilterTabs = () => {
         aria-label="filter tabs"
         style={{
           background: "#F4F4F5",
-          padding:"4px 4px",
+          padding: "4px 4px",
           borderRadius: '8px',
-          gap:'4px',
+          gap: '4px',
         }}>
         {filters.map((filter) => (
           <Button
@@ -62,7 +59,7 @@ const FilterTabs = () => {
             onClick={() => handleFilterChange(filter)}
             style={{
               ...styles.button,
-              ...(activeFilter === filter ? styles.activeButton : {}),
+              ...(selectedFilter === filter ? styles.activeButton : {}),
             }}
           >
             {filter}

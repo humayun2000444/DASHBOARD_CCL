@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import CallIcon from "@mui/icons-material/Call";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import CallMissedIcon from "@mui/icons-material/CallMissed";
@@ -24,7 +23,7 @@ const styles = {
     width: "25%",
     padding: "18px 22px",
     borderRadius: "12px",
-    fontFamily:"Inter",
+    fontFamily: "Inter",
     fontSize: "14px",
     fontWeight: 400,
     textTransform: "capitalize",
@@ -35,7 +34,7 @@ const styles = {
   },
   cardValue: {
     color: "#2D3748",
-    fontFamily:"Inter",
+    fontFamily: "Inter",
     fontSize: "28px",
     fontWeight: "800",
   },
@@ -52,7 +51,29 @@ const styles = {
   },
 };
 
-const username = localStorage.getItem("username");
+const getDateRange = (filter) => {
+  const now = new Date();
+  let startStamp = new Date();
+
+  switch (filter) {
+    case "Last 1 hour":
+      startStamp.setHours(now.getHours() - 1);
+      break;
+    case "Last 24 hours":
+      startStamp.setDate(now.getDate() - 1);
+      break;
+    case "Last 7 days":
+      startStamp.setDate(now.getDate() - 7);
+      break;
+    case "Last 30 days":
+      startStamp.setDate(now.getDate() - 30);
+      break;
+    default:
+      break;
+  }
+
+  return { startStamp: startStamp.toISOString(), endStamp: now.toISOString() };
+};
 
 const CallStatusCard = ({ label, value, Icon }) => {
   return (
@@ -60,7 +81,7 @@ const CallStatusCard = ({ label, value, Icon }) => {
       <div className="cardContext">
         <span style={styles.cardContext}>{label}</span>
         <br />
-        <span style={styles.cardValue}>{value}</span>
+        <span style={styles.cardValue}>{value || "N/A"}</span>
       </div>
       <div style={styles.iconWrapper}>
         <Icon style={styles.icon} />
@@ -69,68 +90,61 @@ const CallStatusCard = ({ label, value, Icon }) => {
   );
 };
 
-const DashboardCallStatus = () => {
+const DashboardCallStatus = ({ selectedFilter }) => {
   const [totalCallData, setTotalCallData] = useState(null);
   const [outgoingCallData, setOutgoingCallData] = useState(null);
-  const [incomingCallData, setTIncomingCallData] = useState(null);
+  const [incomingCallData, setIncomingCallData] = useState(null);
   const [missedCallData, setMissedCallData] = useState(null);
 
   const token = localStorage.getItem("authToken");
-  const callerIdNumber = "09646999999";
-  const domainName = "103.95.96.100";
-
   const userToken = JSON.parse(localStorage.getItem("userInfo"));
   const role = userToken.authRoles[0].name;
   const username = localStorage.getItem("username");
 
   const fetchData = async () => {
+    const { startStamp, endStamp } = getDateRange(selectedFilter);
+
     try {
       if (role === "ROLE_ADMIN") {
-        const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
-          token
-        );
-        const outgoingCall =
-          await adminDashboardServices.fetchOutgoingCallForAdmin(token);
-        const incomingCall =
-          await adminDashboardServices.fetchIncomingCallForAdmin(token);
-        const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
-          token
-        );
+        const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(token, startStamp, endStamp);
+        const outgoingCall = await adminDashboardServices.fetchOutgoingCallForAdmin(token, startStamp, endStamp);
+        const incomingCall = await adminDashboardServices.fetchIncomingCallForAdmin(token, startStamp, endStamp);
+        const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(token, startStamp, endStamp);
+
         setTotalCallData(totalCall);
         setOutgoingCallData(outgoingCall);
-        setTIncomingCallData(incomingCall);
+        setIncomingCallData(incomingCall);
         setMissedCallData(missedCall);
       } else if (role === "ROLE_USER") {
         const data = await CDRServices.fetchPartnerPrefixes(username);
-        const allPrefixArr = data.map((item) => {
-          return item.prefix;
-        });
-
+        const allPrefixArr = data.map((item) => item.prefix);
         const totalCall = await adminDashboardServices.fetchTotalCallForUser({
           callerIdNumber: [...allPrefixArr],
-          startStamp: "2023-07-21T18:50:16Z",
-          endStamp: "2026-09-01T18:50:16Z",
+          startStamp,
+          endStamp,
         });
-        const outgoingCall =
-          await adminDashboardServices.fetchOutgoingCallForUser({
-            callerIdNumber: [...allPrefixArr],
-            startStamp: "2023-07-21T18:50:16Z",
-            endStamp: "2026-09-01T18:50:16Z",
-          });
-        const incomingCall =
-          await adminDashboardServices.fetchIncomingCallForUser({
-            callerIdNumber: [...allPrefixArr],
-            startStamp: "2023-07-21T18:50:16Z",
-            endStamp: "2026-09-01T18:50:16Z",
-          });
+
+        const outgoingCall = await adminDashboardServices.fetchOutgoingCallForUser({
+          callerIdNumber: [...allPrefixArr],
+          startStamp,
+          endStamp,
+        });
+
+        const incomingCall = await adminDashboardServices.fetchIncomingCallForUser({
+          callerIdNumber: [...allPrefixArr],
+          startStamp,
+          endStamp,
+        });
+
         const missedCall = await adminDashboardServices.fetchMissedCallForUser({
           callerIdNumber: [...allPrefixArr],
-          startStamp: "2023-07-21T18:50:16Z",
-          endStamp: "2026-09-01T18:50:16Z",
+          startStamp,
+          endStamp,
         });
+
         setTotalCallData(totalCall);
         setOutgoingCallData(outgoingCall);
-        setTIncomingCallData(incomingCall);
+        setIncomingCallData(incomingCall);
         setMissedCallData(missedCall);
       }
     } catch (error) {
@@ -140,32 +154,19 @@ const DashboardCallStatus = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedFilter]); // Refetch data when selectedFilter changes
 
   const callStatuses = [
-    {
-      label: "Total calls",
-      value: totalCallData,
-      Icon: CallIcon,
-    },
+    { label: "Total calls", value: totalCallData, Icon: CallIcon },
     { label: "Outgoing calls", value: outgoingCallData, Icon: CallMadeIcon },
-    {
-      label: "Incoming calls",
-      value: incomingCallData,
-      Icon: CallReceivedIcon,
-    },
+    { label: "Incoming calls", value: incomingCallData, Icon: CallReceivedIcon },
     { label: "Missed calls", value: missedCallData, Icon: CallMissedIcon },
   ];
 
   return (
     <div style={styles.cardWrapper}>
       {callStatuses.map((status, index) => (
-        <CallStatusCard
-          key={index}
-          label={status.label}
-          value={status.value}
-          Icon={status.Icon}
-        />
+        <CallStatusCard key={index} label={status.label} value={status.value} Icon={status.Icon} />
       ))}
     </div>
   );
