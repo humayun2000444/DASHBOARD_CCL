@@ -11,34 +11,34 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
   // Inline styles
   const styles = {
     container: {
-      display: 'inline',
+      display: 'inline-flex',
       justifyContent: 'right',
+      padding: '8px', // Add some spacing around the button group
     },
     button: {
       textTransform: 'none',
       fontFamily: 'Inter',
       fontSize: '14px',
-      lineHeight: '12px',
-      color: '#656575',
-      padding: '12px 8px',
+      lineHeight: '20px',
+      color: '#656575', // Subtle grey text for inactive buttons
+      padding: '10px 16px', // Balanced padding for a cleaner look
       borderRadius: '8px',
-      border: '1px solid transparent', // Keep a transparent border to avoid shaking
+      border: '1px solid transparent', // Transparent border to maintain layout consistency
       fontWeight: '400',
+      backgroundColor: '#F4F4F5', // Default background for buttons
       transition: 'all 0.3s ease', // Smooth transitions for hover/active
     },
     activeButton: {
-      backgroundColor: '#ffffff',
-      fontWeight: 'bold',
-      border: '1px solid #d0d7de', // Same border width to avoid layout shift
-      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
-      color: '#656575',
-      padding: '12px 8px', // Ensure padding is identical
-      transition: 'all 0.3s ease', // Smooth effect for active state
+      backgroundColor: '#ffffff', // White background for active button
+      fontWeight: 'bold', // Bold text for active filter
+      border: '1px solid #1d94ab', // Border with the primary color
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)', // Soft shadow for active state
+      color: '#1d94ab', // Primary color for active button text
+      transition: 'all 0.3s ease',
     },
     hoverButton: {
-      backgroundColor: '#f4f4f5', // Background change on hover
-      color: '#656575',
-      transition: 'all 0.3s ease', // Smooth hover transition
+      backgroundColor: '#e6f5f8', // Slightly lighter shade of primary for hover
+      color: '#1d94ab', // Primary color on hover
     },
   };
 
@@ -48,8 +48,8 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
         variant="text"
         aria-label="filter tabs"
         style={{
-          background: "#F4F4F5",
-          padding: "4px 4px",
+          background: "#EFF2F1", // Light background for the button group
+          padding: "4px",
           borderRadius: '8px',
           gap: '4px',
         }}>
@@ -60,6 +60,18 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
             style={{
               ...styles.button,
               ...(selectedFilter === filter ? styles.activeButton : {}),
+            }}
+            onMouseOver={(e) => {
+              if (selectedFilter !== filter) {
+                e.currentTarget.style.backgroundColor = styles.hoverButton.backgroundColor;
+                e.currentTarget.style.color = styles.hoverButton.color;
+              }
+            }}
+            onMouseOut={(e) => {
+              if (selectedFilter !== filter) {
+                e.currentTarget.style.backgroundColor = styles.button.backgroundColor;
+                e.currentTarget.style.color = styles.button.color;
+              }
             }}
           >
             {filter}

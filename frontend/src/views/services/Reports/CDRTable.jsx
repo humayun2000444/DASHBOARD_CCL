@@ -119,7 +119,7 @@ const CDRTable = ({ dashboardCDR }) => {
       ) : (
         <Table id="table-to-xls" className="table-sm table-bordered">
           <TableHead className="thead-uapp-bg">
-            <TableRow style={{ textAlign: "center" }}>
+            <TableRow style={{ textAlign: "center", borderRadius:"10px" }}>
               <th>Caller Name</th>
               <th>Caller Number</th>
               <th>Caller Destination</th>
