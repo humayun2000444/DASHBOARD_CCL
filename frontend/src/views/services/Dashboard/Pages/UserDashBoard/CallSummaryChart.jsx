@@ -1,13 +1,91 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Card, CardBody, Button } from "reactstrap";
 import ReactECharts from "echarts-for-react";
 import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
-const handleButtonClick = () => {
-  console.log("Button clicked!");
-};
+const CallSummaryChart = ({ selectedFilter }) => {
+  const [chartData, setChartData] = useState({
+    failed: [],
+    success: [],
+    timeLabels: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const [lastFilter, setLastFilter] = useState("");
 
-const CallSummaryChart = () => {
+  const handleButtonClick = () => {
+    console.log("Button clicked!");
+  };
+
+  const fetchCallSummary = async () => {
+    if (loading) return; // Prevent multiple fetches
+    setLoading(true); // Set loading state
+
+    const now = new Date();
+    let startStamp;
+    let endStamp = now.toISOString();
+
+    switch (selectedFilter) {
+      case "Last 1 hour":
+        startStamp = new Date(now.getTime() - 60 * 60 * 1000).toISOString(); // 1 hour ago
+        break;
+      case "Last 24 hours":
+        startStamp = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(); // 24 hours ago
+        break;
+      case "Last 7 days":
+        startStamp = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
+        break;
+      case "Last 30 days":
+        startStamp = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ago
+        break;
+      default:
+        setLoading(false);
+        return; // Exit if no valid filter is selected
+    }
+
+    const requestData = {
+      callerIdNumber: ["09646710720", "09646896378"], // Example callerIdNumbers
+      startStamp,
+      endStamp,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://iptsp.cosmocom.net:5070/user/DashBoard/getIntervalWiseCall",
+        requestData
+      );
+      const data = response.data;
+
+      // Prepare data for the chart
+      const timeLabels = [];
+      const failedCalls = [];
+      const successCalls = [];
+
+      data.forEach(item => {
+        timeLabels.push(new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        failedCalls.push(item.failedCalls);
+        successCalls.push(item.successCalls);
+      });
+
+      setChartData({
+        timeLabels,
+        failed: failedCalls,
+        success: successCalls,
+      });
+      setLastFilter(selectedFilter); // Update the last filter used
+    } catch (error) {
+      console.error("Error fetching call summary data:", error.message);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  useEffect(() => {
+    // Fetch data only if the selected filter changes
+    if (selectedFilter !== lastFilter) {
+      fetchCallSummary();
+    }
+  }, [selectedFilter]); // Trigger effect when selectedFilter changes
 
   // ECharts Configuration
   const chartOptions = {
@@ -44,7 +122,7 @@ const CallSummaryChart = () => {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: ["12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30"],
+      data: chartData.timeLabels,
       axisLine: {
         lineStyle: { color: "#D1E4F3" },
       },
@@ -56,7 +134,7 @@ const CallSummaryChart = () => {
     },
     yAxis: {
       type: "value",
-      min: -1,
+      min: 0, // Ensure the min is 0 for better representation
       axisLine: { lineStyle: { color: "#D1E4F3" } },
       axisLabel: {
         fontFamily: "Inter",
@@ -69,7 +147,7 @@ const CallSummaryChart = () => {
       {
         name: "Failed",
         type: "line",
-        data: [9, 7, 15, 0, 0, 9, 4, 1, 2, 9],
+        data: chartData.failed,
         itemStyle: {
           color: {
             type: "linear",
@@ -91,7 +169,7 @@ const CallSummaryChart = () => {
       {
         name: "Success",
         type: "line",
-        data: [10, 12, 5, 22, 1, 4, 6, 3, 19, 7],
+        data: chartData.success,
         itemStyle: {
           color: {
             type: "linear",
@@ -115,16 +193,18 @@ const CallSummaryChart = () => {
 
   return (
     <div>
+      <CommonCardHeader
+        title="Detailed Call Summary"
+        subtitle={`Data from ${selectedFilter}`}
+        buttonText="View Report"
+        onButtonClick={handleButtonClick}
+      />
       <div>
-        <CommonCardHeader
-          title="Detailed Call Summary"
-          subtitle="Data from last 24 hours"
-          buttonText="View Report"
-          onButtonClick={handleButtonClick}
-        />
-        <div>
-          <ReactECharts option={chartOptions} style={{top:"-16px"}}/>
-        </div>
+        {loading ? (
+          <p>Loading data...</p> // Show a loading message while fetching data
+        ) : (
+          <ReactECharts option={chartOptions} style={{ top: "-16px" }} />
+        )}
       </div>
     </div>
   );

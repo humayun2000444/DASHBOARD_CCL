@@ -101,15 +101,6 @@ const CDRTable = ({ dashboardCDR }) => {
     return formattedDuration.trim();
   };
 
-  // //     { field: "extension", headerName: "Extension", flex: 1 },
-  //   { field: "callerNumber", headerName: "Caller Number", flex: 1 },
-  //   { field: "callerDestination", headerName: "Caller Destination", flex: 1 },
-  //   { field: "callType", headerName: "Call Type", flex: 1 },
-  //   { field: "date", headerName: "Date", flex: 1 },
-  //   { field: "time", headerName: "Time", flex: 1 },
-  //   { field: "duration", headerName: "Duration", flex: 1 },
-  //   { field: "status", headerName: "Status", flex: 1 },
-  //   { field: "hangupCause", headerName: "Hangup Cause", flex: 1 },
   return (
     <>
       {loading ? (

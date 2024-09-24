@@ -113,7 +113,7 @@ const UserDashBoard = () => {
           >
             <div style={{flex: 1, height: "400px"}}> {/* Same fixed height for both components */}
               <div style={commonContainerStyle}>
-                <CallSummaryChart/>
+                <CallSummaryChart selectedFilter={selectedFilter}/>
               </div>
             </div>
 
