@@ -12,16 +12,13 @@ const FullPageLayout = ({ children, ...rest }) => {
     //    }
     //  )}
     //>
-    <div
-      className={classnames(
-        "full-layout wrapper  blank-page dark-layout",
-        {
+    <div className={classnames("full-layout wrapper  blank-page dark-layout", {
           "layout-dark": themeConfig.layoutDark
-        }
+    }
       )}
       style={{ backgroundColor: "#eff2f7"}}
     >
-      
+
       <div className="app-content">
         <div className="content-wrapper">
           <div className="content-body">

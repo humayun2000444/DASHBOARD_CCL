@@ -61,7 +61,6 @@ const UserName = (props) => {
   } else {
     username = "John Doe";
   }
-
   return username;
 };
 const ThemeNavbar = (props) => {
@@ -94,10 +93,7 @@ const ThemeNavbar = (props) => {
       >
         <div className="navbar-wrapper">
           <div className="navbar-container content">
-            <div
-              className="navbar-collapse d-flex justify-content-between align-items-center"
-              id="navbar-mobile"
-            >
+            <div className="navbar-collapse d-flex justify-content-between align-items-center" id="navbar-mobile">
               <div className="bookmark-wrapper">
                 <SidebarHeader
                   toggleSidebarMenu={toggleSidebarMenu}
