@@ -194,7 +194,7 @@ const CallSummaryChart = ({ selectedFilter }) => {
   return (
     <div>
       <CommonCardHeader
-        title="Detailed Call Summary"
+        title="Call Summary"
         subtitle={`Data from ${selectedFilter}`}
         buttonText="View Report"
         onButtonClick={handleButtonClick}
