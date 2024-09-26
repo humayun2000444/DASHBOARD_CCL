@@ -380,12 +380,11 @@ class NavbarUser extends React.PureComponent {
   //  latestChat.current = chat;
 
   countFunction = () => {
-    axios
-      .get(`${rootUrl}Notification/UserNotificationCount`, {
-        headers: {
-          authorization: AuthStr,
-        },
-      })
+    axios.get(`${rootUrl}Notification/UserNotificationCount`, {
+      headers: {
+        authorization: AuthStr,
+      },
+    })
       .then((res) => {
         this.setState({ notificationCount: res?.data });
       });
@@ -442,7 +441,7 @@ class NavbarUser extends React.PureComponent {
           className="dropdown-notification nav-item"
         >
           <DropdownToggle tag="a" className="nav-link nav-link-label">
-            
+
             <i class="fa-regular fa-message fa-20px"></i>
             <Badge pill color="primary" className="badge-up">
               {" "}
@@ -454,11 +453,11 @@ class NavbarUser extends React.PureComponent {
              <div className="d-flex justify-content-between">
              <div className="dropdown-header mt-0">
                 <h6 className=" notification-title text-white">{this?.state?.notificationCount} Unread Notifications</h6>
-                
+
               </div>
               <div className="dropdown-header mt-0" style={{cursor: 'pointer'}}>
-             
-                
+
+
               </div>
              </div>
             </li>
@@ -470,13 +469,13 @@ class NavbarUser extends React.PureComponent {
             >
              {
                this.state.notificationData?.map((data,i) => (
-                  <div id={i} 
-               
-                  
+                  <div id={i}
+
+
                    className={data?.isSeen? 'd-flex justify-content-between notification-active-style': 'd-flex justify-content-between notification-inactive-style'}>
                 <Media className="d-flex align-items-start">
-                  
-                
+
+
                  <Media body>
                     <Media style={{color: '#1D94AB'}} heading className=" media-heading" tag="h6" onClick={()=>this.redirect(data)}>
                       {data?.title}
@@ -486,19 +485,19 @@ class NavbarUser extends React.PureComponent {
                     </p>
                   </Media>
                   <small>
-                   
-                  
-                 
+
+
+
                   </small>
-                 
+
                 </Media>
-              </div> 
+              </div>
                ))
              }
-           
-             
-            
-             
+
+
+
+
             </PerfectScrollbar>
             <li className="dropdown-menu-footer">
               <div className="p-3 notification-footer-style text-center dropdown-bottom-header" onClick={()=>this.allNotifications()}>
@@ -511,12 +510,7 @@ class NavbarUser extends React.PureComponent {
 
         <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
           <DropdownToggle tag="a" className="nav-link dropdown-user-link">
-            <div className="user-nav d-sm-flex d-none">
-              <span className="user-name text-bold-600">
-                {userInfo?.displayName}
-              </span>
-              <span className="user-status">{userInfo?.roleName}</span>
-            </div>
+
             <span data-tour="user">
               <img
                 src={
@@ -524,17 +518,24 @@ class NavbarUser extends React.PureComponent {
                     ? user
                     : rootUrl + userInfo?.displayImage
                 }
-                className="round"
-                height="40"
-                width="40"
+                className="rounded-circle"
+                height="48"
+                width="48"
                 alt="avatar"
               />
             </span>
+            <div className="user-nav d-sm-flex d-none">
+              <span className="user-name text-bold-600">
+                {userInfo?.displayName} Syed Easin
+              </span>
+              <span className="user-status">{userInfo?.roleName}Software Engineer</span>
+            </div>
           </DropdownToggle>
-          <UserDropdown switch={this?.state?.canSwitch} />
+          <UserDropdown switch={this?.state?.canSwitch}/>
         </UncontrolledDropdown>
       </ul>
     );
   }
 }
+
 export default NavbarUser;
