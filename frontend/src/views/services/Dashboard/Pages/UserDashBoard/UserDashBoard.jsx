@@ -88,9 +88,9 @@ const UserDashBoard = () => {
               >
                 Dashboard Overview
               </h1>
-              <span>
-                <LiveClock/>
-              </span>
+              {/*<span>*/}
+              {/*  <LiveClock/>*/}
+              {/*</span>*/}
             </div>
 
             {/* Filter Tabs */}
@@ -134,7 +134,7 @@ const UserDashBoard = () => {
             fontSize: "14px",
             fontWeight: 400,
             border: "1px solid #E6F5F8",
-          marginTop: "28px",}}>
+            marginTop: "28px",}}>
             <DashboardCdrTable/>
           </div>
 
