@@ -139,7 +139,7 @@ const DashboardCallStatus = ({ selectedFilter }) => {
 
       {/* Chart Section */}
       <div style={useStyles.chartContainer}>
-        <div style={useStyles.chartSection}>
+        <div style={{...useStyles.chartSection, position: 'relative'}}>
           <Doughnut
             data={chartData}
             options={{
@@ -147,25 +147,35 @@ const DashboardCallStatus = ({ selectedFilter }) => {
               maintainAspectRatio: false, // Allows custom height and width
               cutout: '90%', // Adjusts the thickness of the doughnut
               plugins: {
-                tooltip: { enabled: !isDataEmpty }, // Disable tooltip when no data
+                tooltip: {enabled: !isDataEmpty}, // Disable tooltip when no data
               },
             }}
             height={230} // Custom height
             width={230} // Custom width
           />
+
           <h3 style={{
             position: 'absolute',
-            top: '34.5%',
-            left: '72.5%',
-            transform: 'translate(-50%, -50%)', // Centering the text
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)', // Perfectly centers the text
             fontSize: '24px',
             fontWeight: 'bold',
-            color: isDataEmpty ? '#1d94ab' : '#1d94ab', // Gray text for no data
+            color: isDataEmpty ? '#1d94ab' : '#1d94ab', // Same color for simplicity
+            textAlign: 'center', // Centers text inside the h3
           }}>
             {isDataEmpty ? "0" : callData.total}
-            <span style={{display: 'block', fontSize: '14px', fontWeight:400, color: '#888888'}}>Total Calls</span>
+            <span style={{
+              display: 'block',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#888888',
+            }}>
+      Total Calls
+    </span>
           </h3>
         </div>
+
 
         <div style={useStyles.detailsList}>
           {[
@@ -185,7 +195,8 @@ const DashboardCallStatus = ({ selectedFilter }) => {
                 <div style={{...useStyles.coloredCircle, backgroundColor: item.color}}/>
                 <span style={useStyles.rightLabel}>{item.label}:</span>
               </div>
-              <span style={useStyles.rightCallCount}>{item.value === 0 ? "0" : item.value}</span> {/* Show 0 instead of N/A */}
+              <span
+                style={useStyles.rightCallCount}>{item.value === 0 ? "0" : item.value}</span> {/* Show 0 instead of N/A */}
             </div>
           ))}
         </div>
