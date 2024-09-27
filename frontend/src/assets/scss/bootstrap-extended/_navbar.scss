@@ -288,9 +288,9 @@
           .user-nav {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
+            align-items: flex-start;
             float: left;
-            margin-right: $spacer - 0.2;
+            margin-left: $spacer - 0.2;
           }
         }
 
