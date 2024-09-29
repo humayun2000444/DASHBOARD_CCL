@@ -7,6 +7,7 @@ class CallState {
       this.incomingUser = null;
       this.mediaStream = null;
       this.phoneNumber = null;
+      this.windowStatus = null;
       CallState.instance = this;
     }
     return CallState.instance;
@@ -52,7 +53,12 @@ class CallState {
   getIncomingCallStatus() {
     return this.incomingCallStatus;
   }
-
+  setWindowStatus(status) {
+    this.windowStatus = status;
+  }
+  getWindowStatus() {
+    return this.windowStatus;
+  }
   getOutgoingCallStatus() {
     return this.outgoingCallStatus;
   }

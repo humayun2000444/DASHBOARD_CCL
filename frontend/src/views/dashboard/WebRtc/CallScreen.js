@@ -11,14 +11,16 @@ import {
   PhoneDisabled as PhoneDisabledIcon,
   MicOff as MicOffIcon,
 } from "@mui/icons-material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import webSocketClient from "./WebSocketClient";
+import React, { useEffect, useState } from "react";
+import CallState from "./CallState";
+import JanusEvent from "./Responses";
 
 export default function CallScreen({ onEndCall }) {
   const [micEnabled, setMicEnabled] = useState(true);
   const [caller, setCaller] = useState(null);
   const [callStartTime, setCallStartTime] = useState(null);
   const [callDuration, setCallDuration] = useState("00:00:00");
+  const callerName = CallState.getIncomingUser();
 
 
 
@@ -47,9 +49,6 @@ export default function CallScreen({ onEndCall }) {
       return () => clearInterval(intervalId);
     }
   }, []);
-
-
-
   const getCallDuration = (startTime) => {
     if (!startTime) return "00:00:00";
     const now = new Date();
@@ -77,10 +76,7 @@ export default function CallScreen({ onEndCall }) {
       </Box>
     );
   }
-  const handleCall = () => {
 
-    window.close();
-  };
 
   return (
     <Box
@@ -144,8 +140,7 @@ export default function CallScreen({ onEndCall }) {
         </IconButton>
 
         <IconButton
-          onClick={() => webSocketClient.sendHangupRequest }
-          // onClick={window.close}
+          onClick={window.close}
           sx={{
             backgroundColor: "red",
             color: "white",
