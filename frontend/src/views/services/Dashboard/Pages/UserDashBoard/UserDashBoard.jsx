@@ -81,12 +81,14 @@ const UserDashBoard = () => {
               <h1
                 style={{
                   fontFamily: "Inter",
-                  fontSize: "2rem",
-                  fontWeight: 700,
-                  color: "#2E3A45",
+                  fontSize: "30px",
+                  lineHeight:"36px",
+                  fontWeight: 600,
+                  letterSpacing:"-1px",
+                  color: "#09090B",
                 }}
               >
-                Dashboard Overview
+                Dashboard
               </h1>
               {/*<span>*/}
               {/*  <LiveClock/>*/}
@@ -107,7 +109,7 @@ const UserDashBoard = () => {
               justifyContent: "flex-start", // Align both components to the start
               alignItems: "flex-start", // Top alignment
               width: "100%",
-              gap: "28px",
+              gap: "18px",
               height: "auto", // Ensures container is flexible with content height
             }}
           >
@@ -134,7 +136,7 @@ const UserDashBoard = () => {
             fontSize: "14px",
             fontWeight: 400,
             border: "1px solid #E6F5F8",
-            marginTop: "28px",}}>
+            marginTop: "18px",}}>
             <DashboardCdrTable/>
           </div>
 

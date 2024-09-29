@@ -485,9 +485,6 @@ class NavbarUser extends React.PureComponent {
                     </p>
                   </Media>
                   <small>
-
-
-
                   </small>
 
                 </Media>

@@ -12,35 +12,38 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
   const styles = {
     container: {
       display: 'inline-flex',
-      justifyContent: 'right',
-      padding: '8px', // Add some spacing around the button group
+      justifyContent: 'flex-end', // Right-align buttons
+      padding: '4px', // Space around the button group
+      gap: '0px', // Space between each button
     },
     button: {
       textTransform: 'none',
-      fontFamily: 'Inter',
+      fontFamily: 'Inter, sans-serif',
       fontSize: '14px',
       lineHeight: '20px',
-      color: '#656575', // Subtle grey text for inactive buttons
-      padding: '10px 16px', // Balanced padding for a cleaner look
-      borderRadius: '8px',
-      border: '1px solid transparent', // Transparent border to maintain layout consistency
-      fontWeight: '400',
-      backgroundColor: '#F4F4F5', // Default background for buttons
-      transition: 'all 0.3s ease', // Smooth transitions for hover/active
+      color: '#71717A',
+      backgroundColor: 'rgba(244,244,245,0)',
+      padding: '6px 12px',
+      borderRadius: '6px',
+      border: '1px solid transparent',
+      fontWeight: '500',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease-in-out',
     },
     activeButton: {
-      backgroundColor: '#ffffff', // White background for active button
-      fontWeight: 'bold', // Bold text for active filter
-      border: '1px solid #1d94ab', // Border with the primary color
-      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)', // Soft shadow for active state
-      color: '#1d94ab', // Primary color for active button text
-      transition: 'all 0.3s ease',
+      backgroundColor: '#ffffff',
+      fontWeight: 600,
+      border: '1px solid #E4E4E7',
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.0)',
+      color: '#09090B',
     },
     hoverButton: {
-      backgroundColor: '#e6f5f8', // Slightly lighter shade of primary for hover
-      color: '#1d94ab', // Primary color on hover
+      backgroundColor: '#E5E7EB',
+      color: '#3F3F46',
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.0)',
     },
   };
+
 
   return (
     <Box sx={styles.container}>

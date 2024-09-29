@@ -83,6 +83,14 @@ const ThemeNavbar = (props) => {
     menuShadow,
   } = props;
 
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const authRoles = userInfo && userInfo.authRoles ? userInfo.authRoles[0].name : null;
+
+  // Example button click handler
+  const handleClick = () => {
+    console.log("Button clicked!");
+  };
+
   return (
     <React.Fragment>
       <div className="content-overlay" />
@@ -186,82 +194,99 @@ const ThemeNavbar = (props) => {
                 {/*  </div>*/}
                 {/*</div>*/}
                 <div className="navbar-right-content" style={{display: "flex", alignItems: "center", gap: "8px"}}>
-                  <NotificationsNoneIcon sx={{ width: 48, height: 48, color: "#0f172a", padding:"10px", backgroundColor:"rgba(15,23,42,0.06)", borderRadius:"100px" }} />
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      backgroundColor: "#0f172a",
-                      height: "48px",
-                      textAlign: "left",
-                      fontFamily: "Inter",
-                      borderRadius: "8px",
-                      padding: "5px 12px",
-                      gap: 1,
-                      px: 1.5,
-                      py: 0.5,
-                      color: "#fff",
-                      border: "1px solid #fff",
-                      '&:hover': {
-                        backgroundColor: "#0f172a", // Lighter shade on hover
-                        borderColor: "#0f172a", // Change border color on hover
-                      },
-                    }}
-                  >
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap:0,}}>
-                      <Typography variant="body2" sx={{color: "#fff", fontSize: "8px", fontWeight: 400}}>
-                        Account Balance
-                      </Typography>
-                      <Typography variant="h6" sx={{color: "#fff", fontFamily:"Inter", fontSize: "16px", fontWeight: "bold"}}>
-                        ৳320.00
-                      </Typography>
-                    </div>
-                    <ArrowDropDownIcon sx={{width: 20, height: 20, color: '#fff'}}/> {/* White arrow */}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      backgroundColor: "#1D94AB",
-                      height: 48,
-                      borderRadius: 2,
-                      px: 1.5,
-                      py: 0.5,
-                      gap: 1,
-                      color: "#fff",
-                      borderColor: "#fff",
-                      textAlign: "left",
-                      "&:hover": {
-                        backgroundColor: "#1d6f81",
-                        borderColor: "#1d6f81",
-                      },
-                    }}
-                  >
-                    <AddIcon sx={{ width: 20, height: 20, color: "#fff" }} />
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: "#fff",
-                          fontSize: 16,
-                          textTransform: "capitalize",
-                          fontWeight: 400,
-                        }}
-                      >
-                        Recharge
-                      </Typography>
-                    </Box>
-                  </Button>
+                  <NotificationsNoneIcon sx={{
+                    width: 48,
+                    height: 48,
+                    color: "#0f172a",
+                    padding: "10px",
+                    backgroundColor: "rgba(15,23,42,0.06)",
+                    borderRadius: "100px"
+                  }}/>
+                  <div className="navbar-buttons">
+                    {authRoles === "ROLE_USER" &&(
+                      <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                        {/* Account Balance Button */}
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            backgroundColor: "#0f172a",
+                            height: "48px",
+                            textAlign: "left",
+                            fontFamily: "Inter",
+                            borderRadius: "8px",
+                            padding: "5px 12px",
+                            gap: 1,
+                            px: 1.5,
+                            py: 0.5,
+                            color: "#fff",
+                            border: "1px solid #fff",
+                            "&:hover": {
+                              backgroundColor: "#0f172a",
+                              borderColor: "#0f172a",
+                            },
+                          }}
+                        >
+                          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0}}>
+                            <Typography variant="body2" sx={{color: "#fff", fontSize: "8px", fontWeight: 400}}>
+                              Account Balance
+                            </Typography>
+                            <Typography variant="h6"
+                                        sx={{color: "#fff", fontFamily: "Inter", fontSize: "16px", fontWeight: "bold"}}>
+                              ৳320.00
+                            </Typography>
+                          </div>
+                          <ArrowDropDownIcon sx={{width: 20, height: 20, color: "#fff"}}/>
+                        </Button>
+
+                        {/* Recharge Button */}
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            backgroundColor: "#1D94AB",
+                            height: 48,
+                            borderRadius: 2,
+                            px: 1.5,
+                            py: 0.5,
+                            gap: 1,
+                            color: "#fff",
+                            borderColor: "#fff",
+                            textAlign: "left",
+                            "&:hover": {
+                              backgroundColor: "#1d6f81",
+                              borderColor: "#1d6f81",
+                            },
+                          }}
+                        >
+                          <AddIcon sx={{width: 20, height: 20, color: "#fff"}}/>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: "#fff",
+                                fontSize: 16,
+                                textTransform: "capitalize",
+                                fontWeight: 400,
+                              }}
+                            >
+                              Recharge
+                            </Typography>
+                          </Box>
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                   <NavbarUser
                     handleAppOverlay={props.handleAppOverlay}
                     changeCurrentLang={props.changeCurrentLang}
