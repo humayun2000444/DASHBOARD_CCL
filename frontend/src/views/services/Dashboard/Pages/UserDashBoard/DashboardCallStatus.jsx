@@ -106,10 +106,27 @@ const DashboardCallStatus = ({ selectedFilter }) => {
 
     try {
       if (role === "ROLE_ADMIN") {
-        const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(token, startStamp, endStamp);
-        const outgoingCall = await adminDashboardServices.fetchOutgoingCallForAdmin(token, startStamp, endStamp);
-        const incomingCall = await adminDashboardServices.fetchIncomingCallForAdmin(token, startStamp, endStamp);
-        const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(token, startStamp, endStamp);
+        const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
+          token,
+          { startStamp, endStamp }
+        );
+        const outgoingCall =
+          await adminDashboardServices.fetchOutgoingCallForAdmin(token, {
+            startStamp,
+            endStamp,
+          });
+        const incomingCall =
+          await adminDashboardServices.fetchIncomingCallForAdmin(token, {
+            startStamp,
+            endStamp,
+          });
+        const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
+          token,
+          {
+            startStamp,
+            endStamp,
+          }
+        );
 
         setTotalCallData(totalCall);
         setOutgoingCallData(outgoingCall);
@@ -124,17 +141,19 @@ const DashboardCallStatus = ({ selectedFilter }) => {
           endStamp,
         });
 
-        const outgoingCall = await adminDashboardServices.fetchOutgoingCallForUser({
-          callerIdNumber: [...allPrefixArr],
-          startStamp,
-          endStamp,
-        });
+        const outgoingCall =
+          await adminDashboardServices.fetchOutgoingCallForUser({
+            callerIdNumber: [...allPrefixArr],
+            startStamp,
+            endStamp,
+          });
 
-        const incomingCall = await adminDashboardServices.fetchIncomingCallForUser({
-          callerIdNumber: [...allPrefixArr],
-          startStamp,
-          endStamp,
-        });
+        const incomingCall =
+          await adminDashboardServices.fetchIncomingCallForUser({
+            callerIdNumber: [...allPrefixArr],
+            startStamp,
+            endStamp,
+          });
 
         const missedCall = await adminDashboardServices.fetchMissedCallForUser({
           callerIdNumber: [...allPrefixArr],
@@ -159,14 +178,23 @@ const DashboardCallStatus = ({ selectedFilter }) => {
   const callStatuses = [
     { label: "Total calls", value: totalCallData, Icon: CallIcon },
     { label: "Outgoing calls", value: outgoingCallData, Icon: CallMadeIcon },
-    { label: "Incoming calls", value: incomingCallData, Icon: CallReceivedIcon },
+    {
+      label: "Incoming calls",
+      value: incomingCallData,
+      Icon: CallReceivedIcon,
+    },
     { label: "Missed calls", value: missedCallData, Icon: CallMissedIcon },
   ];
 
   return (
     <div style={styles.cardWrapper}>
       {callStatuses.map((status, index) => (
-        <CallStatusCard key={index} label={status.label} value={status.value} Icon={status.Icon} />
+        <CallStatusCard
+          key={index}
+          label={status.label}
+          value={status.value}
+          Icon={status.Icon}
+        />
       ))}
     </div>
   );

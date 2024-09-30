@@ -1,19 +1,16 @@
 import axios from "axios";
-import { root2, root} from "../../constants/constants"; // Assuming root2 is the base API URL
+import { root2, root } from "../../constants/constants"; // Assuming root2 is the base API URL
 
+const url = `${root2}5070/admin/DashBoard/`;
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
-  fetchTotalCallForAdmin: async (token) => {
+  fetchTotalCallForAdmin: async (token, payload) => {
     try {
-      const response = await axios.post(
-        `${root2}5070/admin/getTotalCall`,
-        {}, // Empty body if not needed
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${url}getTotalCall`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching Total calls:", error);
@@ -22,17 +19,13 @@ const adminDashboardServices = {
   },
 
   // Fetch Outgoing Calls for Admin
-  fetchOutgoingCallForAdmin: async (token) => {
+  fetchOutgoingCallForAdmin: async (token, payload) => {
     try {
-      const response = await axios.post(
-        `${root2}5070/admin/getOutgoingCall`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${url}getOutgoingCall`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching Outgoing calls:", error);
@@ -41,17 +34,13 @@ const adminDashboardServices = {
   },
 
   // Fetch Incoming Calls for Admin
-  fetchIncomingCallForAdmin: async (token) => {
+  fetchIncomingCallForAdmin: async (token, payload) => {
     try {
-      const response = await axios.post(
-        `${root2}5070/admin/getIncomingCall`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${url}getIncomingCall`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching Incoming calls:", error);
@@ -60,17 +49,13 @@ const adminDashboardServices = {
   },
 
   // Fetch Missed Calls for User
-  fetchMissedCallForAdmin: async (token) => {
+  fetchMissedCallForAdmin: async (token, payload) => {
     try {
-      const response = await axios.post(
-        `${root2}5070/admin/getMissedCall`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${url}getMissedCall`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching Missed calls:", error);

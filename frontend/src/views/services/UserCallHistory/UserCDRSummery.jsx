@@ -71,34 +71,6 @@ const UserCDRSummery = () => {
       <Card className="mt-3">
         <CardBody>
           <h3>User CDR Summary for DID: {didNumber}</h3>
-
-          {/* <div className="mt-3">
-            {callHistory ? (
-              <Table id="table-to-xls" className="table-sm table-bordered">
-                <TableHead className="thead-uapp-bg">
-                  <TableRow style={{ textAlign: "center" }}>
-                    {tableHeaders?.map((header, index) => (
-                      <th key={index}>{header}</th>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {callHistory.map((history) => {
-                    <TableRow>
-                      <td>{history?.callerIdNumber}</td>
-                      <td>{history?.totalCalls}</td>
-                      <td>{history?.missedCalls}</td>
-                      <td>{history?.incomingCalls}</td>
-                      <td>{history?.outgoingCalls}</td>
-                    </TableRow>;
-                  })}
-                </TableBody>
-              </Table>
-            ) : (
-              <p>No data available for this DID number.</p>
-            )}
-          </div> */}
-
           <Table id="table-to-xls" className="table-sm table-bordered">
             <TableHead className="thead-uapp-bg">
               <TableRow style={{ textAlign: "center" }}>
