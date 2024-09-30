@@ -1,80 +1,211 @@
-import React from "react";
-import { Card, CardBody } from "reactstrap";
-
-import "../../../../../assets/scss/pages/dashboard-analytics.scss";
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, CardBody, Button } from "reactstrap";
 import ReactECharts from "echarts-for-react";
+import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
-const CallSummaryChart = () => {
-  const option = {
-    title: {
-      text: "Call Summery",
-    },
+const CallSummaryChart = ({ selectedFilter }) => {
+  const [chartData, setChartData] = useState({
+    failed: [],
+    success: [],
+    timeLabels: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const [lastFilter, setLastFilter] = useState("");
+
+  const handleButtonClick = () => {
+    console.log("Button clicked!");
+  };
+
+  const fetchCallSummary = async () => {
+    if (loading) return; // Prevent multiple fetches
+    setLoading(true); // Set loading state
+
+    const now = new Date();
+    let startStamp;
+    let endStamp = now.toISOString();
+
+    switch (selectedFilter) {
+      case "Last 1 hour":
+        startStamp = new Date(now.getTime() - 60 * 60 * 1000).toISOString(); // 1 hour ago
+        break;
+      case "Last 24 hours":
+        startStamp = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(); // 24 hours ago
+        break;
+      case "Last 7 days":
+        startStamp = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
+        break;
+      case "Last 30 days":
+        startStamp = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ago
+        break;
+      default:
+        setLoading(false);
+        return; // Exit if no valid filter is selected
+    }
+
+    const requestData = {
+      callerIdNumber: ["09646710720", "09646896378"], // Example callerIdNumbers
+      startStamp,
+      endStamp,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://iptsp.cosmocom.net:5070/user/DashBoard/getIntervalWiseCall",
+        requestData
+      );
+      const data = response.data;
+
+      // Prepare data for the chart
+      const timeLabels = [];
+      const failedCalls = [];
+      const successCalls = [];
+
+      data.forEach(item => {
+        timeLabels.push(new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        failedCalls.push(item.failedCalls);
+        successCalls.push(item.successCalls);
+      });
+
+      setChartData({
+        timeLabels,
+        failed: failedCalls,
+        success: successCalls,
+      });
+      setLastFilter(selectedFilter); // Update the last filter used
+    } catch (error) {
+      console.error("Error fetching call summary data:", error.message);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  useEffect(() => {
+    // Fetch data only if the selected filter changes
+    if (selectedFilter !== lastFilter) {
+      fetchCallSummary();
+    }
+  }, [selectedFilter]); // Trigger effect when selectedFilter changes
+
+  // ECharts Configuration
+  const chartOptions = {
     tooltip: {
       trigger: "axis",
+      backgroundColor: "#ffffff",
+      borderColor: "#D1E4F3",
+      borderWidth: 1,
+      textStyle: {
+        color: "#374151",
+        fontFamily: "Inter",
+        fontSize: 12,
+      },
     },
     legend: {
       data: ["Failed", "Success"],
-      right: 10,
+      bottom: 0,
+      icon: "circle",
+      itemWidth: 12,
+      itemHeight: 12,
+      textStyle: {
+        fontFamily: "Inter",
+        fontSize: 14,
+        color: "#374151",
+      },
     },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
+      top: "-2%",
+      left: "0%",
+      right: "3%",
+      bottom: "12%",
       containLabel: true,
     },
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: [
-        "12:15:00",
-        "12:30:00",
-        "12:45:00",
-        "13:00:00",
-        "13:15:00",
-        "13:30:00",
-        "13:45:00",
-        "14:00:00",
-        "14:15:00",
-        "14:30:00",
-      ],
+      data: chartData.timeLabels,
+      axisLine: {
+        lineStyle: { color: "#D1E4F3" },
+      },
+      axisLabel: {
+        fontFamily: "Inter",
+        fontSize: 12,
+        color: "#374151",
+      },
     },
     yAxis: {
       type: "value",
-      min: -1,
+      min: 0, // Ensure the min is 0 for better representation
+      axisLine: { lineStyle: { color: "#D1E4F3" } },
+      axisLabel: {
+        fontFamily: "Inter",
+        fontSize: 12,
+        color: "#374151",
+      },
+      splitLine: { lineStyle: { color: "#E5E7EB" } },
     },
     series: [
       {
         name: "Failed",
         type: "line",
-        stack: "Total",
-        data: [9, 7, 15, 0, 0, 9, 4, 1, 2, 9],
+        data: chartData.failed,
         itemStyle: {
-          color: "red",
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#E74C3C" },
+              { offset: 1, color: "rgba(231, 76, 60, 0.2)" },
+            ],
+          },
         },
+        lineStyle: { width: 2 },
+        symbol: "circle",
+        symbolSize: 6,
+        areaStyle: { color: "rgba(231, 76, 60, 0.2)" },
       },
       {
         name: "Success",
         type: "line",
-        stack: "Total",
-        data: [10, 12, 5, 22, 1, 4, 6, 3, 19, 7],
+        data: chartData.success,
         itemStyle: {
-          color: "green",
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "#1d94ab" },
+              { offset: 1, color: "rgba(29, 148, 171, 0.2)" },
+            ],
+          },
         },
+        lineStyle: { width: 2 },
+        symbol: "circle",
+        symbolSize: 6,
+        areaStyle: { color: "rgba(29, 148, 171, 0.2)" },
       },
     ],
   };
 
   return (
     <div>
-      <Card style={{ marginTop: "20px" }}>
-        <CardBody>
-          <ReactECharts
-            option={option}
-            style={{ height: 300, width: "100%" }}
-          />
-        </CardBody>
-      </Card>
+      <CommonCardHeader
+        title="Call Summary"
+        subtitle={`Data from ${selectedFilter}`}
+        buttonText="View Report"
+        onButtonClick={handleButtonClick}
+      />
+      <div>
+        {loading ? (
+          <p>Loading data...</p> // Show a loading message while fetching data
+        ) : (
+          <ReactECharts option={chartOptions} style={{ top: "-16px" }} />
+        )}
+      </div>
     </div>
   );
 };

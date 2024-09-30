@@ -1085,6 +1085,9 @@ const PaymentReport = lazy(() =>
 const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
+const userProfile = lazy(() =>
+  import("./views/services/Profile/UserProfile.jsx")
+);
 const AssignDid = lazy(() => import("./views/services/DIDPool/AssignDid.jsx"));
 const DidPool = lazy(() => import("./views/services/DIDPool/DidPool.jsx"));
 const RetailPartner = lazy(() =>
@@ -1163,6 +1166,7 @@ class AppRouter extends React.Component {
                     component={CallScreen}
                     fullLayout
                   />
+
                   {/* END WEBRTC */}
                   <AppRoute path="/sales" component={Sales} />
                   <AppRoute path="/ratePlan" component={RatePlan} />
@@ -1206,6 +1210,7 @@ class AppRouter extends React.Component {
                   {/* Easin Code */}
                   {/* PaymentEntry Route  */}
                   <AppRoute path="/paymentEntry" component={PaymentEntry} />
+                  <AppRoute path="/userProfile" component={userProfile}/>
                   {/* CallHistory Route  */}
                   <AppRoute
                     path="/userCallHistory"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
 import CDRTable from "../../../Reports/CDRTable";
+import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
 const rows = [
   {
@@ -100,6 +101,10 @@ const columns = [
   { field: "hangupCause", headerName: "Hangup Cause", flex: 1 },
 ];
 
+const handleButtonClick = () => {
+  console.log("Button clicked!");
+};
+
 const DashboardCdrTable = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -121,18 +126,14 @@ const DashboardCdrTable = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        height: 400,
-        width: "100%",
-        marginTop: "20px",
-        backgroundColor: "#fff",
-        padding: "32px 28px 28px 28px",
-        boxShadow: "0 8px 24px rgba(69,69,80,0.1)",
-        borderRadius: "12px",
-      }}
-    >
-      <h4 style={{ marginBottom: "12px" }}>Call Details Records</h4>
+    <div>
+      <CommonCardHeader
+        title="Call Details Record"
+        subtitle="Data from last 24 hours"
+        buttonText="View Full CDR"
+        onButtonClick={handleButtonClick}
+      />
+      {/*<h4 style={{ marginBottom: "12px" }}>Call Details Records</h4>*/}
       <CDRTable dashboardCDR={true} />
     </div>
   );

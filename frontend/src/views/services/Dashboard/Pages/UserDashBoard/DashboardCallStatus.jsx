@@ -1,53 +1,57 @@
-import React, { useEffect, useState } from "react";
-import CallIcon from "@mui/icons-material/Call";
-import CallMadeIcon from "@mui/icons-material/CallMade";
-import CallMissedIcon from "@mui/icons-material/CallMissed";
-import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import React, { useEffect, useState, useCallback } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import Button from "@mui/material/Button";
 import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
 import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
+import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
-const styles = {
-  cardWrapper: {
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+// Button Click
+const handleButtonClick = () => {
+  console.log("Button clicked!");
+};
+
+const useStyles = {
+  chartContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  chartSection: {
+    width: "50%",
+    textAlign: "center",
+    maxWidth: "300px", // Set max width for the chart section
+  },
+  detailsList: {
+    width: "45%",
+  },
+  detailItem: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
-    gap: 16,
+    padding: "16px 0",
+    borderBottom: "1px dashed #E0E0E0",
   },
-  card: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#fff",
-    boxShadow: "0 8px 24px rgba(69,69,80,0.1)",
-    width: "25%",
-    padding: "18px 22px",
-    borderRadius: "12px",
+  rightLabel: {
     fontFamily: "Inter",
-    fontSize: "14px",
-    fontWeight: 400,
-    textTransform: "capitalize",
+    fontSize: "16px",
+    fontWeight: "600",
+    color: "#333",
   },
-  cardContext: {
-    color: "#656575",
-    fontSize: "14px",
-  },
-  cardValue: {
-    color: "#2D3748",
+  rightCallCount: {
     fontFamily: "Inter",
-    fontSize: "28px",
-    fontWeight: "800",
+    fontSize: "16px",
+    fontWeight: "500",
+    color: "#333",
   },
-  iconWrapper: {
-    backgroundColor: "#EFF2F1",
-    padding: "12px",
-    borderRadius: "12px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  icon: {
-    color: "#006AFF",
+  coloredCircle: {
+    width: "12px",
+    height: "12px",
+    borderRadius: "50%",
+    marginRight: "8px",
   },
 };
 
@@ -55,77 +59,56 @@ const getDateRange = (filter) => {
   const now = new Date();
   let startStamp = new Date();
 
-  switch (filter) {
-    case "Last 1 hour":
-      startStamp.setHours(now.getHours() - 1);
-      break;
-    case "Last 24 hours":
-      startStamp.setDate(now.getDate() - 1);
-      break;
-    case "Last 7 days":
-      startStamp.setDate(now.getDate() - 7);
-      break;
-    case "Last 30 days":
-      startStamp.setDate(now.getDate() - 30);
-      break;
-    default:
-      break;
-  }
+  const ranges = {
+    "Last 1 hour": () => startStamp.setHours(now.getHours() - 1),
+    "Last 24 hours": () => startStamp.setDate(now.getDate() - 1),
+    "Last 7 days": () => startStamp.setDate(now.getDate() - 7),
+    "Last 30 days": () => startStamp.setDate(now.getDate() - 30),
+  };
 
+  ranges[filter]?.();
   return { startStamp: startStamp.toISOString(), endStamp: now.toISOString() };
 };
 
-const CallStatusCard = ({ label, value, Icon }) => {
-  return (
-    <div style={styles.card}>
-      <div className="cardContext">
-        <span style={styles.cardContext}>{label}</span>
-        <br />
-        <span style={styles.cardValue}>{value || "N/A"}</span>
-      </div>
-      <div style={styles.iconWrapper}>
-        <Icon style={styles.icon} />
-      </div>
-    </div>
-  );
-};
-
 const DashboardCallStatus = ({ selectedFilter }) => {
-  const [totalCallData, setTotalCallData] = useState(null);
-  const [outgoingCallData, setOutgoingCallData] = useState(null);
-  const [incomingCallData, setIncomingCallData] = useState(null);
-  const [missedCallData, setMissedCallData] = useState(null);
+  const [callData, setCallData] = useState({
+    total: 0,
+    outgoing: 0,
+    incoming: 0,
+    missed: 0,
+  });
 
   const token = localStorage.getItem("authToken");
   const userToken = JSON.parse(localStorage.getItem("userInfo"));
-  const role = userToken.authRoles[0].name;
+  const { name: role } = userToken.authRoles[0];
   const username = localStorage.getItem("username");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const { startStamp, endStamp } = getDateRange(selectedFilter);
 
     try {
       if (role === "ROLE_ADMIN") {
         const totalCall = await adminDashboardServices.fetchTotalCallForAdmin(
           token,
-          { startStamp, endStamp }
+          startStamp,
+          endStamp
         );
         const outgoingCall =
-          await adminDashboardServices.fetchOutgoingCallForAdmin(token, {
+          await adminDashboardServices.fetchOutgoingCallForAdmin(
+            token,
             startStamp,
-            endStamp,
-          });
+            endStamp
+          );
         const incomingCall =
-          await adminDashboardServices.fetchIncomingCallForAdmin(token, {
+          await adminDashboardServices.fetchIncomingCallForAdmin(
+            token,
             startStamp,
-            endStamp,
-          });
+            endStamp
+          );
         const missedCall = await adminDashboardServices.fetchMissedCallForAdmin(
           token,
-          {
-            startStamp,
-            endStamp,
-          }
+          startStamp,
+          endStamp
         );
 
         setTotalCallData(totalCall);
@@ -169,7 +152,7 @@ const DashboardCallStatus = ({ selectedFilter }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  }, [selectedFilter, role, token, username]);
 
   useEffect(() => {
     fetchData();

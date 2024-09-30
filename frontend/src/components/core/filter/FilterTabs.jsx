@@ -11,36 +11,39 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
   // Inline styles
   const styles = {
     container: {
-      display: 'inline',
-      justifyContent: 'right',
+      display: 'inline-flex',
+      justifyContent: 'flex-end', // Right-align buttons
+      padding: '4px', // Space around the button group
+      gap: '0px', // Space between each button
     },
     button: {
       textTransform: 'none',
-      fontFamily: 'Inter',
+      fontFamily: 'Inter, sans-serif',
       fontSize: '14px',
-      lineHeight: '12px',
-      color: '#656575',
-      padding: '12px 8px',
-      borderRadius: '8px',
-      border: '1px solid transparent', // Keep a transparent border to avoid shaking
-      fontWeight: '400',
-      transition: 'all 0.3s ease', // Smooth transitions for hover/active
+      lineHeight: '20px',
+      color: '#71717A',
+      backgroundColor: 'rgba(244,244,245,0)',
+      padding: '6px 12px',
+      borderRadius: '6px',
+      border: '1px solid transparent',
+      fontWeight: '500',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease-in-out',
     },
     activeButton: {
       backgroundColor: '#ffffff',
-      fontWeight: 'bold',
-      border: '1px solid #d0d7de', // Same border width to avoid layout shift
-      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
-      color: '#656575',
-      padding: '12px 8px', // Ensure padding is identical
-      transition: 'all 0.3s ease', // Smooth effect for active state
+      fontWeight: 600,
+      border: '1px solid #E4E4E7',
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.0)',
+      color: '#09090B',
     },
     hoverButton: {
-      backgroundColor: '#f4f4f5', // Background change on hover
-      color: '#656575',
-      transition: 'all 0.3s ease', // Smooth hover transition
+      backgroundColor: '#E5E7EB',
+      color: '#3F3F46',
+      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.0)',
     },
   };
+
 
   return (
     <Box sx={styles.container}>
@@ -48,8 +51,8 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
         variant="text"
         aria-label="filter tabs"
         style={{
-          background: "#F4F4F5",
-          padding: "4px 4px",
+          background: "#EFF2F1", // Light background for the button group
+          padding: "4px",
           borderRadius: '8px',
           gap: '4px',
         }}>
@@ -60,6 +63,18 @@ const FilterTabs = ({ selectedFilter, onFilterChange }) => {
             style={{
               ...styles.button,
               ...(selectedFilter === filter ? styles.activeButton : {}),
+            }}
+            onMouseOver={(e) => {
+              if (selectedFilter !== filter) {
+                e.currentTarget.style.backgroundColor = styles.hoverButton.backgroundColor;
+                e.currentTarget.style.color = styles.hoverButton.color;
+              }
+            }}
+            onMouseOut={(e) => {
+              if (selectedFilter !== filter) {
+                e.currentTarget.style.backgroundColor = styles.button.backgroundColor;
+                e.currentTarget.style.color = styles.button.color;
+              }
             }}
           >
             {filter}
