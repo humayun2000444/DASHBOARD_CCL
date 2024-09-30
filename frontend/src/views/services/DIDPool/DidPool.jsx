@@ -8,6 +8,20 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import DidPoolModal from "./DidPoolModal";
+import CommonCardHeader from "../../../components/core/commonCardHeader/CommonCardHeader";
+
+
+const commonContainerStyle = {
+  backgroundColor: "#FFFFFF",
+  boxShadow: "0 8px 24px rgba(69, 69, 80, 0.1)",
+  padding: "24px",
+  borderRadius: "12px",
+  fontFamily: "'Inter', sans-serif",
+  fontSize: "14px",
+  fontWeight: 400,
+  border: "1px solid #E6F5F8",
+  height: "100%", // Ensures both components take up full height
+};
 
 const DIDPool = () => {
   const history = useHistory();
@@ -60,24 +74,30 @@ const DIDPool = () => {
 
   return (
     <div>
-      <Card className="mt-3">
-        <CardBody>
-          <div className="d-flex justify-content-between align-items-center">
-            <h3 className="">DID Pool</h3>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddPool}
-              sx={{
-                backgroundColor: "#164677",
-                "&:hover": {
-                  backgroundColor: "#123a5a",
-                },
-              }}
-            >
-              Add DID Pool
-            </Button>
-          </div>
+      <div className="mt-3" style={commonContainerStyle}>
+        <div>
+          <CommonCardHeader
+            title="Did Pool"
+            subtitle="Check your did pools here, view and manage details"
+            buttonText="Add DID Pool"
+            onButtonClick={handleAddPool}
+          />
+          {/*<div className="d-flex justify-content-between align-items-center">*/}
+          {/*  <h3 className="">DID Pool</h3>*/}
+          {/*  <Button*/}
+          {/*    variant="contained"*/}
+          {/*    color="primary"*/}
+          {/*    onClick={handleAddPool}*/}
+          {/*    sx={{*/}
+          {/*      backgroundColor: "#164677",*/}
+          {/*      "&:hover": {*/}
+          {/*        backgroundColor: "#123a5a",*/}
+          {/*      },*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    Add DID Pool*/}
+          {/*  </Button>*/}
+          {/*</div>*/}
 
           <div className="mt-3">
             <Table id="table-to-xls" className="table-sm table-bordered">
@@ -124,8 +144,8 @@ const DIDPool = () => {
               </TableBody>
             </Table>
           </div>
-        </CardBody>
-      </Card>
+        </div>
+      </div>
 
       <DidPoolModal
         show={modalOpen}
