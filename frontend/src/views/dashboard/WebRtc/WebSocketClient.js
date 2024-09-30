@@ -1,11 +1,11 @@
 import JanusEvent from "./Responses";
 import CallState from "./CallState";
+import IncomingCallModal from "./IncomingCallModal";
+import React, {useState} from "react";
 
 class WebSocketClient {
-
   constructor(url, protocol = null, onOutgoingCallStateChange, onIncomingCallStateChange) {
     this.url = url;
-    // this.onMessage = onMessage;
     this.protocol = protocol;
     this.socket = null;
     this.sessionId = null;
@@ -17,43 +17,50 @@ class WebSocketClient {
     this.onOutgoingCallStateChange = onOutgoingCallStateChange;
     this.onIncomingCallStateChange = onIncomingCallStateChange;
     this.pluginHandles = {};
+    this.keepaliveInterval = null;
   }
 
-  incomingCallStatus = false;
   connect(username, password) {
     this.username = username;
     this.password = password;
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      this.socket = this.protocol ? new WebSocket(this.url, this.protocol) : new WebSocket(this.url);
 
-    this.socket = this.protocol ? new WebSocket(this.url, this.protocol) : new WebSocket(this.url);
+      this.socket.onopen = () => {
+        console.log('Connected to WebSocket server');
+        this.sendMessage(JSON.stringify({
+          janus: "create",
+          transaction: this.getRandomString(12)
+        }));
+      };
 
-    this.socket.onopen = () => {
-      console.log('Connected to the WebSocket server');
-      this.sendMessage(JSON.stringify({
-        janus: "create",
-        transaction: WebSocketClient.randomString(12)
-      }));
-    };
+      this.socket.onmessage = (event) => {
+        this.handleEvent(JSON.parse(event.data));
+      };
 
-    this.socket.onmessage = (event) => {
-      // console.log(event.data.toString());
-      this.handleEvent(JSON.parse(event.data));
-    };
+      this.socket.onclose = () => {
+        console.log('Disconnected from WebSocket server');
+        this.reconnect();
+      };
 
-    this.socket.onclose = () => {
-      console.log('Disconnected from the WebSocket server');
-    };
+      this.socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
 
-    this.socket.onerror = (error) => {
-      console.error('WebSocket error', error);
-    };
-
-    this.keepaliveInterval = setInterval(() => {
-      if (this.sessionId) {
-        this.sendKeepalive();
-      }
-    }, 15000);
+      this.keepaliveInterval = setInterval(() => {
+        if (this.sessionId) {
+          this.sendKeepalive();
+        }
+      }, 15000);
+    }
   }
 
+  reconnect() {
+    console.log('Reconnecting to WebSocket server...');
+    setTimeout(() => {
+      this.connect(this.username, this.password);
+    }, 5000); // Reconnect after 5 seconds
+  }
   sendMessage(message) {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       // console.log(message.toString());
@@ -66,7 +73,7 @@ class WebSocketClient {
       this.sendMessage(JSON.stringify({
         janus: "keepalive",
         session_id: this.sessionId,
-        transaction: WebSocketClient.randomString(12)
+        transaction: this.getRandomString(12)
       }));
     }
   }
@@ -104,7 +111,7 @@ class WebSocketClient {
               secret: this.password,
               // proxy: "sip:103.95.96.100:5060"
             },
-            transaction: WebSocketClient.randomString(12),
+            transaction: this.getRandomString(12),
             session_id: this.sessionId,
             handle_id: this.handleId
           }));
@@ -117,8 +124,8 @@ class WebSocketClient {
         this.sendMessage(JSON.stringify({
           janus: "attach",
           plugin: "janus.plugin.sip",
-          opaque_id: `siptest-${WebSocketClient.randomString(12)}`,
-          transaction: WebSocketClient.randomString(12),
+          opaque_id: `siptest-${this.getRandomString(12)}`,
+          transaction: this.getRandomString(12),
           session_id: this.sessionId
         }));
         this.attached = true;
@@ -129,11 +136,13 @@ class WebSocketClient {
       {
         if(!this.incomingCallStatus)
         {
+          CallState.setWindowStatus("hangup");
           CallState.setOutgoingCallStatus("idle");
           if (this.onOutgoingCallStateChange) this.onOutgoingCallStateChange("idle");
         }
         else
         {
+          CallState.setWindowStatus("hangup");
           CallState.setIncomingCallStatus("idle");
           if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("idle");
         }
@@ -212,10 +221,12 @@ class WebSocketClient {
           callState.setIncomingCallStatus("incomingcall");
           callState.setIncomingUser(janusEvent.getDisplayname());
 
+
           if (this.onIncomingCallStateChange) this.onIncomingCallStateChange("incomingcall");
         }
       }
     }
+
     else if(janusEvent.getEvent === "accepted") {
       if(!this.incomingCallStatus)
       {
@@ -251,7 +262,7 @@ class WebSocketClient {
         uri: `sip:${uri}@103.95.96.100`,
         autoaccept_reinvites: false
       },
-      transaction: WebSocketClient.randomString(12),
+      transaction: this.getRandomString(12),
       jsep: {
         type: "offer",
         sdp: sdp
@@ -268,7 +279,7 @@ class WebSocketClient {
       body: {
         request: "accept"
       },
-      transaction: WebSocketClient.randomString(12),
+      transaction: this.getRandomString(12),
       jsep: {
         type: "answer",
         sdp: sdp
@@ -283,7 +294,7 @@ class WebSocketClient {
       body: {
         request: "decline"
       },
-      transaction: WebSocketClient.randomString(12),
+      transaction: this.getRandomString(12),
       session_id: this.sessionId,
       handle_id: this.handleId
     }));
@@ -295,20 +306,20 @@ class WebSocketClient {
       body: {
         request: "hangup"
       },
-      transaction: WebSocketClient.randomString(12),
+      transaction: this.getRandomString(12),
       session_id: this.sessionId,
       handle_id: this.handleId
     }));
   }
 
-  static randomString(len) {
+  getRandomString(len) {
     const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let randomString = '';
+    let getRandomString = '';
     for (let i = 0; i < len; i++) {
       const randomPoz = Math.floor(Math.random() * charSet.length);
-      randomString += charSet.substring(randomPoz, randomPoz + 1);
+      getRandomString += charSet.substring(randomPoz, randomPoz + 1);
     }
-    return randomString;
+    return getRandomString;
   }
 
   cleanup = (peerConnection, mediaStream) => {
@@ -329,7 +340,7 @@ class WebSocketClient {
     CallState.setPeerConnection(null);
 
     console.log("Call has been cleaned up.");
-  };
+  }
 
   disconnect() {
     if (this.socket) {
@@ -339,6 +350,171 @@ class WebSocketClient {
       clearInterval(this.keepaliveInterval);
     }
   }
+
+  attachMediaStreams = (peerConnection) => {
+    peerConnection.getReceivers().forEach((receiver) => {
+      if (receiver.track.kind === "audio") {
+        const remoteAudio = document.getElementById("remoteAudio");
+        if (remoteAudio) {
+          remoteAudio.srcObject = new MediaStream([receiver.track]);
+          console.log("Attached remote audio stream");
+        }
+      }
+    });
+  }
+
+  handleIceCandidates = async (peerConnection) => {
+    peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        const candidate = {
+          janus: "trickle",
+          candidate: {
+            candidate: event.candidate.candidate,
+            sdpMid: event.candidate.sdpMid,
+            sdpMLineIndex: event.candidate.sdpMLineIndex,
+          },
+          transaction: this.getRandomString(12),
+          session_id: this.sessionId,
+          handle_id: this.handleId,
+        };
+        this.sendMessage(JSON.stringify(candidate));
+      } else {
+        const completedCandidate = {
+          janus: "trickle",
+          candidate: { completed: true },
+          transaction: this.getRandomString(12),
+          session_id: this.sessionId,
+          handle_id: this.handleId,
+        };
+        this.sendMessage(JSON.stringify(completedCandidate));
+        console.log("Sending ICE candidate completion.");
+      }
+    };
+  }
+  handleOutgoingCall = async (phoneNumber) => {
+    if ((phoneNumber || CallState.getPhoneNumber()) && WebSocketClient) {
+      if (!phoneNumber) phoneNumber = CallState.getPhoneNumber();
+      try {
+        // Request microphone access
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        console.log("Microphone access granted");
+
+        const iceServers = [
+          {
+            urls: "stun:stun.l.google.com:19302", // Google STUN server
+          },
+          {
+            urls: "turn:iptsp.cosmocom.net:3478",
+            username: "ccl",
+            credential: "ccl!pt$p",
+          },
+        ];
+
+        // Create RTCPeerConnection with STUN servers
+        const peerConnection = new RTCPeerConnection({ iceServers });
+
+        // Add only audio tracks to the peer connection
+        stream.getTracks().forEach((track) => {
+          if (track.kind === "audio") {
+            peerConnection.addTrack(track, stream);
+          }
+        });
+        // Create an SDP offer
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+
+        // Attach media streams after setting the local description
+        this.attachMediaStreams(peerConnection);
+
+        // Send the offer via WebSocket
+        this.sendCallRequest(phoneNumber, offer.sdp);
+
+        // Handle ICE candidates
+        await this.handleIceCandidates(peerConnection);
+
+        // Set the peer connection state
+        CallState.setPeerConnection(peerConnection);
+
+        // Update call status
+        CallState.setOutgoingCallStatus("calling");
+        CallState.setMediaStream(stream);
+        console.log(`Calling ${phoneNumber}`);
+      } catch (error) {
+        console.error("Error accessing microphone:", error);
+        alert(
+          "Failed to access microphone. Please ensure you have granted permission."
+        );
+      }
+    }
+  }
+
+  handleIncomingCall = async () => {
+    try {
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Microphone access granted");
+
+      const peerConnection = CallState.getPeerConnection();
+      stream.getTracks().forEach((track) => {
+        if (track.kind === "audio") {
+          peerConnection.addTrack(track, stream);
+        }
+      });
+      peerConnection.getSenders().forEach(sender => {
+        console.log(`Sender track kind: ${sender.track.kind}, readyState: ${sender.track.readyState}`);
+      });
+      this.attachMediaStreams(peerConnection);
+      // Create an SDP offer
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      this.sendAcceptRequest(answer.sdp);
+
+      // Handle ICE candidates
+      await this.handleIceCandidates(peerConnection);
+      CallState.setPeerConnection(peerConnection);
+      CallState.setIncomingCallStatus("accepted");
+      CallState.setMediaStream(stream);
+      console.log("Incoming call accepted. Peer connection state:", peerConnection.connectionState);
+console.log("Local media stream:", stream);
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Error: " + error);
+    }
+  }
+
+  handleHangup = () => {
+    this.sendHangupRequest();
+    CallState.setOutgoingCallStatus("idle");
+    CallState.setOutgoingCallStatus(CallState.getOutgoingCallStatus());
+  }
+
+
+  handleAcceptCall = () => {
+    console.log("Call accepted from Incoming");
+    this.handleIncomingCall().then(() => {
+      // setToasterIncoming(false);
+      // setToasterOngoing(true);
+      // if (ringtonePlaying) {
+      //   ringtoneRef.current.pause();
+      //   ringtoneRef.current.currentTime = 0;
+      //   setRingtonePlaying(false);
+      // }
+    });
+  }
+handleDecline = () => {
+    if (WebSocketClient && CallState.getIncomingCallStatus() === "incomingcall") {
+      this.sendDeclineRequest();
+      CallState.setIncomingCallStatus("idle");
+      CallState.setIncomingCallStatus(CallState.getIncomingCallStatus());
+    }
+  }
 }
 
-export default WebSocketClient;
+const instance = new WebSocketClient(
+  "wss://pbx.cosmocom.net:3000/",
+  "janus-protocol"
+);
+
+export default instance;

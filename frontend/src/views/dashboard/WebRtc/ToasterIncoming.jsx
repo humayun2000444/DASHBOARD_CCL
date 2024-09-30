@@ -24,18 +24,14 @@ const ToasterIncoming = ({ phoneNumber, onHangup, onAccept }) => {
   //   }
   // }, [contacts, callerName]);
   useEffect(() => {
-    // Check if contacts is an array before using find
     if (Array.isArray(contacts)) {
       const contact = contacts.find(contact => contact.phone === phoneNumber);
       if (contact) {
-        // If the callerName matches a contact's phone, use the firstName + lastName
         setDisplayName(`${contact.firstName} ${contact.lastName}`);
       } else {
-        // If no match, use the phone number as displayName
         setDisplayName(phoneNumber);
       }
     } else {
-      // If contacts is not available, use phone number
       setDisplayName(phoneNumber);
     }
   }, [contacts, phoneNumber]);
