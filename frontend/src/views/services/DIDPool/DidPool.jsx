@@ -1,14 +1,17 @@
 // src/components/DIDPool.jsx
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Card, CardBody } from "reactstrap";
+// import { Card, CardBody } from "reactstrap";
 import DidPoolModal from "./DidPoolModal";
 import CommonCardHeader from "../../../components/core/commonCardHeader/CommonCardHeader";
+import { Button, Card, Form } from "react-bootstrap";
+import TableCell from "@mui/material/TableCell";
+
 
 
 const commonContainerStyle = {
@@ -113,12 +116,7 @@ const DIDPool = () => {
                   <TableRow key={index}>
                     <td>
                       <span
-                        style={{
-                          color: "#164677",
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                        }}
-                        onClick={() => handlePoolClick(item.poolName)}
+
                       >
                         {item.poolName}
                       </span>
@@ -126,17 +124,16 @@ const DIDPool = () => {
                     <td>{item.description}</td>
                     <td>
                       <div className="col-md-6 d-flex justify-content-end">
-                        <Button
-                          style={{
-                            padding: "7px 12px",
-                            borderColor: "#e42728",
-                            backgroundColor: "#ea5455",
-                            color: "#fff",
-                          }}
-                          onClick={() => handleEditPool(item)}
-                        >
-                          Manage Pool
-                        </Button>
+                          <Button onClick={() => handlePoolClick(item.poolName)}>
+                            Manage Pool
+                          </Button>{" "}
+                          <Button
+                            variant="danger"
+                            className="ml-2"
+                            onClick={() => handleEditPool(item)}
+                          >
+                            Edit
+                          </Button>{" "}
                       </div>
                     </td>
                   </TableRow>
