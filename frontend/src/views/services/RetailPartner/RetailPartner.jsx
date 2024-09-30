@@ -128,7 +128,7 @@ const RetailPartner = () => {
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">
-            <h4 className="pb-3">Retail Partners</h4>
+            <h4 className="pb-3">SIP Accounts</h4>
           </div>
           <div className="mt-4 container-fluid">
             <div className="row mb-3">
@@ -144,14 +144,14 @@ const RetailPartner = () => {
                   </Button>
                 </Form>
               </div>
-              <div className="col-md-6 d-flex justify-content-end">
+              {/* <div className="col-md-6 d-flex justify-content-end">
                 <Button
                   style={{ padding: "7px 30px" }}
                   onClick={() => handleOpenModal()}
                 >
                   Add Partner
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
 
