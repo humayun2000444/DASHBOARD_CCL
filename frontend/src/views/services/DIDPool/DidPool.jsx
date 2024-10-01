@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import DidPoolModal from "./DidPoolModal";
 import CommonCardHeader from "../../../components/core/commonCardHeader/CommonCardHeader";
 import { Button, Card, Form } from "react-bootstrap";
-import TableCell from "@mui/material/TableCell";
+import didPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
 
 
 
@@ -30,7 +30,6 @@ const DIDPool = () => {
   const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
   const [editPool, setEditPool] = useState(null);
-
   const tableHeaders = ["Pool Name", "Description", "Actions"];
 
   const [tableBody, setTableBody] = useState([
@@ -74,6 +73,18 @@ const DIDPool = () => {
     }
     toggleModal(); // Close the modal after saving
   };
+
+  //Data Fetching From API
+  const fetchDidPools = async () => {
+    try{
+      const data = await didPoolServices.getDidPools();
+      console.log(data);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <div>
