@@ -1,19 +1,15 @@
-// src/components/DIDPool.jsx
-// import Button from "@mui/material/Button";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-// import { Card, CardBody } from "reactstrap";
 import DidPoolModal from "./DidPoolModal";
 import CommonCardHeader from "../../../components/core/commonCardHeader/CommonCardHeader";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import didPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
 
-
-
+// Common styles for the container
 const commonContainerStyle = {
   backgroundColor: "#FFFFFF",
   boxShadow: "0 8px 24px rgba(69, 69, 80, 0.1)",
@@ -30,18 +26,29 @@ const DIDPool = () => {
   const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
   const [editPool, setEditPool] = useState(null);
+  const [tableBody, setTableBody] = useState([]);
+
   const tableHeaders = ["Pool Name", "Description", "Actions"];
 
-  const [tableBody, setTableBody] = useState([
-    {
-      poolName: "VIP",
-      description: "Minimum 5 Digits",
-    },
-    {
-      poolName: "Short Numbers",
-      description: "Less than 5 digits",
-    },
-  ]);
+  // Function to handle the API call and update the table
+  const fetchDidPools = async () => {
+    try {
+      const data = await didPoolServices.getDidPools();
+      // Assuming the API response contains an array of DID pools
+      const formattedData = data.map((item) => ({
+        poolName: item.name, // Use the correct key from API response
+        description: item.description, // Use the correct key from API response
+      }));
+      setTableBody(formattedData); // Update the tableBody state with API data
+    } catch (error) {
+      console.error("Error fetching DID pools:", error);
+    }
+  };
+
+  // Call the API when the component loads
+  useEffect(() => {
+    fetchDidPools();
+  }, []); // Empty dependency array ensures it runs only once on mount
 
   const handlePoolClick = (poolName) => {
     history.push(`/AssignDid/${poolName}`);
@@ -74,44 +81,16 @@ const DIDPool = () => {
     toggleModal(); // Close the modal after saving
   };
 
-  //Data Fetching From API
-  const fetchDidPools = async () => {
-    try{
-      const data = await didPoolServices.getDidPools();
-      console.log(data);
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-
-
   return (
     <div>
       <div className="mt-3" style={commonContainerStyle}>
         <div>
           <CommonCardHeader
             title="Did Pool"
-            subtitle="Check your did pools here, view and manage details"
+            subtitle="Check your DID pools here, view and manage details"
             buttonText="Add DID Pool"
             onButtonClick={handleAddPool}
           />
-          {/*<div className="d-flex justify-content-between align-items-center">*/}
-          {/*  <h3 className="">DID Pool</h3>*/}
-          {/*  <Button*/}
-          {/*    variant="contained"*/}
-          {/*    color="primary"*/}
-          {/*    onClick={handleAddPool}*/}
-          {/*    sx={{*/}
-          {/*      backgroundColor: "#164677",*/}
-          {/*      "&:hover": {*/}
-          {/*        backgroundColor: "#123a5a",*/}
-          {/*      },*/}
-          {/*    }}*/}
-          {/*  >*/}
-          {/*    Add DID Pool*/}
-          {/*  </Button>*/}
-          {/*</div>*/}
 
           <div className="mt-3">
             <Table id="table-to-xls" className="table-sm table-bordered">
@@ -125,26 +104,20 @@ const DIDPool = () => {
               <TableBody>
                 {tableBody.map((item, index) => (
                   <TableRow key={index}>
-                    <td>
-                      <span
-
-                      >
-                        {item.poolName}
-                      </span>
-                    </td>
+                    <td>{item.poolName}</td>
                     <td>{item.description}</td>
                     <td>
                       <div className="col-md-6 d-flex justify-content-end">
-                          <Button onClick={() => handlePoolClick(item.poolName)}>
-                            Manage Pool
-                          </Button>{" "}
-                          <Button
-                            variant="danger"
-                            className="ml-2"
-                            onClick={() => handleEditPool(item)}
-                          >
-                            Edit
-                          </Button>{" "}
+                        <Button onClick={() => handlePoolClick(item.poolName)}>
+                          Manage Pool
+                        </Button>{" "}
+                        <Button
+                          variant="danger"
+                          className="ml-2"
+                          onClick={() => handleEditPool(item)}
+                        >
+                          Edit
+                        </Button>{" "}
                       </div>
                     </td>
                   </TableRow>
