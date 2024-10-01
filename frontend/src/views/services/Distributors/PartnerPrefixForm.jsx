@@ -1,9 +1,31 @@
+import { MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 
 const PartnerPrefixForm = ({ setAllPartnerPrefixes }) => {
+  const [idPartner, setIdPartner] = useState("");
+  const [partners, setPartners] = useState([]);
+
+  const fetchPartners = async () => {
+    try {
+      const data = await partnerServices.fetchPartners();
+      setPartners(data);
+    } catch (error) {
+      console.error("Error fetching partners:", error);
+    }
+  };
+
+  const handleChange = (event) => {
+    setIdPartner(event.target.value);
+  };
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
   // Initialize form with default values
   const defaultValues = {
     partnerName: "",

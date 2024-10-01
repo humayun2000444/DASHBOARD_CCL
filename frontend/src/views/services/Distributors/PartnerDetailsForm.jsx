@@ -174,8 +174,8 @@ const PartnerDetailsForm = ({ formData, handleSubmit, handleChange }) => {
               value={partnerType}
               onChange={handleChange}
             >
-              <MenuItem value={1}>IOS</MenuItem>
-              <MenuItem value={2}>ANS</MenuItem>
+              <MenuItem value={1}>ICX</MenuItem>
+              <MenuItem value={2}>SIP</MenuItem>
             </Select>
           </FormControl>
         </Grid>

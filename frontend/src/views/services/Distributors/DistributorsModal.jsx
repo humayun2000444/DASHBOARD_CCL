@@ -1,5 +1,4 @@
 import CloseIcon from "@mui/icons-material/Close";
-<<<<<<< HEAD
 import {
   Box,
   FormControl,
@@ -16,13 +15,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Form } from "reactstrap";
-=======
+
 import { Box, IconButton, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import PartnerDetailsForm from "./PartnerDetailsForm";
->>>>>>> a69d4749914421150e8b3ead0eceeb5d5cd59763
 
 const DistributorsModal = ({
   open,

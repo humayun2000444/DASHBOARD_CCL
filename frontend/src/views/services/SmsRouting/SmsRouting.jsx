@@ -7,9 +7,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import { Form, Button } from "react-bootstrap";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Select from "react-select";
 import SmsRoutingModal from "./SmsRoutingModal";
 import smsRouteServices from "../../../apiServices/SmsRouteService/SmsRouteService";
@@ -276,7 +273,7 @@ const SmsRouting = () => {
                   style={{ padding: "7px 30px" }}
                   onClick={() => handleOpenModal()}
                 >
-                  Add Sms Routing
+                  Add Route
                 </Button>
               </div>
             </div>

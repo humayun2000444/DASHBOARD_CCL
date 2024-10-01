@@ -103,12 +103,12 @@ const RoleManagment = () => {
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">
-            <h4 className="pb-3">Permission Management</h4>
+            <h4 className="pb-3">Role Management</h4>
           </div>
           <div className="mt-4 container-fluid">
             <div className="row mb-3">
               <div className="col-md-4">
-                <h6>Find Permission : </h6>
+                <h6>Find Role : </h6>
                 <form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."

@@ -9,6 +9,7 @@ import { CardBody } from "reactstrap";
 import roleServices from "../../../apiServices/RoleServices/RoleServices";
 import userServices from "../../../apiServices/UserServices/UserServices";
 import UserFormModal from "./UserFormModal";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 
 const UserManagement = () => {
   const initalState = {
@@ -18,6 +19,7 @@ const UserManagement = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    partnerId: "",
     userStatus: "",
     authRoles: [],
   };
@@ -27,6 +29,11 @@ const UserManagement = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState(initalState);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [partners, setPartners] = useState([]);
+
+  //  const handleChange = (event) => {
+  //    setIdPartner(event.target.value);
+  //  };
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // const authToken = "Bearer " + userInfo.token;
@@ -50,9 +57,19 @@ const UserManagement = () => {
     }
   };
 
+  const fetchPartners = async () => {
+    try {
+      const data = await partnerServices.fetchPartners();
+      setPartners(data);
+    } catch (error) {
+      console.error("Error fetching partners:", error);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     fetchRoles();
+    fetchPartners();
   }, []);
 
   const handleModalOpen = (userId = null) => {
@@ -91,7 +108,7 @@ const UserManagement = () => {
 
     const userData = {
       ...formData,
-      authRoles: formData.authRoles.map((role) => ({ name: role.value })),
+      authRoles: formData.authRoles.map((role) => ({ name: role.name })),
     };
 
     try {
@@ -117,8 +134,9 @@ const UserManagement = () => {
         phoneNo: data.phoneNo,
         email: data.email,
         userStatus: data.userStatus,
+        partnerId: data.partnerId,
         authRoles: data.authRoles.map((role) => ({
-          value: role.name,
+          name: role.name,
           label: role.name,
         })),
       });
@@ -138,8 +156,8 @@ const UserManagement = () => {
   };
 
   const adminRoleOptions = authRoles.map((role) => ({
-    value: role.name,
-    label: role.name,
+    name: role.name,
+    name: role.name,
   }));
   const style = {
     position: "absolute",
@@ -161,6 +179,7 @@ const UserManagement = () => {
         handleChange={handleChange}
         formData={formData}
         adminRole={adminRoleOptions}
+        partners={partners}
         passwordError={passwordError}
         isUpdate={!!selectedUserId}
         style={style}

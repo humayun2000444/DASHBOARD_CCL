@@ -7,11 +7,32 @@ import {
   TextField,
 } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Form } from "reactstrap";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 
 const SmsRouting = () => {
+  const [idPartner, setIdPartner] = useState("");
+  const [partners, setPartners] = useState([]);
+
+  const fetchPartners = async () => {
+    try {
+      const data = await partnerServices.fetchPartners();
+      setPartners(data);
+    } catch (error) {
+      console.error("Error fetching partners:", error);
+    }
+  };
+
+  const handleChange = (event) => {
+    setIdPartner(event.target.value);
+  };
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
   return (
     <Form>
       <Grid container spacing={3}>
@@ -28,7 +49,7 @@ const SmsRouting = () => {
         <Grid item xs={12} md={3}>
           <TextField
             name="field5"
-            label="Route Address"
+            label="Route Address / IP Address"
             variant="standard"
             fullWidth
             // value={field5}
@@ -48,16 +69,12 @@ const SmsRouting = () => {
         <Grid item xs={12} md={3}>
           <FormControl fullWidth variant="standard">
             <InputLabel>Select Partner</InputLabel>
-            {/* <Select name="idPartner" value={idPartner} onChange={handleChange}>
+            <Select name="idPartner" value={idPartner} onChange={handleChange}>
               {partners.map((partner) => (
                 <MenuItem key={partner.idPartner} value={partner.idPartner}>
                   {partner.partnerName}
                 </MenuItem>
               ))}
-            </Select> */}
-            <Select name="idPartner">
-              <MenuItem value={1}>National</MenuItem>
-              <MenuItem value={2}>International</MenuItem>
             </Select>
           </FormControl>
         </Grid>
