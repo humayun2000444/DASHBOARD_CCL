@@ -51,7 +51,7 @@ export default function Calls() {
 
   const handleOutgoingCall = async () => {
     await WebSocketClient.handleOutgoingCall(phoneNumber);
-    openWindow();
+    openWindow(outgoingCallStatus);
   };
 
   const handleIncomingCall = async () => {
@@ -83,10 +83,53 @@ export default function Calls() {
   const matchedCallerName = getDisplayName(callerName); // Match and get the display name
 
 
+//   const openWindow = () => {
+//     const queryParams = new URLSearchParams({
+//       name: encodeURIComponent(matchedCallerName),
+//       number: encodeURIComponent(callerName),
+//     }).toString();
+//
+//     const windowReference = window.open(
+//       `/call-screen?${queryParams}`,
+//       "_blank",
+//       "width=800,height=600"
+//     );
+//
+//
+//
+//     const trackWindowClose = () => {
+//       const timer = setInterval(() => {
+//         if (windowReference && windowReference.closed) {
+//           clearInterval(timer);
+//           console.log("The window has been closed.");
+//           // Call any additional function or clean-up actions
+//           handleWindowClose();
+//         }
+//       }, 500); // Check every 500ms if the window is closed
+//     };
+//
+// // Function to handle what happens when the window is closed
+//     const handleWindowClose = () => {
+//       // Do something, e.g., send hangup request
+//       console.log("Hangup request or other action here");
+//       WebSocketClient.handleHangup();
+//     };
+//
+//     if (windowReference) {
+//       console.log("Popup allowed, closing modal...");
+//       setCallWindow(windowReference);
+//       // setOpen(false);
+//       trackWindowClose();
+//
+//     } else {
+//       console.error("Popup blocked, modal not closed.");
+//       alert("Please allow popups for this website to accept the call.");
+//     }
+//   };
 
   const openWindow = () => {
     const queryParams = new URLSearchParams({
-      name: encodeURIComponent(matchedCallerName),
+      name: encodeURIComponent(matchedCallerName), // Use matched name
       number: encodeURIComponent(callerName),
     }).toString();
 
@@ -96,18 +139,26 @@ export default function Calls() {
       "width=800,height=600"
     );
 
+
+
+
+
     const trackWindowClose = () => {
       const timer = setInterval(() => {
+        const currentStatus = CallState.getIncomingCallStatus();
+        if (windowReference) {
+          windowReference.callstatus = currentStatus;
+        }
         if (windowReference && windowReference.closed) {
           clearInterval(timer);
           console.log("The window has been closed.");
           // Call any additional function or clean-up actions
           handleWindowClose();
         }
+
       }, 500); // Check every 500ms if the window is closed
     };
 
-// Function to handle what happens when the window is closed
     const handleWindowClose = () => {
       // Do something, e.g., send hangup request
       console.log("Hangup request or other action here");
@@ -125,7 +176,6 @@ export default function Calls() {
       alert("Please allow popups for this website to accept the call.");
     }
   };
-
 
 
 

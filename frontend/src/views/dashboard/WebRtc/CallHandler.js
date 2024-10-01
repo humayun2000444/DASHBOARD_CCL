@@ -13,7 +13,7 @@ const CallHandler = () => {
     const interval = setInterval(() => {
       const currentStatus = CallState.getIncomingCallStatus();
       setCallStatus(currentStatus);
-    }, 1000);
+     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
