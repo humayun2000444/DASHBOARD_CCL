@@ -1,20 +1,17 @@
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
-import AssignNewDidModal from "./AssignNewDidModal"; // Import the new modal
+import AssignNewDidModal from "./AssignNewDidModal"; // Import the modal component
+import DidPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices"; // Import the API service
 
 const AssignDid = () => {
   const { poolName } = useParams(); // Get pool name from URL
-  const [tableData, setTableData] = useState([
-    { assignedDid: "09646699607", description: "Syed Easin" },
-    { assignedDid: "09646699607", description: "Humayun Ahmed" },
-  ]);
-
+  const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Toggle modal visibility
@@ -27,10 +24,31 @@ const AssignDid = () => {
     setTableData([...tableData, newEntry]);
   };
 
+  // Fetch DID data from the API and filter based on pool name
+  const fetchDidNumbers = async () => {
+    try {
+      const response = await DidPoolServices.getDidNumbers(); // Call the API service to fetch DID numbers
+
+      // Filter the response based on poolName
+      const filteredData = response.filter(
+        (did) => did.didPool.name === poolName
+      );
+
+      // Map the filtered data to match the table format
+      const formattedData = filteredData.map((did) => ({
+        assignedDid: did.id,
+        description: did.description,
+      }));
+
+      setTableData(formattedData); // Update the tableData state with the filtered DID numbers
+    } catch (error) {
+      console.error("Error fetching DID numbers:", error);
+    }
+  };
+
   useEffect(() => {
-    // Example logic to fetch data specific to the pool name
-    console.log(`Loading data for pool: ${poolName}`);
-    // Fetch data here based on the poolName if necessary
+    // Fetch data when component mounts or poolName changes
+    fetchDidNumbers();
   }, [poolName]);
 
   return (
@@ -38,10 +56,7 @@ const AssignDid = () => {
       <Card className="mt-3">
         <CardBody>
           <div className="d-flex justify-content-between align-items-center">
-            {/* Heading with Pool Name */}
             <h3 className="">Assigned DID for {poolName} Pool</h3>
-
-            {/* Buttons */}
             <div>
               <Button
                 style={{

@@ -72,7 +72,15 @@ const DidPoolServices = {
       throw error;
     }
   },
-
+  getDidNumbers: async () => {
+    try {
+      const response = await axios.post(`${DID_POOL_API_BASE_URL}get-did-numbers`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching DID numbers:", error);
+      throw error;
+    }
+  },
   // Create a DID assignment
   createDidAssignment: async (data, token) => {
     try {

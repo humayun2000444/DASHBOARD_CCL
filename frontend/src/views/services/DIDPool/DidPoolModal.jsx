@@ -11,7 +11,7 @@ import SwipeableViews from "react-swipeable-views";
 import ManageDidPool from "./ManageDidPool";
 import AssignNewDid from "./AssignNewDid";
 
-const DidPoolModal = ({ show, handleClose, onSave }) => {
+const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -23,14 +23,19 @@ const DidPoolModal = ({ show, handleClose, onSave }) => {
     setValue(index);
   };
 
-  // Determine the title based on the selected tab (value)
+  // Determine the title based on the selected tab (value) and mode (add/edit)
   const getTitle = () => {
     if (value === 0) {
-      return "Edit DID Pool";
+      return mode === "edit" ? "Edit DID Pool" : "Add DID Pool";
     } else if (value === 1) {
       return "Assign DID";
     }
     return "Manage DID Pool"; // Fallback or default title
+  };
+
+  // Determine the tab label based on the mode
+  const getTabLabel = () => {
+    return mode === "edit" ? "Edit Pool" : "Add Pool";
   };
 
   return (
@@ -94,7 +99,7 @@ const DidPoolModal = ({ show, handleClose, onSave }) => {
                 },
               }}
             >
-              <Tab label="Edit Pool" {...a11yProps(0)} />
+              <Tab label={getTabLabel()} {...a11yProps(0)} />
               <Tab label="Assign DID" {...a11yProps(1)} />
             </Tabs>
           </AppBar>

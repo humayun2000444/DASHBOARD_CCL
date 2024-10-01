@@ -26,6 +26,7 @@ const DIDPool = () => {
   const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
   const [editPool, setEditPool] = useState(null);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const [tableBody, setTableBody] = useState([]);
 
   const tableHeaders = ["Pool Name", "Description", "Actions"];
