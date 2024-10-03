@@ -1,221 +1,3 @@
-// import React, { useState } from "react";
-// import Box from "@mui/material/Box";
-// import Typography from "@mui/material/Typography";
-// import Modal from "@mui/material/Modal";
-// import { Row, Col, Form, Button } from "react-bootstrap";
-// import {
-//   FormControl,
-//   Grid,
-//   InputLabel,
-//   MenuItem,
-//   TextField,
-//   Select,
-//   IconButton,
-//   InputAdornment,
-// } from "@mui/material";
-// import CloseIcon from "@mui/icons-material/Close";
-// import Visibility from "@mui/icons-material/Visibility";
-// import VisibilityOff from "@mui/icons-material/VisibilityOff";
-// const UserFormModal = ({
-//   open,
-//   handleClose,
-//   handleSubmit,
-//   handleChange,
-//   formData,
-//   style,
-//   adminRole,
-//   isUpdate = false,
-//   passwordError,
-// }) => {
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-//   const handleClickShowPassword = () => {
-//     setShowPassword(!showPassword);
-//   };
-
-//   const handleClickShowConfirmPassword = () => {
-//     setShowConfirmPassword(!showConfirmPassword);
-//   };
-
-//   const handleMouseDownPassword = (event) => {
-//     event.preventDefault();
-//   };
-//   return (
-//     <div>
-//       <Modal
-//         open={open}
-//         onClose={handleClose}
-//         aria-labelledby="modal-modal-title"
-//         aria-describedby="modal-modal-description"
-//       >
-//         <Box sx={style}>
-//           <Box
-//             sx={{
-//               display: "flex",
-//               justifyContent: "space-between",
-//               alignItems: "center",
-//             }}
-//           >
-//             <Typography variant="h6" component="h2">
-//               {isUpdate ? "Update User" : "Add User"}
-//             </Typography>
-//             <IconButton
-//               onClick={handleClose}
-//               style={{
-//                 transition: "color 0.3s ease",
-//                 color: "inherit",
-//               }}
-//               onMouseOver={(e) => (e.currentTarget.style.color = "red")}
-//               onMouseOut={(e) => (e.currentTarget.style.color = "inherit")}
-//             >
-//               <CloseIcon />
-//             </IconButton>
-//           </Box>
-
-//           <Form onSubmit={handleSubmit}>
-//             <Grid container spacing={3}>
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="firstName"
-//                   label="First Name"
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.firstName}
-//                   onChange={handleChange}
-//                 />
-//               </Grid>
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="lastName"
-//                   label="Last Name"
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.lastName}
-//                   onChange={handleChange}
-//                 />
-//               </Grid>
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="phoneNo"
-//                   label="Phone Number"
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.phoneNo}
-//                   onChange={handleChange}
-//                 />
-//               </Grid>
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="email"
-//                   label="Email"
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.email}
-//                   onChange={handleChange}
-//                 />
-//               </Grid>
-//               <Grid item xs={12} md={6}>
-//                 <FormControl fullWidth variant="standard">
-//                   <InputLabel>Status </InputLabel>
-//                   <Select
-//                     name="userStatus"
-//                     value={formData.userStatus}
-//                     onChange={handleChange}
-//                   >
-//                     <MenuItem value="ACTIVE">ACTIVE</MenuItem>
-//                     <MenuItem value="SUSPENDED">SUSPENDED</MenuItem>
-//                   </Select>
-//                 </FormControl>
-//               </Grid>
-
-//               <Grid item xs={12} md={6}>
-//                 <FormControl fullWidth variant="standard">
-//                   <InputLabel>Role</InputLabel>
-//                   <Select
-//                     name="role"
-//                     value={formData.authRoles.value}
-//                     onChange={(selectedOptions) =>
-//                       handleChange({
-//                         target: { name: "authRoles", value: selectedOptions },
-//                       })
-//                     }
-//                   >
-//                     {adminRole.map((role) => (
-//                       <MenuItem key={role.anme} value={role.name}>
-//                         {role.name}
-//                       </MenuItem>
-//                     ))}
-//                   </Select>
-//                 </FormControl>
-//               </Grid>
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="password"
-//                   label="Password"
-//                   type={showPassword ? "text" : "password"}
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.password}
-//                   onChange={handleChange}
-//                   InputProps={{
-//                     endAdornment: (
-//                       <InputAdornment position="end">
-//                         <IconButton
-//                           onClick={handleClickShowPassword}
-//                           onMouseDown={handleMouseDownPassword}
-//                         >
-//                           {showPassword ? <VisibilityOff /> : <Visibility />}
-//                         </IconButton>
-//                       </InputAdornment>
-//                     ),
-//                   }}
-//                 />
-//               </Grid>
-
-//               {/* Confirm Password Field */}
-//               <Grid item xs={12} md={6}>
-//                 <TextField
-//                   name="confirmPassword"
-//                   label="Confirm Password"
-//                   type={showConfirmPassword ? "text" : "password"}
-//                   variant="standard"
-//                   fullWidth
-//                   value={formData.confirmPassword}
-//                   onChange={handleChange}
-//                   InputProps={{
-//                     endAdornment: (
-//                       <InputAdornment position="end">
-//                         <IconButton
-//                           onClick={handleClickShowConfirmPassword}
-//                           onMouseDown={handleMouseDownPassword}
-//                         >
-//                           {showConfirmPassword ? (
-//                             <VisibilityOff />
-//                           ) : (
-//                             <Visibility />
-//                           )}
-//                         </IconButton>
-//                       </InputAdornment>
-//                     ),
-//                   }}
-//                 />
-//               </Grid>
-
-//             </Grid>
-//             <Grid container spacing={3} className="mt-3">
-//               <Grid item xs={2}>
-//                 <Button type="submit">Submit</Button>
-//               </Grid>
-//             </Grid>
-//           </Form>
-//         </Box>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default UserFormModal;
-
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -235,6 +17,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const UserFormModal = ({
   open,
@@ -286,6 +69,9 @@ const UserFormModal = ({
     }
     if (!formData.authRoles || formData.authRoles.length === 0) {
       newErrors.authRoles = "Role is required";
+    }
+    if (!formData.partnerId) {
+      newErrors.partnerId = "Partner is required";
     }
 
     setErrors(newErrors);
@@ -400,6 +186,7 @@ const UserFormModal = ({
                 )}
               </FormControl>
             </Grid>
+
             {/* Role Field */}
             <Grid item xs={12} md={4}>
               <FormControl
@@ -437,20 +224,33 @@ const UserFormModal = ({
               </FormControl>
             </Grid>
             <Grid item xs={12} md={4}>
-              <FormControl fullWidth variant="standard">
-                <InputLabel>Select Partner</InputLabel>
-                <Select
-                  name="partnerId"
-                  value={formData.partnerId}
-                  onChange={handleChange}
-                >
-                  {partners.map((partner) => (
-                    <MenuItem key={partner.idPartner} value={partner.idPartner}>
-                      {partner.partnerName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Autocomplete
+                options={[...partners].sort((a, b) =>
+                  a.partnerName.localeCompare(b.partnerName)
+                )}
+                getOptionLabel={(option) => option.partnerName}
+                value={
+                  partners.find((p) => p.idPartner === formData.partnerId) ||
+                  null
+                }
+                onChange={(event, newValue) => {
+                  handleFieldChange({
+                    target: {
+                      name: "partnerId",
+                      value: newValue?.idPartner || "",
+                    },
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select Partner"
+                    variant="standard"
+                    error={!!errors.partnerId}
+                    helperText={errors.partnerId}
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -460,7 +260,7 @@ const UserFormModal = ({
                 variant="standard"
                 fullWidth
                 value={formData.password}
-                onChange={handleFieldChange} // Use updated handleFieldChange
+                onChange={handleFieldChange}
                 error={!!errors.password}
                 helperText={errors.password}
                 InputProps={{
@@ -486,7 +286,7 @@ const UserFormModal = ({
                 variant="standard"
                 fullWidth
                 value={formData.confirmPassword}
-                onChange={handleFieldChange} // Use updated handleFieldChange
+                onChange={handleFieldChange}
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword}
                 InputProps={{
