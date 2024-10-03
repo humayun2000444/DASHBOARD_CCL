@@ -31,25 +31,25 @@ const DIDPool = () => {
 
   const tableHeaders = ["Pool Name", "Description", "Actions"];
 
-  // Function to handle the API call and update the table
+
   const fetchDidPools = async () => {
     try {
       const data = await didPoolServices.getDidPools();
-      // Assuming the API response contains an array of DID pools
+
       const formattedData = data.map((item) => ({
-        poolName: item.name, // Use the correct key from API response
-        description: item.description, // Use the correct key from API response
+        poolName: item.name,
+        description: item.description,
       }));
-      setTableBody(formattedData); // Update the tableBody state with API data
+      setTableBody(formattedData);
     } catch (error) {
       console.error("Error fetching DID pools:", error);
     }
   };
 
-  // Call the API when the component loads
+
   useEffect(() => {
     fetchDidPools();
-  }, []); // Empty dependency array ensures it runs only once on mount
+  }, []);
 
   const handlePoolClick = (poolName) => {
     history.push(`/AssignDid/${poolName}`);
@@ -79,7 +79,10 @@ const DIDPool = () => {
       // Add new pool
       setTableBody([...tableBody, newPool]);
     }
-    toggleModal(); // Close the modal after saving
+    setModalOpen(false);
+    fetchDidPools();
+    console.log("data save")
+
   };
 
   return (
@@ -133,6 +136,7 @@ const DIDPool = () => {
         show={modalOpen}
         handleClose={toggleModal}
         poolData={editPool}
+        mode={editPool ? "edit" : "add"}
         onSave={handleSave}
       />
     </div>

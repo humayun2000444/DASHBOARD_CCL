@@ -6,14 +6,16 @@ import { useTheme } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import ManageDidPool from "./ManageDidPool";
-import AssignNewDid from "./AssignNewDid";
+import NewEditPoolForm from "./NewEditPoolForm";
 
-const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
+const NewDidPoolEditModal = ({ open, handleClose, title, buttonText, handleChange }) => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -23,27 +25,19 @@ const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
     setValue(index);
   };
 
-  // Determine the title based on the selected tab (value) and mode (add/edit)
-  const getTitle = () => {
-    if (value === 0) {
-      return mode === "edit" ? "Edit DID Pool" : "Add DID Pool";
-    } else if (value === 1) {
-      return "Assign DID";
-    }
-    return "Manage DID Pool"; // Fallback or default title
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
-  // Determine the tab label based on the mode
-  const getTabLabel = () => {
-    return mode === "edit" ? "Edit Pool" : "Add Pool";
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
     <Modal
-      open={show}
-      onClose={handleClose}
-      aria-labelledby="did-pool-modal-title"
-      aria-describedby="did-pool-modal-description"
+      open={open}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
     >
       <Box
         sx={{
@@ -52,38 +46,31 @@ const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "90%",
-          maxWidth: 600,
+          maxWidth: 1000,
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 3,
-          }}
-        >
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" component="h2">
-            {getTitle()}
+            {title}
           </Typography>
           <IconButton
             onClick={handleClose}
             style={{
               transition: "color 0.3s ease",
               color: "inherit",
+              position: "relative",
+              right: "0",
             }}
             onMouseOver={(e) => (e.currentTarget.style.color = "red")}
             onMouseOut={(e) => (e.currentTarget.style.color = "inherit")}
           >
             <CloseIcon />
           </IconButton>
-        </Box>
-
-        {/* Tabs */}
-        <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
+        </div>
+        <Box sx={{ bgcolor: "background.paper", width: "100%", mt: 2 }}>
           <AppBar position="static" sx={{ bgcolor: "white", color: "black" }}>
             <Tabs
               value={value}
@@ -94,26 +81,33 @@ const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
               aria-label="full width tabs example"
               sx={{
                 ".MuiTabs-indicator": {
-                  backgroundColor: "#007b8f",
+                  backgroundColor: "#007b8f", // Same color as the button
                 },
               }}
             >
-              <Tab label={getTabLabel()} {...a11yProps(0)} />
-              <Tab label="Assign DID" {...a11yProps(1)} />
+              <Tab label="Details" {...a11yProps(0)} />
+              <Tab label="Route" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
 
-          {/* Swipeable Views */}
           <SwipeableViews
             axis={theme.direction === "rtl" ? "x-reverse" : "x"}
             index={value}
             onChangeIndex={handleTabChangeIndex}
+            handleChange = {handleChange}
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
-              <ManageDidPool />
+              {/*<PartnerDetailsForm />*/}
+              <NewEditPoolForm/>
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              <AssignNewDid />
+              {/*<SmsRouting />*/}
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              {/*<PartnerPrefix />*/}
+            </TabPanel>
+            <TabPanel value={value} index={3} dir={theme.direction}>
+              {/*<KYC />*/}
             </TabPanel>
           </SwipeableViews>
         </Box>
@@ -122,9 +116,8 @@ const DidPoolModal = ({ show, handleClose, onSave, mode }) => {
   );
 };
 
-export default DidPoolModal;
+export default NewDidPoolEditModal;
 
-// Function to provide accessibility props
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
@@ -132,7 +125,6 @@ function a11yProps(index) {
   };
 }
 
-// TabPanel Component
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

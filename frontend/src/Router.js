@@ -1085,6 +1085,9 @@ const PaymentReport = lazy(() =>
 const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
+const NewDidPool = lazy(() =>
+  import("./views/services/NewDidPool/NewDidPool.jsx")
+);
 const userProfile = lazy(() =>
   import("./views/services/Profile/UserProfile.jsx")
 );
@@ -1211,6 +1214,7 @@ class AppRouter extends React.Component {
                   {/* PaymentEntry Route  */}
                   <AppRoute path="/paymentEntry" component={PaymentEntry} />
                   <AppRoute path="/userProfile" component={userProfile}/>
+                  <AppRoute path="/newDidPool" component={NewDidPool}/>
                   {/* CallHistory Route  */}
                   <AppRoute
                     path="/userCallHistory"

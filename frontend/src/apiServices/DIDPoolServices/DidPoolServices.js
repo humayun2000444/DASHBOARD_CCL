@@ -54,12 +54,30 @@ const DidPoolServices = {
     }
   },
 
+  //Update a Did Pool
+  updateDidPool: async (id, data, token) => {
+    try{
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}update-did-pool`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    }catch (error) {
+      console.error("Error updating DID pool:", error);
+    }
+  },
+
   // Delete a DID pool by ID
   deleteDidPool: async (id, token) => {
     try {
       const response = await axios.post(
         `${DID_POOL_API_BASE_URL}delete-did-pool`,
-        { idDidPool: id },
+        { id: id },
         {
           headers: {
             Authorization: `Bearer ${token}`,
