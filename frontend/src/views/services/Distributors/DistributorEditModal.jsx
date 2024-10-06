@@ -14,7 +14,13 @@ import PartnerDetailsForm from "./PartnerDetailsForm.jsx";
 import PartnerPrefix from "./PartnerPrefix";
 import SmsRouting from "./SmsRouting.jsx";
 
-const DistributorEditModal = ({ open, handleClose, title, buttonText }) => {
+const DistributorEditModal = ({
+  open,
+  handleClose,
+  title,
+  buttonText,
+  setOpenToaster,
+}) => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -90,7 +96,7 @@ const DistributorEditModal = ({ open, handleClose, title, buttonText }) => {
             >
               <Tab label="Details" {...a11yProps(0)} />
               <Tab label="Route" {...a11yProps(1)} />
-              <Tab label="DID" {...a11yProps(2)} />
+              <Tab label="Sip Account" {...a11yProps(2)} />
               <Tab label="KYC" {...a11yProps(3)} />
             </Tabs>
           </AppBar>
@@ -107,7 +113,7 @@ const DistributorEditModal = ({ open, handleClose, title, buttonText }) => {
               <SmsRouting />
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              <PartnerPrefix />
+              <PartnerPrefix setOpenToaster={setOpenToaster} />
             </TabPanel>
             <TabPanel value={value} index={3} dir={theme.direction}>
               <KYC />

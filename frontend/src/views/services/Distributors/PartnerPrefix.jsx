@@ -1,11 +1,9 @@
 // PartnerPrefix.js
-import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import PartnerPrefixForm from "./PartnerPrefixForm";
-import PartnerPrefixTable from "./PartnerPrefixTable";
 import FileUploader from "./FileUploader";
+import PartnerPrefixForm from "./PartnerPrefixForm";
 
-const PartnerPrefix = () => {
+const PartnerPrefix = ({setOpenToaster}) => {
   const [allPartnerPrefixes, setAllPartnerPrefixes] = useState([]);
 
   const handleDelete = (index) => {
@@ -14,32 +12,18 @@ const PartnerPrefix = () => {
 
   return (
     <div>
-      {allPartnerPrefixes.length > 0 && (
+      {/* {allPartnerPrefixes.length > 0 && (
         <PartnerPrefixTable
           allPartnerPrefixes={allPartnerPrefixes}
           handleDelete={handleDelete}
         />
-      )}
-      <PartnerPrefixForm setAllPartnerPrefixes={setAllPartnerPrefixes} />
+      )} */}
+      <PartnerPrefixForm setAllPartnerPrefixes={setAllPartnerPrefixes} setOpenToaster={setOpenToaster} />
       <div
         style={{
-          display: "flex",
-          gap: "200px",
-          justifyContent: "space-between",
+          marginTop: "1rem",
         }}
       >
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{
-            width: "130px",
-            backgroundColor: "#1D94AB",
-            marginTop: "10px",
-            height: "40px",
-          }}
-        >
-          Submit
-        </Button>
         <FileUploader dataType="csv" />
       </div>
     </div>
