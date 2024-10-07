@@ -19,8 +19,10 @@ const DashboardBalance = () => {
             <div
               style={{
                 color: "#333",
-                fontSize: "18px",
+                fontFamily:"Inter",
+                fontSize: "16px",
                 fontWeight: 500,
+                letterSpacing:"-0.4px",
                 paddingBottom: "8px",
                 borderBottom: "1px solid #EBEBEB",
               }}
@@ -30,8 +32,11 @@ const DashboardBalance = () => {
             <div
               style={{
                 color: "#2D3748",
-                fontSize: "28px",
-                fontWeight: "bold",
+                fontFamily: "Inter",
+                fontSize: "24px",
+                letterSpacing:"-0.6px",
+                textTransform: "capitalize",
+                fontWeight: "800",
                 padding: "12px 0 6px 0",
               }}
             >
@@ -42,28 +47,29 @@ const DashboardBalance = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                position: "relative", // Ensure that absolute positioning inside the container is relative to this div
-                width: "100%", // Set to the size of the CircularProgress
-                height: "100%", // Set to the size of the CircularProgress
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                padding:"12px 0",
               }}
             >
               <CircularProgress
                 variant="determinate"
-                value={100} // This ensures the circle is fully drawn
+                value={100}
                 thickness={6}
-                size={160} // Size should match the main circle
+                size={160}
                 sx={{
-                  color: "#e0e0e0", // The rest color (light gray)
-                  position: "absolute", // Position it behind the main progress
+                  color: "#e0e0e0",
+                  position: "absolute",
                 }}
               />
               <CircularProgress
                 variant="determinate"
                 value={65}
                 thickness={6}
-                size={160} // You can adjust the size
+                size={160}
                 sx={{
-                  color: "#006AFF", // Adjust color as needed
+                  color: "#1D94AB",
                   "& .MuiCircularProgress-circle": {
                     strokeLinecap: "Sharp",
                   },
@@ -73,12 +79,14 @@ const DashboardBalance = () => {
 
             <div
               style={{
-                color: "#064E3B",
+                color: "#525256",
+                fontFamily: "Inter",
+                fontSize: "14px",
+                fontWeight:"500",
+                letterSpacing:"-0.4px",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                fontWeight: "bold",
-                fontSize: "14px",
               }}
             >
               <span>Valid till</span>
@@ -86,12 +94,14 @@ const DashboardBalance = () => {
             </div>
             <div
               style={{
-                color: "#064E3B",
+                color: "#525256",
+                fontFamily: "Inter",
+                fontSize: "14px",
+                fontWeight:"500",
+                letterSpacing:"-0.4px",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                fontWeight: "bold",
-                fontSize: "14px",
               }}
             >
               <span>Last week usage</span>

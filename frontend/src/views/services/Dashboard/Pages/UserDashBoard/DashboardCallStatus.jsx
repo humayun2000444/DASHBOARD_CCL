@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useHistory } from "react-router-dom"
 import Button from "@mui/material/Button";
 import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
 import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
@@ -8,11 +9,6 @@ import CommonCardHeader from "../../../../../components/core/commonCardHeader/Co
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-// Button Click
-const handleButtonClick = () => {
-  console.log("Button clicked!");
-};
 
 const useStyles = {
   chartContainer: {
@@ -71,6 +67,12 @@ const getDateRange = (filter) => {
 };
 
 const DashboardCallStatus = ({ selectedFilter }) => {
+
+  const history = useHistory();
+  const handleButtonClick = () => {
+    history.push("/userCallHistory")
+  };
+
   const [callData, setCallData] = useState({
     total: 0,
     outgoing: 0,

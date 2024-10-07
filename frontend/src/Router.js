@@ -14,7 +14,6 @@ import "./assets/CoustomStyle/style.css";
 import { userTypes } from "./constants/userTypeConstant";
 
 // Authentication Checking
-
 const tokenForRouting = JSON.parse(localStorage.getItem("userInfo"));
 
 const adminChecking =
@@ -1211,7 +1210,7 @@ class AppRouter extends React.Component {
                   <AppRoute path="/paymentReport" component={PaymentReport} />
 
                   {/* Easin Code */}
-                  {/* PaymentEntry Route  */}
+                  {/* Mir Pages PaymentEntry Route  */}
                   <AppRoute path="/paymentEntry" component={PaymentEntry} />
                   <AppRoute path="/userProfile" component={userProfile}/>
                   <AppRoute path="/newDidPool" component={NewDidPool}/>

@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardBody, Button } from "reactstrap";
 import ReactECharts from "echarts-for-react";
+import { useHistory } from "react-router-dom"
 import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
 const CallSummaryChart = ({ selectedFilter }) => {
+
+  const history = useHistory();
+  const handleButtonClick = () => {
+    history.push("/userCallHistory")
+  };
+
   const [chartData, setChartData] = useState({
     failed: [],
     success: [],
@@ -12,10 +19,6 @@ const CallSummaryChart = ({ selectedFilter }) => {
   });
   const [loading, setLoading] = useState(false);
   const [lastFilter, setLastFilter] = useState("");
-
-  const handleButtonClick = () => {
-    console.log("Button clicked!");
-  };
 
   const fetchCallSummary = async () => {
     if (loading) return; // Prevent multiple fetches
@@ -72,11 +75,11 @@ const CallSummaryChart = ({ selectedFilter }) => {
         failed: failedCalls,
         success: successCalls,
       });
-      setLastFilter(selectedFilter); // Update the last filter used
+      setLastFilter(selectedFilter);
     } catch (error) {
       console.error("Error fetching call summary data:", error.message);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -113,7 +116,7 @@ const CallSummaryChart = ({ selectedFilter }) => {
       },
     },
     grid: {
-      top: "-2%",
+      top: "0%",
       left: "0%",
       right: "3%",
       bottom: "12%",
@@ -121,7 +124,7 @@ const CallSummaryChart = ({ selectedFilter }) => {
     },
     xAxis: {
       type: "category",
-      boundaryGap: false,
+      boundaryGap: true,
       data: chartData.timeLabels,
       axisLine: {
         lineStyle: { color: "#D1E4F3" },
@@ -201,7 +204,7 @@ const CallSummaryChart = ({ selectedFilter }) => {
       />
       <div>
         {loading ? (
-          <p>Loading data...</p> // Show a loading message while fetching data
+          <p>Loading data...</p>
         ) : (
           <ReactECharts option={chartOptions} style={{ top: "-16px" }} />
         )}

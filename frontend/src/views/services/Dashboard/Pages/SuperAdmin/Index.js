@@ -10,8 +10,9 @@ import DashboardCdrTable from "../UserDashBoard/DashboardCdrTable";
 import LiveCalls from "../UserDashBoard/LiveCalls";
 import PBXOverview from "../UserDashBoard/PBXOverview";
 import FilterTabs from "../../../../../components/core/filter/FilterTabs";
+import NewCallSummaryChart from "./NewCallSummaryChart";
 
-const SuperAdmin = () => {
+  const SuperAdmin = () => {
   const [selectedFilter, setSelectedFilter] = useState("Last 1 hour"); // Default filter
 
   // Function to handle filter change from FilterTabs
@@ -196,7 +197,17 @@ const SuperAdmin = () => {
     { title: "Answer Seizure Ratio (ASR)", value: "0%" },
     { title: "Average Call Duration (ACD)", value: "00:00:18.5" },
   ];
-
+  const commonContainerStyle = {
+    backgroundColor: "#FFFFFF",
+    boxShadow: "0 8px 24px rgba(69, 69, 80, 0.1)",
+    padding: "24px",
+    borderRadius: "12px",
+    fontFamily: "'Inter', sans-serif",
+    fontSize: "14px",
+    fontWeight: 400,
+    border: "1px solid #E6F5F8",
+    height: "100%", // Ensures both components take up full height
+  };
   return (
     <div>
       <div
@@ -216,11 +227,10 @@ const SuperAdmin = () => {
             height: "100vh",
             background: "#f8f8f8",
             padding: "32px 28px",
-          }}
-        >
+          }}>
           <AccountDetails />
-          <DashboardBalance />
           <LiveCalls />
+          <DashboardBalance />
         </div>
         <div
           className="dashboardRightWrapper"
@@ -239,8 +249,22 @@ const SuperAdmin = () => {
               marginBottom: "20px",
             }}
           >
-            <div>
-              <h2>Dashboard Overview</h2>
+            <div style={{display: "flex", alignItems: "center"}}>
+              <h1
+                style={{
+                  fontFamily: "Inter",
+                  fontSize: "30px",
+                  lineHeight: "36px",
+                  fontWeight: 600,
+                  letterSpacing: "-1px",
+                  color: "#09090B",
+                }}
+              >
+                Statistics of {selectedFilter} Calls
+              </h1>
+              {/*<span>*/}
+              {/*  <LiveClock/>*/}
+              {/*</span>*/}
             </div>
             {/* Pass the handleFilterChange and selectedFilter to FilterTabs */}
             <FilterTabs
@@ -248,15 +272,38 @@ const SuperAdmin = () => {
               onFilterChange={handleFilterChange}
             />
           </div>
-          {/* Pass selectedFilter to components */}
-          <DashboardCallStatus selectedFilter={selectedFilter} />
-          <PBXOverview selectedFilter={selectedFilter} />
-          <CallSummaryChart selectedFilter={selectedFilter} />
-          <DashboardCdrTable selectedFilter={selectedFilter} />
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              width: "100%",
+              gap: "18px",
+              height: "auto",
+            }}
+          >
+            <div style={{flex: 1, height: "400px"}}>
+              <div style={commonContainerStyle}>
+                <NewCallSummaryChart selectedFilter={selectedFilter}/>
+              </div>
+            </div>
+
+            <div style={{flex: 1, height: "400px"}}>
+              <div style={commonContainerStyle}>
+                <DashboardCallStatus selectedFilter={selectedFilter}/>
+              </div>
+            </div>
+          </div>
+          {/*<CallSummaryChart selectedFilter={selectedFilter}/>*/}
+          {/*<DashboardCallStatus selectedFilter={selectedFilter}/>*/}
+          <PBXOverview selectedFilter={selectedFilter}/>
+
+          <DashboardCdrTable selectedFilter={selectedFilter}/>
         </div>
       </div>
     </div>
   );
-};
+  };
 
 export default SuperAdmin;

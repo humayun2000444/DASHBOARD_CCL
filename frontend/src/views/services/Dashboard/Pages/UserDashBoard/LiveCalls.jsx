@@ -28,8 +28,10 @@ const LiveCalls = () => {
               <div
                 style={{
                   color: "#333",
-                  fontSize: "18px",
+                  fontFamily:"Inter",
+                  fontSize: "16px",
                   fontWeight: 500,
+                  letterSpacing:"-0.4px",
                   paddingBottom: "8px",
                   borderBottom: "1px solid #EBEBEB",
                 }}

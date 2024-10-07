@@ -41,46 +41,45 @@ const AccountDetails = () => {
               <div
                 style={{
                   color: "#333",
-                  fontSize: "18px",
+                  fontFamily:"Inter",
+                  fontSize: "16px",
                   fontWeight: 500,
+                  letterSpacing:"-0.4px",
                   paddingBottom: "8px",
                   borderBottom: "1px solid #EBEBEB",
                 }}
               >
-                Account Details
+                Account details
               </div>
               <div
                 style={{
                   color: "#2D3748",
-                  fontSize: "28px",
+                  fontFamily: "Inter",
+                  fontSize: "24px",
+                  letterSpacing:"-0.8px",
+                  textTransform: "capitalize",
                   fontWeight: "bold",
                   padding: "12px 0 6px 0",
                 }}
               >
                 {partnerDetails?.partner.partnerName}
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "relative", // Ensure that absolute positioning inside the container is relative to this div
-                  width: "100%", // Set to the size of the CircularProgress
-                  height: "100%", // Set to the size of the CircularProgress
-                }}
-              ></div>
 
               <div
                 style={{
                   color: "#525256",
+                  fontFamily: "Inter",
                   fontSize: "14px",
+                  letterSpacing:"-0.4px",
                 }}
               >
                 <span>Account Type </span>
                 <span
                   style={{
                     color: "#064E3B",
+                    fontFamily: "Inter",
                     fontSize: "14px",
+                    letterSpacing:"-0.4px",
                     padding: "4px 8px",
                     marginRight: "6px",
                     borderRadius: "4px",

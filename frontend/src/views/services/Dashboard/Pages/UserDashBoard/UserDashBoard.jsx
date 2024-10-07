@@ -53,8 +53,8 @@ const UserDashBoard = () => {
           }}
         >
           <AccountDetails />
-          <DashboardBalance />
           <LiveCalls />
+          <DashboardBalance />
         </div>
 
         {/* Right Content */}
@@ -88,7 +88,7 @@ const UserDashBoard = () => {
                   color: "#09090B",
                 }}
               >
-                Dashboard
+                Statistics of {selectedFilter} Calls
               </h1>
               {/*<span>*/}
               {/*  <LiveClock/>*/}
@@ -106,20 +106,20 @@ const UserDashBoard = () => {
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-start", // Align both components to the start
-              alignItems: "flex-start", // Top alignment
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
               width: "100%",
               gap: "18px",
-              height: "auto", // Ensures container is flexible with content height
+              height: "auto",
             }}
           >
-            <div style={{flex: 1, height: "400px"}}> {/* Same fixed height for both components */}
+            <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
                 <CallSummaryChart selectedFilter={selectedFilter}/>
               </div>
             </div>
 
-            <div style={{flex: 1, height: "400px"}}> {/* Same fixed height for both components */}
+            <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
                 <DashboardCallStatus selectedFilter={selectedFilter}/>
               </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
 import CDRTable from "../../../Reports/CDRTable";
+import {useHistory} from "react-router-dom";
 import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
 
 const rows = [
@@ -101,11 +102,14 @@ const columns = [
   { field: "hangupCause", headerName: "Hangup Cause", flex: 1 },
 ];
 
-const handleButtonClick = () => {
-  console.log("Button clicked!");
-};
 
 const DashboardCdrTable = () => {
+
+  const history = useHistory();
+  const handleButtonClick = () => {
+    history.push("/CDRs");
+  };
+
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
 
