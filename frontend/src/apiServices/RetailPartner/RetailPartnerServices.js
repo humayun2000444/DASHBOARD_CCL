@@ -49,6 +49,23 @@ const retailPartnerServices = {
       console.log("Error Updating Retail Partner:", error);
     }
   },
+
+  createRetailPartnerFromFile: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root}8001/FREESWITCH/create-retail-partner-from-file`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error Uploading Retail Partner:", error);
+    }
+  },
 };
 
 export default retailPartnerServices;

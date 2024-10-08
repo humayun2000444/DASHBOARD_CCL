@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
 
-const PartnerPrefixForm = ({ setAllPartnerPrefixes, setOpenToaster }) => {
+const PartnerPrefixForm = ({ setOpenToaster }) => {
   const [partners, setPartners] = useState([]);
 
   const fetchPartners = async () => {
@@ -59,7 +59,7 @@ const PartnerPrefixForm = ({ setAllPartnerPrefixes, setOpenToaster }) => {
     });
     setOpenToaster(true);
     console.log({ ...data });
-    setAllPartnerPrefixes((prev) => [...prev, data]);
+    // setAllPartnerPrefixes((prev) => [...prev, data]);
     reset(); // Reset form fields after submission
   };
 

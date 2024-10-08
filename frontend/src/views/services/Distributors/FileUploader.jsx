@@ -31,17 +31,25 @@ const FileUploader = ({ dataType, onFileUpload }) => {
   const [files, setFiles] = useState([]);
 
   const handleFileChange = (newFiles) => {
+    console.log(newFiles);
     setFiles(newFiles);
-    // onFileUpload(newFiles); // Pass the files back to the parent component
+    onFileUpload(newFiles); // Pass the files back to the parent component
   };
 
   // Set accepted file formats based on dataType
   const acceptedFiles =
     dataType === "csv"
-      ? ["text/csv"]
+      ? [
+          "text/csv", // CSV files
+          "application/vnd.ms-excel", // Excel .xls
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // Excel .xlsx
+        ]
       : dataType === "image"
       ? ["image/jpeg", "image/png", "image/gif", "image/jpg"]
       : [];
+
+  // Set file limit conditionally based on dataType
+  const filesLimit = dataType === "csv" ? 1 : 2; 
 
   const maxFileSize = dataType === "csv" ? Infinity : 2000000; // 2MB for non-CSV
 
@@ -49,7 +57,7 @@ const FileUploader = ({ dataType, onFileUpload }) => {
     <DropzoneArea
       showPreviewsInDropzone={true}
       useChipsForPreview
-      filesLimit={2}
+      filesLimit={filesLimit} // Limit to 1 file for CSV
       acceptedFiles={acceptedFiles}
       maxFileSize={maxFileSize}
       dropzoneClass={classes.dropzoneContainer}
@@ -60,7 +68,7 @@ const FileUploader = ({ dataType, onFileUpload }) => {
         >
           <CloudUploadIcon />{" "}
           {dataType === "csv"
-            ? "Select CSV file"
+            ? "Select CSV or Excel file"
             : dataType === "image"
             ? "Upload image files (Max 2MB)"
             : "Upload your files (Max 2MB)"}
