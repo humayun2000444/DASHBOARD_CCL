@@ -115,7 +115,7 @@ const UserDashBoard = () => {
           >
             <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
-                <CallSummaryChart selectedFilter={selectedFilter}/>
+                <CallSummaryChart userRole={"user"} selectedFilter={selectedFilter}/>
               </div>
             </div>
 

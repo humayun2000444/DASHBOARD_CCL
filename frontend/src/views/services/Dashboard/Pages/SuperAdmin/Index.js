@@ -285,7 +285,7 @@ import NewCallSummaryChart from "./NewCallSummaryChart";
           >
             <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
-                <NewCallSummaryChart selectedFilter={selectedFilter}/>
+                <CallSummaryChart userRole={"admin"} selectedFilter={selectedFilter}/>
               </div>
             </div>
 
