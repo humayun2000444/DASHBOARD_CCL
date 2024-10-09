@@ -7,6 +7,7 @@ import DashboardCdrTable from "./DashboardCdrTable";
 import LiveCalls from "./LiveCalls";
 import FilterTabs from "../../../../../components/core/filter/FilterTabs";
 import LiveClock from "../../../../../components/core/clock/LiveClock";
+import NewCallStatus from "../SuperAdmin/NewCallStatus";
 
 const UserDashBoard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Last 1 hour"); // Default filter
@@ -121,6 +122,7 @@ const UserDashBoard = () => {
 
             <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
+                {/*<NewCallStatus/>*/}
                 <DashboardCallStatus selectedFilter={selectedFilter}/>
               </div>
             </div>
