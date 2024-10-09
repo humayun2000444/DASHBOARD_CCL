@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const FileUploader = ({ dataType, onFileUpload }) => {
+const FileUploader = ({ dataType, onFileUpload, isSubmitted,setIsSubmitted }) => {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
 
   const handleFileChange = (newFiles) => {
+    setIsSubmitted(!isSubmitted);
     setTimeout(() => {
       setFiles(newFiles);
       onFileUpload(newFiles);
@@ -58,7 +59,7 @@ const FileUploader = ({ dataType, onFileUpload }) => {
   return (
     <>
       <DropzoneArea
-        showPreviewsInDropzone={true}
+        showPreviewsInDropzone={isSubmitted ? false : true}
         useChipsForPreview
         filesLimit={filesLimit} // Limit to 1 file for CSV
         acceptedFiles={acceptedFiles}

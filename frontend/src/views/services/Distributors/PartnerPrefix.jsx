@@ -6,6 +6,7 @@ import PartnerPrefixForm from "./PartnerPrefixForm";
 const PartnerPrefix = ({ setOpenToaster }) => {
   // State to store the uploaded files
   const [docFiles, setDocFiles] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Handle file upload and update state
   const handleFileUpload = (setFiles) => (files) => {
@@ -18,6 +19,8 @@ const PartnerPrefix = ({ setOpenToaster }) => {
       console.error("No file selected.");
       return;
     }
+
+    setIsSubmitted(!isSubmitted);
 
     const file = docFiles[0];
 
@@ -48,6 +51,8 @@ const PartnerPrefix = ({ setOpenToaster }) => {
         <FileUploader
           dataType="csv"
           onFileUpload={handleFileUpload(setDocFiles)}
+          isSubmitted={isSubmitted}
+          setIsSubmitted={setIsSubmitted}
         />
         <button
           style={{
