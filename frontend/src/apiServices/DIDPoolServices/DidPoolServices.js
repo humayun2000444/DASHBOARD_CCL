@@ -1,6 +1,5 @@
 import axios from "axios";
 import { root } from "../../constants/constants";
-import { root2 } from "../../constants/constants";
 
 const DID_POOL_API_BASE_URL = `${root}8001/FREESWITCH/`;
 
@@ -8,11 +7,21 @@ const DidPoolServices = {
   // Fetch all DID pools
   getDidPools: async () => {
     try {
-      const response = await axios.post(`${DID_POOL_API_BASE_URL}get-did-pools`);
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}get-did-pools`
+      );
       return response.data;
     } catch (error) {
-      console.error("Error fetching DID pools:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -30,8 +39,16 @@ const DidPoolServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching DID pool by ID:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -49,17 +66,28 @@ const DidPoolServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating DID pool:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 
   //Update a Did Pool
   updateDidPool: async (id, data, token) => {
-    try{
+    try {
       const response = await axios.post(
         `${DID_POOL_API_BASE_URL}update-did-pool`,
-        data,
+        {
+          id: id,
+          ...data,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,8 +95,17 @@ const DidPoolServices = {
         }
       );
       return response.data;
-    }catch (error) {
-      console.error("Error updating DID pool:", error);
+    } catch (error) {
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -86,17 +123,57 @@ const DidPoolServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error deleting DID pool:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
-  getDidNumbers: async () => {
+  getDidAssingnmentNumberById: async (id) => {
     try {
-      const response = await axios.post(`${DID_POOL_API_BASE_URL}get-did-numbers`);
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}get-did-assignment-by-didpool`,
+        { id: id }
+      );
       return response.data;
     } catch (error) {
-      console.error("Error fetching DID numbers:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
+    }
+  },
+
+  // All Did Number
+  getDidNumbers: async () => {
+    try {
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}get-did-numbers`
+      );
+      return response.data;
+    } catch (error) {
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
   // Create a DID assignment
@@ -113,8 +190,97 @@ const DidPoolServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating DID assignment:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
+    }
+  },
+
+  DidAssignmentSingleData: async (id, token) => {
+    try {
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}get-did-assignment`,
+        { id: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
+    }
+  },
+
+  updateDidAssignmentId: async (id, data, token) => {
+    try {
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}update-did-assignment`,
+        {
+          id: id,
+          ...data,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
+    }
+  },
+
+  deleteDidAssignmentId: async (id, token) => {
+    try {
+      const response = await axios.post(
+        `${DID_POOL_API_BASE_URL}delete-did-assignment`,
+        { id: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -132,8 +298,16 @@ const DidPoolServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating DID number:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error in DID pools:", errorEx);
+
+      throw errorEx;
     }
   },
 };

@@ -232,7 +232,7 @@ const SmsRouting = () => {
         formData={formData}
         partners={partners}
         handleChange={handleChange}
-        title={selectedRouteId ? "Update partner" : "Add Partner"}
+        title={selectedRouteId ? "Update Route" : "Add Route"}
         buttonText={selectedRouteId ? "Update" : "Save"}
       />
 
@@ -244,7 +244,7 @@ const SmsRouting = () => {
           <div className="mt-4 container-fluid">
             <div className="row mb-3">
               <div className="col-md-4">
-                <h6>Find Sms Routing:</h6>
+                <h6>Find Route:</h6>
                 <Form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."

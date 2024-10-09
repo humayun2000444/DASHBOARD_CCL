@@ -53,6 +53,11 @@ const AssignDid = () => {
 
   return (
     <div>
+      <AssignNewDidModal
+        show={isModalOpen}
+        handleClose={toggleModal}
+        onSave={handleSave}
+      />
       <Card className="mt-3">
         <CardBody>
           <div className="d-flex justify-content-between align-items-center">
@@ -62,7 +67,7 @@ const AssignDid = () => {
                 style={{
                   marginRight: "10px",
                   padding: "7px 12px",
-                  backgroundColor: "#1D94AB", // Blue background
+                  backgroundColor: "#1D94AB",
                   color: "#fff",
                 }}
                 onClick={toggleModal}
@@ -72,7 +77,7 @@ const AssignDid = () => {
               <Button
                 style={{
                   padding: "7px 12px",
-                  backgroundColor: "#EA5455", // Red background
+                  backgroundColor: "#EA5455",
                   color: "#fff",
                 }}
               >
@@ -116,13 +121,6 @@ const AssignDid = () => {
           </div>
         </CardBody>
       </Card>
-
-      {/* Include the AssignNewDidModal */}
-      <AssignNewDidModal
-        show={isModalOpen}
-        handleClose={toggleModal}
-        onSave={handleSave}
-      />
     </div>
   );
 };

@@ -220,7 +220,8 @@ const UserManagement = () => {
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>
                   <th></th>
-                  <th align="right">User Name</th>
+                  <th align="right">Name</th>
+                  <th align="right">Email</th>
                   <th align="right">Role</th>
                   <th align="right">Created on</th>
                   <th align="right">Status</th>
@@ -237,6 +238,13 @@ const UserManagement = () => {
                       style={{ padding: "2px 16px", minWidth: "220px" }}
                     >
                       {row.firstName} {row.lastName}
+                    </td>
+                    <td
+                      component="th"
+                      scope="row"
+                      style={{ padding: "2px 16px", minWidth: "220px" }}
+                    >
+                      {row.email}
                     </td>
                     <td style={{ padding: "2px 16px", minWidth: "220px" }}>
                       {row.authRoles.map((role) => (

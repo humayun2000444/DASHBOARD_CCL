@@ -1086,13 +1086,22 @@ const PaymentEntry = lazy(() =>
   import("./views/services/PaymentEntry/PaymentEntry.jsx")
 );
 const NewDidPool = lazy(() =>
-  import("./views/services/NewDidPool/NewDidPool.jsx")
+  import("./views/services/NewDidPool/DidPoolManagement.jsx")
 );
 const userProfile = lazy(() =>
   import("./views/services/Profile/UserProfile.jsx")
 );
-const AssignDid = lazy(() => import("./views/services/DIDPool/AssignDid.jsx"));
-const DidPool = lazy(() => import("./views/services/DIDPool/DidPool.jsx"));
+
+const AssignDid = lazy(() =>
+  import("./views/services/NewDidPool/AssignDidNumber.jsx")
+);
+const DidPool = lazy(() =>
+  import("./views/services/NewDidPool/DidPoolManagement.jsx")
+);
+
+const DidPoolNumbers = lazy(() =>
+  import("./views/services/NewDidPool/DidAllNumbers.jsx")
+);
 const RetailPartner = lazy(() =>
   import("./views/services/RetailPartner/RetailPartner.jsx")
 );
@@ -1106,9 +1115,7 @@ const RechargeBalance = lazy(() =>
   import("./views/services/RechargeBalance/RechargeBalance.jsx")
 );
 
-const CallScreen = lazy(() =>
-  import("./views/dashboard/WebRtc/CallScreen.js")
-);
+const CallScreen = lazy(() => import("./views/dashboard/WebRtc/CallScreen.js"));
 
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
@@ -1213,8 +1220,8 @@ class AppRouter extends React.Component {
                   {/* Easin Code */}
                   {/* PaymentEntry Route  */}
                   <AppRoute path="/paymentEntry" component={PaymentEntry} />
-                  <AppRoute path="/userProfile" component={userProfile}/>
-                  <AppRoute path="/newDidPool" component={NewDidPool}/>
+                  <AppRoute path="/userProfile" component={userProfile} />
+                  <AppRoute path="/newDidPool" component={NewDidPool} />
                   {/* CallHistory Route  */}
                   <AppRoute
                     path="/userCallHistory"
@@ -1222,8 +1229,8 @@ class AppRouter extends React.Component {
                   />
                   <AppRoute path="/retailPartner" component={RetailPartner} />
                   <AppRoute path="/didPool" component={DidPool} />
-                  <AppRoute path="/AssignDid/:poolName" component={AssignDid} />
-
+                  <AppRoute path="/AssignDid/:poolId" component={AssignDid} />
+                  <AppRoute path="/didPoolNumber" component={DidPoolNumbers} />
                   <AppRoute
                     path="/userCDRSummery/:didNumber"
                     component={UserCDRSummery}
