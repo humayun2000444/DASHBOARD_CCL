@@ -1,12 +1,20 @@
+import React, { useState, useEffect } from "react";
+import { Button, Card, Form } from "react-bootstrap";
+import { CardBody } from "reactstrap";
+import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
+import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
-import { CardBody } from "reactstrap";
-import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const RetailPartner = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,115 +22,94 @@ const RetailPartner = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    username: "",
+    userName: "",
     password: "",
     partnerName: "",
   });
 
-  // Add state for password visibility
-  const [visiblePasswords, setVisiblePasswords] = useState({});
+  const [visiblePasswords, setVisiblePasswords] = useState({}); // Handle password visibility
 
-  // Dummy retail partners data
-  const [retailPartners, setRetailPartners] = useState([
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      username: "jdoe",
-      password: "pass123",
-      partnerName: "Partner A",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      username: "jsmith",
-      password: "pass456",
-      partnerName: "Partner B",
-    },
-  ]);
+  const [retailPartners, setRetailPartners] = useState([]); // Retail partners data
 
-  // Toggle password visibility
-  const togglePasswordVisibility = (id) => {
-    setVisiblePasswords((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
+  const [dialogOpen, setDialogOpen] = useState(false); // Dialog state
+  const [partnerToDelete, setPartnerToDelete] = useState(null); // Partner to delete
+
+  // Fetch retail partners data
+  const fetchRetailPartners = async () => {
+    try {
+      const data = await retailPartnerServices.fetchAllRetailPartners();
+      setRetailPartners(data);
+    } catch (error) {
+      console.log("Error fetching retail partners:" + error);
+    }
   };
 
-  // Open modal for adding a new retail partner
+  useEffect(() => {
+    fetchRetailPartners();
+  }, []);
+
+  // Handle delete button click - open confirmation dialog
+  const handleDeleteClick = (id) => {
+    setPartnerToDelete(id);
+    setDialogOpen(true);
+  };
+
+  // Confirm delete action
+  const handleDeleteConfirm = async () => {
+    try {
+      await retailPartnerServices.deleteRetailPartner({ id: partnerToDelete });
+      setDialogOpen(false); // Close dialog
+      fetchRetailPartners(); // Fetch updated data
+      setSnackbarOpen(true); // Show success snackbar
+    } catch (error) {
+      console.error("Error deleting retail partner:", error);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  // Open modal for adding/editing retail partner
   const handleOpenModal = (partnerId = null) => {
     if (partnerId) {
       const partner = retailPartners.find((p) => p.id === partnerId);
-      setFormData(partner);
+      setFormData({
+        id: partnerId,
+        firstName: partner.firstName,
+        lastName: partner.lastName,
+        userName: partner.userName,
+        password: partner.password,
+        partnerName: partner.partner.partnerName,
+      });
       setSelectedPartnerId(partnerId);
     } else {
       setFormData({
         firstName: "",
         lastName: "",
-        username: "",
+        userName: "",
         password: "",
         partnerName: "",
+        id: "",
       });
       setSelectedPartnerId(null);
     }
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      username: "",
-      password: "",
-      partnerName: "",
-    });
-  };
-
-  // Handle form input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submit (add or update retail partner)
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (selectedPartnerId) {
-      // Update retail partner
-      const updatedPartners = retailPartners.map((p) =>
-        p.id === selectedPartnerId ? { ...p, ...formData } : p
-      );
-      setRetailPartners(updatedPartners);
-    } else {
-      // Add new retail partner
-      const newPartner = {
-        id: retailPartners.length + 1,
-        ...formData,
-      };
-      setRetailPartners([...retailPartners, newPartner]);
-    }
-    handleCloseModal();
-  };
-
-  // Handle delete retail partner
-  const handleDeletePartner = (partnerId) => {
-    const updatedPartners = retailPartners.filter((p) => p.id !== partnerId);
-    setRetailPartners(updatedPartners);
-  };
-
   return (
     <div>
       <RetailPartnerModal
         show={modalOpen}
-        handleClose={handleCloseModal}
-        handleSubmit={handleSubmit}
+        handleClose={() => setModalOpen(false)}
         formData={formData}
-        handleChange={handleChange}
+        fetchRetailPartners={fetchRetailPartners}
+        setModalOpen={setModalOpen}
       />
 
       <Card>
@@ -144,53 +131,32 @@ const RetailPartner = () => {
                   </Button>
                 </Form>
               </div>
-              {/* <div className="col-md-6 d-flex justify-content-end">
-                <Button
-                  style={{ padding: "7px 30px" }}
-                  onClick={() => handleOpenModal()}
-                >
-                  Add Partner
-                </Button>
-              </div> */}
             </div>
           </div>
 
-          <div
-            className="overflow-auto"
-            style={{ maxWidth: "100%", overflowX: "scroll" }}
-          >
+          <div className="overflow-auto" style={{ maxWidth: "100%" }}>
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>
-                  <th>First Name</th>
-                  <th>Last Name</th>
+                  <th>Name</th>
                   <th align="right">Username</th>
-                  <th align="right">Password</th>
                   <th align="right">Partner Name</th>
                   <th align="right">Action</th>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {retailPartners.map((row) => (
+                {retailPartners?.map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell>{row.firstName}</TableCell>
-                    <TableCell>{row.lastName}</TableCell>
-                    <TableCell>{row.username}</TableCell>
-                    {/* Password Cell */}
-                    <TableCell
-                      onClick={() => togglePasswordVisibility(row.id)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {visiblePasswords[row.id] ? row.password : "********"}
-                    </TableCell>
-                    <TableCell>{row.partnerName}</TableCell>
+                    <TableCell>{row.firstName + " " + row.lastName}</TableCell>
+                    <TableCell>{row.userName}</TableCell>
+                    <TableCell>{row.partner.partnerName}</TableCell>
                     <TableCell>
                       <Button onClick={() => handleOpenModal(row.id)}>
                         Edit
                       </Button>{" "}
                       <Button
                         variant="danger"
-                        onClick={() => handleDeletePartner(row.id)}
+                        onClick={() => handleDeleteClick(row.id)}
                       >
                         Delete
                       </Button>{" "}
@@ -202,6 +168,35 @@ const RetailPartner = () => {
           </div>
         </CardBody>
       </Card>
+
+      {/* Snackbar for success message */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          Retail partner deleted successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* Dialog for confirmation */}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this retail partner?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

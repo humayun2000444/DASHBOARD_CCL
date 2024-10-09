@@ -1,14 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { useHistory } from "react-router-dom"
-import Button from "@mui/material/Button";
-import adminDashboardServices from "../../../../../apiServices/AdminDashboardServices/adminDashboardServices";
-import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
+import React, {useState} from 'react';
 import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
-
-// Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend);
+import {Doughnut} from "react-chartjs-2";
+import {useHistory} from "react-router-dom";
 
 const useStyles = {
   chartContainer: {
@@ -51,22 +44,7 @@ const useStyles = {
   },
 };
 
-const getDateRange = (filter) => {
-  const now = new Date();
-  let startStamp = new Date();
-
-  const ranges = {
-    "Last 1 hour": () => startStamp.setHours(now.getHours() - 1),
-    "Last 24 hours": () => startStamp.setDate(now.getDate() - 1),
-    "Last 7 days": () => startStamp.setDate(now.getDate() - 7),
-    "Last 30 days": () => startStamp.setDate(now.getDate() - 30),
-  };
-
-  ranges[filter]?.();
-  return { startStamp: startStamp.toISOString(), endStamp: now.toISOString() };
-};
-
-const DashboardCallStatus = ({ selectedFilter }) => {
+const NewCallStatus = () => {
 
   const history = useHistory();
   const handleButtonClick = () => {
@@ -80,46 +58,6 @@ const DashboardCallStatus = ({ selectedFilter }) => {
     missed: 0,
   });
 
-  const token = localStorage.getItem("authToken");
-  const userToken = JSON.parse(localStorage.getItem("userInfo"));
-  const { name: role } = userToken.authRoles[0];
-  const username = localStorage.getItem("username");
-
-  const fetchData = useCallback(async () => {
-    const { startStamp, endStamp } = getDateRange(selectedFilter);
-
-    try {
-      if (role === "ROLE_ADMIN") {
-        const [total, outgoing, incoming, missed] = await Promise.all([
-          adminDashboardServices.fetchTotalCallForAdmin(token, startStamp, endStamp),
-          adminDashboardServices.fetchOutgoingCallForAdmin(token, startStamp, endStamp),
-          adminDashboardServices.fetchIncomingCallForAdmin(token, startStamp, endStamp),
-          adminDashboardServices.fetchMissedCallForAdmin(token, startStamp, endStamp),
-        ]);
-        setCallData({ total, outgoing, incoming, missed });
-      } else if (role === "ROLE_USER") {
-        const data = await CDRServices.fetchPartnerPrefixes(username);
-        const callerIdNumber = data.map((item) => item.prefix);
-        const [total, outgoing, incoming, missed] = await Promise.all([
-          adminDashboardServices.fetchTotalCallForUser({ callerIdNumber, startStamp, endStamp }),
-          adminDashboardServices.fetchOutgoingCallForUser({ callerIdNumber, startStamp, endStamp }),
-          adminDashboardServices.fetchIncomingCallForUser({ callerIdNumber, startStamp, endStamp }),
-          adminDashboardServices.fetchMissedCallForUser({ callerIdNumber, startStamp, endStamp }),
-        ]);
-        setCallData({ total, outgoing, incoming, missed });
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, [selectedFilter, role, token, username]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  // Check if all values are zero
-  const isDataEmpty = callData.total === 0 && callData.incoming === 0 && callData.outgoing === 0 && callData.missed === 0;
-
   const chartData = {
     labels: [], // Hidden labels
     datasets: [
@@ -129,6 +67,9 @@ const DashboardCallStatus = ({ selectedFilter }) => {
       },
     ],
   };
+
+  // Check if all values are zero
+  const isDataEmpty = callData.total === 0 && callData.incoming === 0 && callData.outgoing === 0 && callData.missed === 0;
 
   return (
     <div>
@@ -146,14 +87,14 @@ const DashboardCallStatus = ({ selectedFilter }) => {
             data={chartData}
             options={{
               responsive: true,
-              maintainAspectRatio: false, // Allows custom height and width
-              cutout: '90%', // Adjusts the thickness of the doughnut
+              maintainAspectRatio: false,
+              cutout: '90%',
               plugins: {
-                tooltip: {enabled: !isDataEmpty}, // Disable tooltip when no data
+                tooltip: {enabled: !isDataEmpty},
               },
             }}
-            height={230} // Custom height
-            width={230} // Custom width
+            height={230}
+            width={230}
           />
 
           <h3 style={{
@@ -172,9 +113,7 @@ const DashboardCallStatus = ({ selectedFilter }) => {
               fontSize: '14px',
               fontWeight: 400,
               color: '#888888',
-            }}>
-      Total Calls
-    </span>
+            }}>Total Calls</span>
           </h3>
         </div>
 
@@ -207,5 +146,4 @@ const DashboardCallStatus = ({ selectedFilter }) => {
   );
 };
 
-export default DashboardCallStatus;
-
+export default NewCallStatus;

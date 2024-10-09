@@ -23,17 +23,27 @@ const PartnerPrefixTable = ({ allPartnerPrefixes, handleDelete }) => {
             <TableCell
               style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
             >
-              Partner Name
+              First Name
             </TableCell>
             <TableCell
               style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
             >
-              Priority
+              Last Name
             </TableCell>
             <TableCell
               style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
             >
-              DID Number
+              User Name
+            </TableCell>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
+              Password
+            </TableCell>
+            <TableCell
+              style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
+            >
+              Partner
             </TableCell>
             <TableCell
               style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
@@ -45,9 +55,11 @@ const PartnerPrefixTable = ({ allPartnerPrefixes, handleDelete }) => {
         <TableBody>
           {allPartnerPrefixes.map((prefix, index) => (
             <TableRow key={index}>
-              <TableCell>{prefix.partnerName}</TableCell>
-              <TableCell>{prefix.priority}</TableCell>
-              <TableCell>{prefix.DIDNo}</TableCell>
+              <TableCell>{prefix.firstName}</TableCell>
+              <TableCell>{prefix.lastName}</TableCell>
+              <TableCell>{prefix.userName}</TableCell>
+              <TableCell>{prefix.password}</TableCell>
+              <TableCell>{prefix.idPartner}</TableCell>
               <TableCell>
                 <IconButton color="error" onClick={() => handleDelete(index)}>
                   <DeleteIcon />

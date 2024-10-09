@@ -11,6 +11,7 @@ import { CardBody } from "reactstrap";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import Pagination from "../Pagination/Pagination";
 import DistributorEditModal from "./DistributorEditModal";
+import SuccessToaster from "./SuccessToaster";
 
 const Distributors = () => {
   const [partners, setPartners] = useState([
@@ -228,6 +229,8 @@ const Distributors = () => {
     );
   };
 
+  const [openToaster, setOpenToaster] = useState(false);
+
   return (
     <div>
       <DistributorEditModal
@@ -235,7 +238,9 @@ const Distributors = () => {
         title={modalOpen.openType === "Update" ? "Update" : "Add"}
         handleClose={handleCloseModal}
         handleSubmit={handleSubmit}
+        setOpenToaster={setOpenToaster}
       />
+      <SuccessToaster open={openToaster} setOpen={setOpenToaster} />
       <Card>
         <CardBody>
           <div className="border-bottom mb-4">

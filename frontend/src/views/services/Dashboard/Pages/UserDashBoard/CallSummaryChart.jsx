@@ -1,127 +1,142 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Card, CardBody, Button } from "reactstrap";
-import ReactECharts from "echarts-for-react";
+import React, { useState, useEffect } from 'react';
 import CommonCardHeader from "../../../../../components/core/commonCardHeader/CommonCardHeader";
+import { useHistory } from "react-router-dom";
+import ReactECharts from "echarts-for-react";
+import axios from "axios";
+import CDRServices from "../../../../../apiServices/CDRServices/CDRServices";
 
-const CallSummaryChart = ({ selectedFilter }) => {
+
+const username = localStorage.getItem("username");
+
+const CallSummaryChart = ({ userRole, selectedFilter }) => {
+
+  // Chart State
   const [chartData, setChartData] = useState({
     failed: [],
     success: [],
     timeLabels: [],
   });
-  const [loading, setLoading] = useState(false);
-  const [lastFilter, setLastFilter] = useState("");
 
+  const history = useHistory();
   const handleButtonClick = () => {
-    console.log("Button clicked!");
+    history.push("/userCallHistory");
   };
 
-  const fetchCallSummary = async () => {
-    if (loading) return; // Prevent multiple fetches
-    setLoading(true); // Set loading state
-
-    const now = new Date();
+  // Function to get the start and end timestamps based on the selected filter
+  const getTimestamps = (filter) => {
+    const endStamp = new Date().toISOString(); // Current time
     let startStamp;
-    let endStamp = now.toISOString();
 
-    switch (selectedFilter) {
-      case "Last 1 hour":
-        startStamp = new Date(now.getTime() - 60 * 60 * 1000).toISOString(); // 1 hour ago
+    switch (filter) {
+      case 'Last 1 hour':
+        startStamp = new Date(new Date().getTime() - 60 * 60 * 1000).toISOString(); // 1 hour ago
         break;
-      case "Last 24 hours":
-        startStamp = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(); // 24 hours ago
+      case 'Last 24 hours':
+        startStamp = new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString(); // 24 hours ago
         break;
-      case "Last 7 days":
-        startStamp = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
+      case 'Last 7 days':
+        startStamp = new Date(new Date().setDate(new Date().getDate() - 7)).toISOString(); // 7 days ago
         break;
-      case "Last 30 days":
-        startStamp = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ago
+      case 'Last 30 days':
+        startStamp = new Date(new Date().setDate(new Date().getDate() - 30)).toISOString(); // 30 days ago
         break;
       default:
-        setLoading(false);
-        return; // Exit if no valid filter is selected
+        startStamp = endStamp; // Fallback
+        break;
     }
-
-    const requestData = {
-      callerIdNumber: ["09646710720", "09646896378"], // Example callerIdNumbers
-      startStamp,
-      endStamp,
-    };
-
-    try {
-      const response = await axios.post(
-        "http://iptsp.cosmocom.net:5070/user/DashBoard/getIntervalWiseCall",
-        requestData
-      );
-      const data = response.data;
-
-      // Prepare data for the chart
-      const timeLabels = [];
-      const failedCalls = [];
-      const successCalls = [];
-
-      data.forEach(item => {
-        timeLabels.push(new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-        failedCalls.push(item.failedCalls);
-        successCalls.push(item.successCalls);
-      });
-
-      setChartData({
-        timeLabels,
-        failed: failedCalls,
-        success: successCalls,
-      });
-      setLastFilter(selectedFilter); // Update the last filter used
-    } catch (error) {
-      console.error("Error fetching call summary data:", error.message);
-    } finally {
-      setLoading(false); // Reset loading state
-    }
+    return { startStamp, endStamp };
   };
 
+  // Set sample data in useEffect
   useEffect(() => {
-    // Fetch data only if the selected filter changes
-    if (selectedFilter !== lastFilter) {
-      fetchCallSummary();
-    }
-  }, [selectedFilter]); // Trigger effect when selectedFilter changes
+    const fetchCallSummery = async () => {
 
-  // ECharts Configuration
+      const { startStamp, endStamp } = getTimestamps(selectedFilter);
+      const adminRequestData = { startStamp, endStamp };
+
+      const data = await CDRServices.fetchPartnerPrefixes(username);
+      const callerIdNumber = data.map((item) => item.prefix);
+      const requestData = { callerIdNumber, startStamp, endStamp };
+
+      try {
+        if(userRole==="admin") {
+          const response = await axios.post(
+            "http://iptsp.cosmocom.net:5070/admin/DashBoard/getIntervalWiseCall", adminRequestData
+          );
+          const data = await response.data;
+
+          const sampleData = {
+            failed: data.map(item => item.failedCalls),
+            success: data.map(item => item.successCalls),
+            timeLabels: data.map(item => item.timestamp)
+          };
+
+          const formattedTimeLabels = sampleData.timeLabels.map(label =>
+            new Date(label).toLocaleDateString("en-GB") // Format as 'DD/MM/YYYY' or use any desired format
+          );
+
+          setChartData({
+            failed: sampleData.failed,
+            success: sampleData.success,
+            timeLabels: formattedTimeLabels,
+          });
+        }
+        else {
+          const response = await axios.post(
+            "http://iptsp.cosmocom.net:5070/user/DashBoard/getIntervalWiseCall", requestData,
+            {
+              headers: {
+                'Authorization': `Bearer YOUR_TOKEN_HERE`,
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          const data = await response.data;
+          console.log(data);
+
+          const sampleData = {
+            failed: data.map(item => item.failedCalls),
+            success: data.map(item => item.successCalls),
+            timeLabels: data.map(item => item.timestamp)
+          };
+
+          const formattedTimeLabels = sampleData.timeLabels.map(label =>
+            new Date(label).toLocaleDateString("en-GB") // Format as 'DD/MM/YYYY' or use any desired format
+          );
+
+          setChartData({
+            failed: sampleData.failed,
+            success: sampleData.success,
+            timeLabels: formattedTimeLabels,
+          });
+        }
+      } catch (e) {
+        console.log('Error Message:', { e });
+      }
+    };
+    fetchCallSummery();
+  }, [selectedFilter]);
+
+  // Chart Options
   const chartOptions = {
     tooltip: {
       trigger: "axis",
-      backgroundColor: "#ffffff",
-      borderColor: "#D1E4F3",
-      borderWidth: 1,
-      textStyle: {
-        color: "#374151",
-        fontFamily: "Inter",
-        fontSize: 12,
-      },
     },
     legend: {
       data: ["Failed", "Success"],
       bottom: 0,
       icon: "circle",
-      itemWidth: 12,
-      itemHeight: 12,
-      textStyle: {
-        fontFamily: "Inter",
-        fontSize: 14,
-        color: "#374151",
-      },
     },
     grid: {
-      top: "-2%",
-      left: "0%",
+      top: "10%",
+      left: "1%",
       right: "3%",
       bottom: "12%",
       containLabel: true,
     },
     xAxis: {
       type: "category",
-      boundaryGap: false,
+      boundaryGap: true,
       data: chartData.timeLabels,
       axisLine: {
         lineStyle: { color: "#D1E4F3" },
@@ -130,11 +145,12 @@ const CallSummaryChart = ({ selectedFilter }) => {
         fontFamily: "Inter",
         fontSize: 12,
         color: "#374151",
+        rotate: 45,
       },
     },
     yAxis: {
       type: "value",
-      min: 0, // Ensure the min is 0 for better representation
+      min: 0,
       axisLine: { lineStyle: { color: "#D1E4F3" } },
       axisLabel: {
         fontFamily: "Inter",
@@ -199,13 +215,7 @@ const CallSummaryChart = ({ selectedFilter }) => {
         buttonText="View Report"
         onButtonClick={handleButtonClick}
       />
-      <div>
-        {loading ? (
-          <p>Loading data...</p> // Show a loading message while fetching data
-        ) : (
-          <ReactECharts option={chartOptions} style={{ top: "-16px" }} />
-        )}
-      </div>
+      <ReactECharts option={chartOptions} style={{ top: "-16px" }} />
     </div>
   );
 };
