@@ -1,5 +1,4 @@
 import { Autocomplete } from "@mui/material";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -216,13 +215,20 @@ const PartnerPrefixForm = ({ setOpenToaster }) => {
           </div>
         </div>
         {/* Submit Button */}
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{ width: "130px", backgroundColor: "#1D94AB" }}
+        <button
+          style={{
+            backgroundColor: "#1D94AB",
+            marginTop: "1rem",
+            border: "none",
+            outline: "none",
+            padding: "10px 15px",
+            borderRadius: "5px",
+            color: "#fff",
+            width: "100px",
+          }}
         >
           Submit
-        </Button>
+        </button>
       </form>
     </>
   );

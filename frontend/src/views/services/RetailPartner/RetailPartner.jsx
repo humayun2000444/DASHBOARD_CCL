@@ -1,13 +1,20 @@
+import React, { useState, useEffect } from "react";
+import { Button, Card, Form } from "react-bootstrap";
+import { CardBody } from "reactstrap";
+import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
+import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useEffect, useState } from "react";
-import { Button, Card, Form } from "react-bootstrap";
-import { CardBody } from "reactstrap";
-import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
-import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const RetailPartner = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,12 +27,15 @@ const RetailPartner = () => {
     partnerName: "",
   });
 
-  // Add state for password visibility
-  const [visiblePasswords, setVisiblePasswords] = useState({});
+  const [visiblePasswords, setVisiblePasswords] = useState({}); // Handle password visibility
 
-  // Dummy retail partners data
-  const [retailPartners, setRetailPartners] = useState([]);
+  const [retailPartners, setRetailPartners] = useState([]); // Retail partners data
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
+  const [dialogOpen, setDialogOpen] = useState(false); // Dialog state
+  const [partnerToDelete, setPartnerToDelete] = useState(null); // Partner to delete
+
+  // Fetch retail partners data
   const fetchRetailPartners = async () => {
     try {
       const data = await retailPartnerServices.fetchAllRetailPartners();
@@ -35,15 +45,37 @@ const RetailPartner = () => {
     }
   };
 
-  // Toggle password visibility
-  const togglePasswordVisibility = (id) => {
-    setVisiblePasswords((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+  useEffect(() => {
+    fetchRetailPartners();
+  }, []);
+
+  // Handle delete button click - open confirmation dialog
+  const handleDeleteClick = (id) => {
+    setPartnerToDelete(id);
+    setDialogOpen(true);
   };
 
-  // Open modal for adding or editing a retail partner
+  // Confirm delete action
+  const handleDeleteConfirm = async () => {
+    try {
+      await retailPartnerServices.deleteRetailPartner({ id: partnerToDelete });
+      setDialogOpen(false); // Close dialog
+      fetchRetailPartners(); // Fetch updated data
+      setSnackbarOpen(true); // Show success snackbar
+    } catch (error) {
+      console.error("Error deleting retail partner:", error);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  // Open modal for adding/editing retail partner
   const handleOpenModal = (partnerId = null) => {
     if (partnerId) {
       const partner = retailPartners.find((p) => p.id === partnerId);
@@ -70,38 +102,13 @@ const RetailPartner = () => {
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      username: "",
-      password: "",
-      partnerName: "",
-    });
-  };
-
-  // Handle delete retail partner
-  const handleDeletePartner = async (id) => {
-    try {
-      await retailPartnerServices.deleteRetailPartner({ id });
-      fetchRetailPartners(); // Fetch updated data after deletion
-    } catch (error) {
-      console.error("Error deleting retail partner:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchRetailPartners();
-  }, []);
-
   return (
     <div>
       <RetailPartnerModal
         show={modalOpen}
-        handleClose={handleCloseModal}
+        handleClose={() => setModalOpen(false)}
         formData={formData}
-        fetchRetailPartners={fetchRetailPartners} // Pass fetchRetailPartners to re-fetch data after form submission
+        fetchRetailPartners={fetchRetailPartners}
         setModalOpen={setModalOpen}
       />
 
@@ -127,10 +134,7 @@ const RetailPartner = () => {
             </div>
           </div>
 
-          <div
-            className="overflow-auto"
-            style={{ maxWidth: "100%", overflowX: "scroll" }}
-          >
+          <div className="overflow-auto" style={{ maxWidth: "100%" }}>
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>
@@ -152,7 +156,7 @@ const RetailPartner = () => {
                       </Button>{" "}
                       <Button
                         variant="danger"
-                        onClick={() => handleDeletePartner(row.id)}
+                        onClick={() => handleDeleteClick(row.id)}
                       >
                         Delete
                       </Button>{" "}
@@ -164,6 +168,35 @@ const RetailPartner = () => {
           </div>
         </CardBody>
       </Card>
+
+      {/* Snackbar for success message */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          Retail partner deleted successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* Dialog for confirmation */}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this retail partner?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

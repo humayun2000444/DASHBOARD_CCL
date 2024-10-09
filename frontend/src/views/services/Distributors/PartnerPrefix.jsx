@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
 import FileUploader from "./FileUploader";
@@ -50,14 +49,28 @@ const PartnerPrefix = ({ setOpenToaster }) => {
           dataType="csv"
           onFileUpload={handleFileUpload(setDocFiles)}
         />
-        <Button
+        <button
+          style={{
+            backgroundColor: "#1D94AB",
+            marginTop: "1rem",
+            border: "none",
+            outline: "none",
+            padding: "10px 15px",
+            borderRadius: "5px",
+            color: "#fff",
+          }}
+          onClick={handleUploadClick}
+        >
+          Upload csv/excel
+        </button>
+        {/* <Button
           variant="contained"
           type="button"
-          sx={{ width: "200px", backgroundColor: "#1D94AB", marginTop: "1rem" }}
+          sx={{}}
           onClick={handleUploadClick} // Call the function when button is clicked
         >
           Upload csv/excel
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
