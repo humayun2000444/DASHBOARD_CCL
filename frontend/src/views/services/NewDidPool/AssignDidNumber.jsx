@@ -301,19 +301,19 @@
 
 // export default AssignDidNumber;
 
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useParams } from "react-router-dom";
-import { Card, CardBody } from "reactstrap";
-import { useLocation } from "react-router-dom";
-import DidPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
-import AssigDidNumberModal from "./AssignDidNumberModal";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
+import { useLocation, useParams } from "react-router-dom";
+import { Card, CardBody } from "reactstrap";
+import DidPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
 import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
+import AssigDidNumberModal from "./AssignDidNumberModal";
+import ImportCSVModal from "./ImportCSVModal";
 
 const AssignDidNumber = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -503,6 +503,14 @@ const AssignDidNumber = () => {
     fetchPartner();
   }, [poolId]);
 
+  const [modalOpen2, setModalOpen2] = useState(false);
+  const handleOpenModal2 = () => {
+    setModalOpen2(true);
+  };
+  const handleCloseModal2 = () => {
+    setModalOpen2(false);
+  };
+
   return (
     <div>
       <AssigDidNumberModal
@@ -515,6 +523,9 @@ const AssignDidNumber = () => {
         title={selectedAssignPoolId ? "Update DID" : "Add DID"}
         buttonText={selectedAssignPoolId ? "Update" : "Save"}
       />
+
+      <ImportCSVModal open={modalOpen2} setModalOpen={setModalOpen2} handleClose={handleCloseModal2} />
+
       <Card className="mt-3">
         <CardBody>
           <div className="d-flex justify-content-between align-items-center">
@@ -537,8 +548,9 @@ const AssignDidNumber = () => {
                   backgroundColor: "#EA5455",
                   color: "#fff",
                 }}
+                onClick={handleOpenModal2}
               >
-                Export CSV
+                Import CSV
               </Button>
             </div>
           </div>

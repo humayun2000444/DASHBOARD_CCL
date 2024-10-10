@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Button, Card, Form } from "react-bootstrap";
-import { CardBody } from "reactstrap";
-import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
-import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
+import toast from "react-hot-toast";
+import { CardBody } from "reactstrap";
+import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
+import RetailPartnerModal from "./RetailPartnerModal"; // Import the modal component
 
 const RetailPartner = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,12 +22,7 @@ const RetailPartner = () => {
   });
 
   const [visiblePasswords, setVisiblePasswords] = useState({}); // Handle password visibility
-
   const [retailPartners, setRetailPartners] = useState([]); // Retail partners data
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
-  const [dialogOpen, setDialogOpen] = useState(false); // Dialog state
-  const [partnerToDelete, setPartnerToDelete] = useState(null); // Partner to delete
 
   // Fetch retail partners data
   const fetchRetailPartners = async () => {
@@ -49,30 +38,48 @@ const RetailPartner = () => {
     fetchRetailPartners();
   }, []);
 
-  // Handle delete button click - open confirmation dialog
-  const handleDeleteClick = (id) => {
-    setPartnerToDelete(id);
-    setDialogOpen(true);
-  };
-
   // Confirm delete action
-  const handleDeleteConfirm = async () => {
-    try {
-      await retailPartnerServices.deleteRetailPartner({ id: partnerToDelete });
-      setDialogOpen(false); // Close dialog
-      fetchRetailPartners(); // Fetch updated data
-      setSnackbarOpen(true); // Show success snackbar
-    } catch (error) {
-      console.error("Error deleting retail partner:", error);
-    }
-  };
+  const handleDeleteRetailPartner = async (id) => {
+    const item = retailPartners.find((item) => item.id === id);
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
+    toast(
+      (t) => (
+        <div>
+          <h6>
+            Are you sure you want to delete the Retail Partner
+            <strong>"{item.userName}"</strong>?
+          </h6>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "10px",
+            }}
+          >
+            <Button onClick={() => toast.dismiss(t.id)}>Cancel</Button>
+            <Button
+              variant="danger"
+              onClick={async () => {
+                try {
+                  toast.dismiss(t.id);
+                  await retailPartnerServices.deleteRetailPartner({ id });
+                  fetchRetailPartners(); // Fetch updated data
+                  toast.success(
+                    `Retail Partner "${item.userName}" deleted successfully!`
+                  );
+                } catch (error) {
+                  console.error("Error deleting Retail Partner", error);
+                  toast.error("Failed to delete Retail Partner!");
+                }
+              }}
+            >
+              Confirm Delete
+            </Button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity, position: "top-center" }
+    );
   };
 
   // Open modal for adding/editing retail partner
@@ -156,10 +163,10 @@ const RetailPartner = () => {
                       </Button>{" "}
                       <Button
                         variant="danger"
-                        onClick={() => handleDeleteClick(row.id)}
+                        onClick={() => handleDeleteRetailPartner(row.id)}
                       >
                         Delete
-                      </Button>{" "}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -168,35 +175,6 @@ const RetailPartner = () => {
           </div>
         </CardBody>
       </Card>
-
-      {/* Snackbar for success message */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="success">
-          Retail partner deleted successfully!
-        </Alert>
-      </Snackbar>
-
-      {/* Dialog for confirmation */}
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>{"Confirm Deletion"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this retail partner?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
