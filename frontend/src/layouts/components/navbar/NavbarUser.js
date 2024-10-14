@@ -27,8 +27,9 @@ const handleNavigation = (e, path) => {
 
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 const AuthStr = localStorage.getItem("token");
-const username = localStorage.getItem('username');
-const description = userInfo.authRoles[0].description;
+
+// const username = localStorage.getItem('username');
+// const description = userInfo.authRoles[0].description;
 
 
 // const redirectToProfile = () => {
@@ -529,13 +530,13 @@ class NavbarUser extends React.PureComponent {
                 textTransform:"capitalize",
                 color:"#09090B",
               }}>
-                {description}
+                {userInfo?.displayName}
               </span>
               <span className="user-status" style={{
                 fontSize:"14px",
                 fontFamily:"Inter",
                 color:"#525256",
-              }}>{username}</span>
+              }}>{userInfo?.roleName}</span>
             </div>
           </DropdownToggle>
           <UserDropdown switch={this?.state?.canSwitch}/>
