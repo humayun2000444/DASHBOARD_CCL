@@ -1119,6 +1119,9 @@ const CallScreen = lazy(() => import("./views/dashboard/WebRtc/CallScreen.js"));
 // Balance Component
 const Balance = lazy(() => import("./views/services/Balance/Balance.jsx"));
 
+const ProfilePage = lazy(() =>
+  import("./views/services/ProfilePage/ProfilePage.jsx")
+);
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
     {...rest}
@@ -1238,6 +1241,7 @@ class AppRouter extends React.Component {
                     path="/rechargeBalance"
                     component={RechargeBalance}
                   />
+                  <AppRoute path="/ProfilePage" component={ProfilePage} />
 
                   <AppRoute path="/balance" component={Balance} />
                   <AppRoute

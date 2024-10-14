@@ -269,6 +269,15 @@ const UserDropdown = (props) => {
       <DropdownItem
         tag="a"
         onClick={(e) => {
+          handleNavigation(e, "/profilePage");
+        }}
+      >
+        <i class="fa-regular fa-user"></i>{" "}
+        <span className="align-middle">Profile</span>
+      </DropdownItem>
+      <DropdownItem
+        tag="a"
+        onClick={(e) => {
           handleLogOut(e);
         }}
       >
@@ -380,11 +389,12 @@ class NavbarUser extends React.PureComponent {
   //  latestChat.current = chat;
 
   countFunction = () => {
-    axios.get(`${rootUrl}Notification/UserNotificationCount`, {
-      headers: {
-        authorization: AuthStr,
-      },
-    })
+    axios
+      .get(`${rootUrl}Notification/UserNotificationCount`, {
+        headers: {
+          authorization: AuthStr,
+        },
+      })
       .then((res) => {
         this.setState({ notificationCount: res?.data });
       });
@@ -507,7 +517,6 @@ class NavbarUser extends React.PureComponent {
 
         <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
           <DropdownToggle tag="a" className="nav-link dropdown-user-link">
-
             <span data-tour="user">
               <img
                 src={
@@ -525,10 +534,12 @@ class NavbarUser extends React.PureComponent {
               <span className="user-name text-bold-600">
                 {userInfo?.displayName} Syed Easin
               </span>
-              <span className="user-status">{userInfo?.roleName}Software Engineer</span>
+              <span className="user-status">
+                {userInfo?.roleName}Software Engineer
+              </span>
             </div>
           </DropdownToggle>
-          <UserDropdown switch={this?.state?.canSwitch}/>
+          <UserDropdown switch={this?.state?.canSwitch} />
         </UncontrolledDropdown>
       </ul>
     );

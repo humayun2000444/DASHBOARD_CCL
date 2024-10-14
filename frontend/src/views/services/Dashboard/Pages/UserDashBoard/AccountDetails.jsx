@@ -22,8 +22,13 @@ const AccountDetails = () => {
     fetchPartnerDetails();
   }, []);
 
-  console.log();
-  console.log(partnerDetails?.partner.customerPrePaid);
+  console.log(partnerDetails?.firstName);
+  const fullName = {
+    firstName: partnerDetails?.firstName || "",
+    lastName: partnerDetails?.lastName || "",
+  };
+
+  localStorage.setItem("partnerFullName", JSON.stringify(fullName));
   return (
     <div>
       <div>
@@ -41,10 +46,10 @@ const AccountDetails = () => {
               <div
                 style={{
                   color: "#333",
-                  fontFamily:"Inter",
+                  fontFamily: "Inter",
                   fontSize: "16px",
                   fontWeight: 500,
-                  letterSpacing:"-0.4px",
+                  letterSpacing: "-0.4px",
                   paddingBottom: "8px",
                   borderBottom: "1px solid #EBEBEB",
                 }}
@@ -56,7 +61,7 @@ const AccountDetails = () => {
                   color: "#2D3748",
                   fontFamily: "Inter",
                   fontSize: "24px",
-                  letterSpacing:"-0.8px",
+                  letterSpacing: "-0.8px",
                   textTransform: "capitalize",
                   fontWeight: "bold",
                   padding: "12px 0 6px 0",
@@ -70,7 +75,7 @@ const AccountDetails = () => {
                   color: "#525256",
                   fontFamily: "Inter",
                   fontSize: "14px",
-                  letterSpacing:"-0.4px",
+                  letterSpacing: "-0.4px",
                 }}
               >
                 <span>Account Type </span>
@@ -79,7 +84,7 @@ const AccountDetails = () => {
                     color: "#064E3B",
                     fontFamily: "Inter",
                     fontSize: "14px",
-                    letterSpacing:"-0.4px",
+                    letterSpacing: "-0.4px",
                     padding: "4px 8px",
                     marginRight: "6px",
                     borderRadius: "4px",
@@ -90,7 +95,6 @@ const AccountDetails = () => {
                     ? "Prepaid"
                     : "Postpaid"}
                 </span>
-
               </div>
             </div>
           </div>
