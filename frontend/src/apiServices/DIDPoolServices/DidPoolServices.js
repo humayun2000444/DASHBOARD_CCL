@@ -310,6 +310,23 @@ const DidPoolServices = {
       throw errorEx;
     }
   },
+
+  importDidPoolFromFile: async (payload) => {
+    try {
+      const response = await axios.post(
+        `${root}8001/FREESWITCH/create-did-assign-from-csv`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error Uploading Did Pool:", error);
+    }
+  },
 };
 
 export default DidPoolServices;

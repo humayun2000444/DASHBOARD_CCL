@@ -3,22 +3,23 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import toast from "react-hot-toast";
+import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import { CardBody } from "reactstrap";
 import didPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
-import Pagination from "../Pagination/Pagination";
-import { useHistory } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "../../../assets/scss/core/variables/_variables.scss";
+import Pagination from "../Pagination/Pagination";
 import NewDidPoolModal from "./NewDidPoolModal";
 
 const NewDidPoolManagement = () => {
   const history = useHistory();
   const [didPools, setDidPools] = useState([]);
   const [modalOpen, setModalOpen] = useState({ openType: "", open: false });
+
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [selectedDidPoolId, setDidPoolId] = useState(null);
   const [dataPerPage, setDataPerPage] = useState(10);

@@ -11,6 +11,7 @@ import LiveCalls from "../UserDashBoard/LiveCalls";
 import PBXOverview from "../UserDashBoard/PBXOverview";
 import FilterTabs from "../../../../../components/core/filter/FilterTabs";
 import NewCallSummaryChart from "./NewCallSummaryChart";
+import NewCallStatus from "./NewCallStatus";
 
   const SuperAdmin = () => {
   const [selectedFilter, setSelectedFilter] = useState("Last 1 hour"); // Default filter
@@ -291,7 +292,8 @@ import NewCallSummaryChart from "./NewCallSummaryChart";
 
             <div style={{flex: 1, height: "400px"}}>
               <div style={commonContainerStyle}>
-                <DashboardCallStatus selectedFilter={selectedFilter}/>
+                {/*<DashboardCallStatus selectedFilter={selectedFilter}/>*/}
+                <NewCallStatus selectedFilter={selectedFilter}/>
               </div>
             </div>
           </div>

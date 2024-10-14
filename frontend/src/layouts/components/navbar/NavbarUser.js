@@ -25,8 +25,10 @@ const handleNavigation = (e, path) => {
   history.push(path);
 };
 
-const userInfo = JSON.parse(localStorage.getItem("current_user"));
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 const AuthStr = localStorage.getItem("token");
+const username = localStorage.getItem("username");
+const description = userInfo.authRoles[0].description;
 
 // const redirectToProfile = () => {
 
@@ -74,9 +76,6 @@ const handleDate = (e) => {
 
 const handleLogOut = (e) => {
   e.preventDefault();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(userInfo);
 
   axios
     .post(
@@ -531,8 +530,17 @@ class NavbarUser extends React.PureComponent {
               />
             </span>
             <div className="user-nav d-sm-flex d-none">
-              <span className="user-name text-bold-600">
-                {userInfo?.displayName} Syed Easin
+              <span
+                className="user-name text-bold-600"
+                style={{
+                  fontSize: "16px",
+                  fontFamily: "Inter",
+                  fontWeight: "bold",
+                  textTransform: "capitalize",
+                  color: "#09090B",
+                }}
+              >
+                {description}
               </span>
               <span className="user-status">
                 {userInfo?.roleName}Software Engineer
