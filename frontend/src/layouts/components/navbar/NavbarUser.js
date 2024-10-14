@@ -28,7 +28,6 @@ const handleNavigation = (e, path) => {
 const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 const AuthStr = localStorage.getItem("token");
 const username = localStorage.getItem("username");
-const description = userInfo.authRoles[0].description;
 
 // const redirectToProfile = () => {
 
@@ -540,7 +539,7 @@ class NavbarUser extends React.PureComponent {
                   color: "#09090B",
                 }}
               >
-                {description}
+                Syed Easin
               </span>
               <span className="user-status">
                 {userInfo?.roleName}Software Engineer
