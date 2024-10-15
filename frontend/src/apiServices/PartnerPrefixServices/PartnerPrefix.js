@@ -17,8 +17,16 @@ const partnerPrefixServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching partner by ID:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching prefix by email:", errorEx);
+
+      throw errorEx;
     }
   },
 };

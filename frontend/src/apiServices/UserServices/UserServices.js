@@ -15,8 +15,16 @@ const userServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching users:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching user:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -33,8 +41,16 @@ const userServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching user by ID:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -47,8 +63,16 @@ const userServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error adding user:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching create user:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -61,8 +85,16 @@ const userServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error updating user:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching updating user:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -78,8 +110,16 @@ const userServices = {
         }
       );
     } catch (error) {
-      console.error("Error removing user:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching removing user:", errorEx);
+
+      throw errorEx;
     }
   },
 };

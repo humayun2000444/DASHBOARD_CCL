@@ -1,18 +1,29 @@
 import axios from "axios";
-import {root} from "../../constants/constants";
+import { root } from "../../constants/constants";
 
 // const url = "https://iptsp.cosmocom.net:8001/FREESWITCH/";
 
 const getWebRtcServices = {
   fetchAllContacts: async (payload) => {
     try {
-      const response = await axios.post(root + "8001/FREESWITCH/contact/get-contacts", {
-        username: payload,
-      });
+      const response = await axios.post(
+        root + "8001/FREESWITCH/contact/get-contacts",
+        {
+          username: payload,
+        }
+      );
       return response.data;
     } catch (error) {
-      console.error("Error fetching contacts:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching contacts:", errorEx);
+
+      throw errorEx;
     }
   },
   createContact: async (payload) => {
@@ -23,19 +34,38 @@ const getWebRtcServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating contact:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching create contact:", errorEx);
+
+      throw errorEx;
     }
   },
   deleteContact: async (id) => {
     try {
-      const response = await axios.post(root + "8001/FREESWITCH/contact/delete-contact", {
-        contactId: id,
-      });
+      const response = await axios.post(
+        root + "8001/FREESWITCH/contact/delete-contact",
+        {
+          contactId: id,
+        }
+      );
       return response.data;
     } catch (error) {
-      console.error("Error creating contact:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching deleting contact:", errorEx);
+
+      throw errorEx;
     }
   },
   updateContact: async (payload) => {
@@ -46,17 +76,36 @@ const getWebRtcServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating contact:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching updating contact:", errorEx);
+
+      throw errorEx;
     }
   },
   getCallsHistory: async (payload) => {
     try {
-      const response = await axios.post(root + "8001/FREESWITCH/get-call-history", payload);
+      const response = await axios.post(
+        root + "8001/FREESWITCH/get-call-history",
+        payload
+      );
       return response.data;
     } catch (error) {
-      console.error("Error creating contact:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching get call history:", errorEx);
+
+      throw errorEx;
     }
   },
 };

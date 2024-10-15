@@ -7,7 +7,16 @@ const CDRServices = {
       const response = await axios.post(root2 + "5070/admin/getCallHistory");
       return response.data;
     } catch (error) {
-      console.error("Error fetching roles:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Get call history:", errorEx);
+
+      throw errorEx;
     }
   },
   fetchPartnerPrefixes: async (payload) => {
@@ -21,7 +30,16 @@ const CDRServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching partner prefixes:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching partner prefixes:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -34,7 +52,16 @@ const CDRServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching User calls history:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching User calls history:", errorEx);
+
+      throw errorEx;
     }
   },
 };

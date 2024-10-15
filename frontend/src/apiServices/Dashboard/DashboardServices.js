@@ -1,10 +1,9 @@
-import axios from 'axios';
-import { root2,root } from "../../constants/constants";
+import axios from "axios";
+import { root2, root } from "../../constants/constants";
 
-const BASE_URL_ADMIN = '5070/admin/DashBoard';
+const BASE_URL_ADMIN = "5070/admin/DashBoard";
 
 const DashboardServices = {
-
   // Admin: Get Total Calls
   getTotalCallsForAdmin: async (startStamp, endStamp) => {
     const payload = JSON.stringify({
@@ -17,14 +16,22 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Total calls for admin: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching total calls for admin:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -40,14 +47,22 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Outgoing calls for admin: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Outgoning calls for admin:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -63,14 +78,22 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Incoming calls for admin: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Incoming call for admin:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -86,14 +109,22 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Missed calls for admin: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Missed call for admin:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -109,14 +140,22 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Call Summary for admin: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching  Call Summary for admin:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -134,16 +173,24 @@ const DashboardServices = {
         payload,
         {
           headers: {
-            'Content-Type': 'application/json' // Ensure the correct content type is set
-          }
+            "Content-Type": "application/json", // Ensure the correct content type is set
+          },
         }
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching CDR History: ", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching CDR History:", errorEx);
+
+      throw errorEx;
     }
-  }
+  },
 };
 
 export default DashboardServices;
