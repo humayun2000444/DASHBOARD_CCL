@@ -1,40 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
 
-import put from "../../../helpers/put";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Nav,
   NavItem,
   NavLink,
+  Row,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
 import get from "../../../helpers/get";
 import post from "../../../helpers/post";
-import { useToasts } from "react-toast-notifications";
+import put from "../../../helpers/put";
 import remove from "../../../helpers/remove";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import { userTypes } from "../../../constants/userTypeConstant";
 import ButtonLoader from "../Components/ButtonLoader";
 
 const UpdateAssociateBankDetails = () => {

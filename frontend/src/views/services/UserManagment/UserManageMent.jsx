@@ -6,10 +6,10 @@ import TableRow from "@mui/material/TableRow";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { CardBody } from "reactstrap";
+import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 import roleServices from "../../../apiServices/RoleServices/RoleServices";
 import userServices from "../../../apiServices/UserServices/UserServices";
 import UserFormModal from "./UserFormModal";
-import partnerServices from "../../../apiServices/PartnerServices/PartnerServices";
 
 const UserManagement = () => {
   const initalState = {
@@ -180,31 +180,32 @@ const UserManagement = () => {
         style={style}
       />
 
-      <Card>
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
-          <div className="border-bottom mb-4">
-            <h4 className="pb-3">User Management</h4>
-          </div>
-          <div className="mt-4 container-fluid">
+          <div className="container-fluid">
             <div className="row mb-3">
-              <div className="col-md-4">
-                <h6>Find User : </h6>
+              <div className="col-md-4" style={{ padding: "0" }}>
                 <form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."
                     style={{ marginRight: "10px" }}
                   />
-                  <Button style={{ padding: "7px 30px" }} type="submit">
+                  <Button style={{ padding: "6px 30px" }} type="submit">
                     Find
                   </Button>
                 </form>
               </div>
               <div
                 className="col-md-8 d-flex justify-content-end"
-                style={{ marginTop: "23px" }}
               >
                 <Button
-                  style={{ padding: "7px 30px" }}
+                  style={{ padding: "6px 30px" }}
                   onClick={() => handleModalOpen()}
                 >
                   Add User

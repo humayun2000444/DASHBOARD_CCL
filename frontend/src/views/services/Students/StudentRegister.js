@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -8,23 +11,17 @@ import {
   Form,
   FormGroup,
   Input,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Label,
 } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import post from "../../../helpers/post";
-import { useToasts } from "react-toast-notifications";
-import Select from "react-select";
-import get from "../../../helpers/get";
-import ButtonForFunction from "../Components/ButtonForFunction";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import { userTypes } from "../../../constants/userTypeConstant";
-import axios from "axios";
-import { rootUrl } from "../../../constants/constants";
+import post from "../../../helpers/post";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const StudentRegister = () => {
   const history = useHistory();

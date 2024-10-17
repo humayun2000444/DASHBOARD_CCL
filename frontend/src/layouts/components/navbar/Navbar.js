@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
-import { Navbar } from "reactstrap";
-import { connect, useDispatch } from "react-redux";
-import classnames from "classnames";
-import axios from "axios";
-import { useAuth0 } from "../../../authServices/auth0/auth0Service";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Box, Typography } from "@mui/material";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import classnames from "classnames";
+import React from "react";
+import { connect, useDispatch } from "react-redux";
+import { Navbar } from "reactstrap";
+import { useAuth0 } from "../../../authServices/auth0/auth0Service";
 
+import Button from "@mui/material/Button";
+import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
+import { useCCLContext } from "../../../context/CClContext";
 import {
   // logoutWithJWT,
   logoutWithFirebase,
 } from "../../../redux/actions/auth/loginActions";
-import NavbarUser from "./NavbarUser";
-import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import SidebarHeader from "../menu/vertical-menu/SidebarHeader";
-import { rootUrl } from "../../../views/ReusableFunction/Api/ApiFunc";
-import { studentLoginJwtAction } from "../../../redux/actions/SMS/AuthAction/AuthAction";
-import Button from '@mui/material/Button';
+import NavbarUser from "./NavbarUser";
 
 const UserName = (props) => {
   const dispatch = useDispatch();
@@ -32,24 +30,6 @@ const UserName = (props) => {
   };
   const token = localStorage.getItem("token");
   const AuthStr = "Bearer " + token;
-
-  // useEffect(()=>{
-  //   axios.get(`${rootUrl}/Account/GetCurrentUser`,{ 'headers': { 'Authorization': AuthStr } })
-  //           .then(res => {
-
-  //             loggedInUser.name = res.data.fullName;
-  //             loggedInUser.id = res.data.id;
-  //             loggedInUser.email = res.data.email;
-  //             // loggedInUser = JSON.stringify(res.data);
-  //             // dispatch({
-  //             //           type: "LOGIN_WITH_JWT",
-  //             //           payload: { loggedInUser, loggedInWith: "jwt" }
-  //             //         })
-
-  //             dispatch(studentLoginJwtAction(loggedInUser));
-
-  //           })
-  // },[])
 
   let username = "";
   const userObj = props.user.login.values;
@@ -71,6 +51,7 @@ const UserName = (props) => {
 };
 const ThemeNavbar = (props) => {
   const { user } = useAuth0();
+
   let {
     toggleSidebarMenu,
     toggle,
@@ -84,18 +65,19 @@ const ThemeNavbar = (props) => {
   } = props;
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const authRoles = userInfo && userInfo.authRoles ? userInfo.authRoles[0].name : null;
+  const authRoles =
+    userInfo && userInfo.authRoles ? userInfo.authRoles[0].name : null;
 
   // Example button click handler
   const handleClick = () => {
     console.log("Button clicked!");
   };
 
+  const { sidebarTitle } = useCCLContext();
+
   return (
     <React.Fragment>
       <div className="content-overlay" />
-      {/* <div className="header-navbar-shadow" /> */}
-
       <Navbar
         className={classnames(
           "header-navbar uapp-navbar navbar-expand-lg navbar navbar-with-menu navbar-shadow",
@@ -107,8 +89,14 @@ const ThemeNavbar = (props) => {
       >
         <div className="navbar-wrapper">
           <div className="navbar-container content">
-            <div className="navbar-collapse d-flex justify-content-between align-items-center" id="navbar-mobile">
-              <div className="bookmark-wrapper">
+            <div
+              className="navbar-collapse d-flex justify-content-between align-items-center"
+              id="navbar-mobile"
+            >
+              <div
+                className="bookmark-wrapper"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <SidebarHeader
                   toggleSidebarMenu={toggleSidebarMenu}
                   toggle={toggle}
@@ -120,6 +108,7 @@ const ThemeNavbar = (props) => {
                   activePath={activePath}
                   sidebarState={sidebarState}
                 />
+                <h4 style={{ marginLeft: "1rem" }}>{sidebarTitle}</h4>
               </div>
               <div className="navbar-right-wrapper">
                 {/*  <div className="navbar-right-content" style={{display:"flex",alignItems:"center",gap:"8px"}}>*/}
@@ -193,18 +182,29 @@ const ThemeNavbar = (props) => {
                 {/*    />*/}
                 {/*  </div>*/}
                 {/*</div>*/}
-                <div className="navbar-right-content" style={{display: "flex", alignItems: "center", gap: "8px"}}>
-                  <NotificationsNoneIcon sx={{
-                    width: 48,
-                    height: 48,
-                    color: "#0f172a",
-                    padding: "10px",
-                    backgroundColor: "rgba(15,23,42,0.06)",
-                    borderRadius: "100px"
-                  }}/>
+                <div
+                  className="navbar-right-content"
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <NotificationsNoneIcon
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      color: "#0f172a",
+                      padding: "10px",
+                      backgroundColor: "rgba(15,23,42,0.06)",
+                      borderRadius: "100px",
+                    }}
+                  />
                   <div className="navbar-buttons">
-                    {authRoles === "ROLE_USER" &&(
-                      <div style={{display: "flex", alignItems: "center", gap: "8px"}}>
+                    {authRoles === "ROLE_USER" && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
                         {/* Account Balance Button */}
                         <Button
                           variant="outlined"
@@ -229,16 +229,39 @@ const ThemeNavbar = (props) => {
                             },
                           }}
                         >
-                          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0}}>
-                            <Typography variant="body2" sx={{color: "#fff", fontSize: "8px", fontWeight: 400}}>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                              gap: 0,
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: "#fff",
+                                fontSize: "8px",
+                                fontWeight: 400,
+                              }}
+                            >
                               Account Balance
                             </Typography>
-                            <Typography variant="h6"
-                                        sx={{color: "#fff", fontFamily: "Inter", fontSize: "16px", fontWeight: "bold"}}>
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                color: "#fff",
+                                fontFamily: "Inter",
+                                fontSize: "16px",
+                                fontWeight: "bold",
+                              }}
+                            >
                               ৳320.00
                             </Typography>
                           </div>
-                          <ArrowDropDownIcon sx={{width: 20, height: 20, color: "#fff"}}/>
+                          <ArrowDropDownIcon
+                            sx={{ width: 20, height: 20, color: "#fff" }}
+                          />
                         </Button>
 
                         {/* Recharge Button */}
@@ -263,7 +286,9 @@ const ThemeNavbar = (props) => {
                             },
                           }}
                         >
-                          <AddIcon sx={{width: 20, height: 20, color: "#fff"}}/>
+                          <AddIcon
+                            sx={{ width: 20, height: 20, color: "#fff" }}
+                          />
                           <Box
                             sx={{
                               display: "flex",
@@ -297,8 +322,8 @@ const ThemeNavbar = (props) => {
                       props.user.login.values.photoUrl
                         ? props.user.login.values.photoUrl
                         : user !== undefined && user.picture
-                          ? user.picture
-                          : userImg
+                        ? user.picture
+                        : userImg
                     }
                     loggedInWith={
                       props.user !== undefined &&

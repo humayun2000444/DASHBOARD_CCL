@@ -1,40 +1,31 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
   Col,
-  Form,
   FormGroup,
-  Input,
   Modal,
   ModalBody,
-  ModalFooter,
   ModalHeader,
-  Row,
   Table,
 } from "reactstrap";
-import uapploader from "../../../assets/img/Uapp_fav.png";
-import Select from "react-select";
-import { Image } from "antd";
-import { Upload } from "antd";
-import * as Icon from "react-feather";
-import get from "../../../helpers/get";
-import { useToasts } from "react-toast-notifications";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
-import post from "../../../helpers/post";
-import put from "../../../helpers/put";
-import remove from "../../../helpers/remove";
-import { permissionList } from "../../../constants/AuthorizationConstant";
-import { rootUrl } from "../../../constants/constants";
-import ButtonLoader from "../Components/ButtonLoader";
-import Loader from "../Search/Loader/Loader";
 import bulb from "../../../assets/img/bulb.png";
 import user from "../../../assets/img/Uapp_fav.png";
+import config from "../../../configs/config.json";
+import { permissionList } from "../../../constants/AuthorizationConstant";
+import put from "../../../helpers/put";
+import ButtonLoader from "../Components/ButtonLoader";
+import Loader from "../Search/Loader/Loader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AdmissionOfficerDetails = () => {
   const [officerObj, setOfficerObj] = useState({});

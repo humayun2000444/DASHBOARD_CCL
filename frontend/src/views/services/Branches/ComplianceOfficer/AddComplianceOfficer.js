@@ -1,6 +1,10 @@
+import { Image, Modal, Upload } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
@@ -10,22 +14,16 @@ import {
   Form,
   FormGroup,
   Input,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
-import Select from "react-select";
-import { useToasts } from "react-toast-notifications";
+import config from "../../../../configs/config.json";
 import get from "../../../../helpers/get";
 import put from "../../../../helpers/put";
 import ButtonForFunction from "../../Components/ButtonForFunction";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
 import ButtonLoader from "../../Components/ButtonLoader";
-import { Image, Modal, Upload } from "antd";
-import * as Icon from "react-feather";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddComplianceOfficer = () => {
   const history = useHistory();

@@ -1,47 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
+  Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Col,
-  Row,
-  TabContent,
-  TabPane,
+  Form,
+  FormGroup,
+  Input,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Nav,
   NavItem,
   NavLink,
-  Input,
-  Button,
-  CardFooter,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
+  Row,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
-import get from "../../../helpers/get";
-import { rootUrl } from "../../../constants/constants";
-import { useToasts } from "react-toast-notifications";
 import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
+import get from "../../../helpers/get";
 
 import { permissionList } from "../../../constants/AuthorizationConstant";
-import MessageHistoryCardApplicationDetailsPage from "./MessageHistoryCardApplicationDetailsPage";
-import StudentDocument from "./ApplicationDetailsComponents/StudentDocument";
-import ApplicationStudentProfile from "./ApplicationDetailsComponents/ApplicationStudentProfile";
-import ApplicationInfo from "./ApplicationDetailsComponents/ApplicationInfo";
-import Loader from "../Search/Loader/Loader";
-import post from "../../../helpers/post";
-import Assessment from "./ApplicationDetailsComponents/Assessment";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import put from "../../../helpers/put";
 import { userTypes } from "../../../constants/userTypeConstant";
+import post from "../../../helpers/post";
+import put from "../../../helpers/put";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+import Loader from "../Search/Loader/Loader";
+import ApplicationInfo from "./ApplicationDetailsComponents/ApplicationInfo";
+import ApplicationStudentProfile from "./ApplicationDetailsComponents/ApplicationStudentProfile";
+import Assessment from "./ApplicationDetailsComponents/Assessment";
+import StudentDocument from "./ApplicationDetailsComponents/StudentDocument";
+import MessageHistoryCardApplicationDetailsPage from "./MessageHistoryCardApplicationDetailsPage";
 // import "./styles.css";
 import ReactStars from "react-rating-stars-component";
 import StarRatings from "../Components/StarRatings";
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ApplicationDetails = () => {
   const [activetab, setActivetab] = useState("1");

@@ -1,8 +1,11 @@
 import axios from "axios";
-
-import history from "./history";
-import { rootUrl } from "../constants/constants";
+import config from "../configs/config.json";
 import { expireDateHandler } from "./checkExpireDate";
+import history from "./history";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AuthStr = localStorage.getItem("token");
 
@@ -11,7 +14,7 @@ async function post(url, body = {}, authToken = "") {
     expireDateHandler();
     const res = await axios.post(`${rootUrl}${url}`, body, {
       headers: {
-        'authorization': AuthStr,
+        authorization: AuthStr,
       },
     });
     return await res;

@@ -1,39 +1,33 @@
 import Axios from "axios";
-import React, { createRef, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { createRef, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Label,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 // import { useDropzone } from "react-dropzone"
-import { rootUrl } from "../../../../constants/constants";
 import { useToasts } from "react-toast-notifications";
-import get from "../../../../helpers/get";
+// import { rootUrl } from "../../../../constants/constants";
 import put from "../../../../helpers/put";
 import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddProviderUniversityFeatures = () => {
   const history = useHistory();

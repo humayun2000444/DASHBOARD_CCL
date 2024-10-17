@@ -104,15 +104,16 @@ const CDR = () => {
 
   return (
     <div>
-      <Card>
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
           {/* Menu Section */}
-
           <div className="d-flex justify-content-between mb-3">
-            <div>
-              <h3 style={pageTitleStyle}>Call Detail Records</h3>
-            </div>
-
             <div>
               <button className="btn btn-primary mr-4 mb-2" style={buttonStyle}>
                 <span className="fas fa-chart-area fa-fw mr-1"></span>{" "}

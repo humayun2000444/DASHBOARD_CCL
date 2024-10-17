@@ -241,21 +241,21 @@ const Distributors = () => {
         setOpenToaster={setOpenToaster}
       />
       <SuccessToaster open={openToaster} setOpen={setOpenToaster} />
-      <Card>
+      <Card style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}>
         <CardBody>
-          <div className="border-bottom mb-4">
-            <h4 className="pb-3">Partner</h4>
-          </div>
-          <div className="mt-4 container-fluid">
-            <div className="row mb-3">
-              <div className="col-md-4">
-                <h6>Find Partner:</h6>
+          <div className="container-fluid">
+            <div className="row mb-3" style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className="col-md-4" style={{ padding: "0" }}>
                 <Form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."
                     style={{ marginRight: "10px" }}
                   />
-                  <Button style={{ padding: "7px 30px" }} type="submit">
+                  <Button style={{ padding: "6px 30px" }} type="submit">
                     Find
                   </Button>
                   {/* <Button
@@ -275,7 +275,6 @@ const Distributors = () => {
               <div className="col-md-2"></div>
               <div
                 className="col-md-6 d-flex justify-content-end"
-                style={{ marginTop: "23px" }}
               >
                 <div className="d-flex align-items-center mr-1">
                   <h6 className="mr-2 mb-0">Show : </h6>
@@ -288,7 +287,7 @@ const Distributors = () => {
                 </div>
 
                 <Button
-                  style={{ padding: "7px 30px" }}
+                  style={{ padding: "6px 30px" }}
                   onClick={() => handleOpenModal()}
                 >
                   Add Partner

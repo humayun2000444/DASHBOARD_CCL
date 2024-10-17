@@ -162,11 +162,15 @@ const UserCallHistory = () => {
 
   return (
     <div>
-      <Card className="mt-3">
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
-          <h3 className="">User Call History</h3>
-
-          <div className="mt-3">
+          <div>
             {partnerPrefix.length > 0 ? (
               <Table id="table-to-xls" className="table-sm table-bordered">
                 <TableHead className="thead-uapp-bg">

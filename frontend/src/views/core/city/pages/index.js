@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../../../redux/actions/core/city/city";
 import {
-  div,
-  TableContainer,
+  Button,
+  ButtonGroup,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
   withStyles,
-  ButtonGroup,
-  Button,
 } from "@material-ui/core";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../../../redux/actions/core/city/city";
 
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { useToasts } from "react-toast-notifications";
 import CityCreate from "./form";
 

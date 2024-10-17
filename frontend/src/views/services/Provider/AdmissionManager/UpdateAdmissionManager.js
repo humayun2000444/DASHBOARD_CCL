@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { Image, Modal, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
   Col,
   FormGroup,
   Input,
 } from "reactstrap";
 import get from "../../../../helpers/get";
-import post from "../../../../helpers/post";
-import Select from "react-select";
-import { useHistory, useParams, useLocation } from "react-router-dom";
-import { useToasts } from "react-toast-notifications";
 import put from "../../../../helpers/put";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
-import { Image, Modal, Upload } from "antd";
-import * as Icon from "react-feather";
-import { rootUrl } from "../../../../constants/constants";
+// import { rootUrl } from "../../../../constants/constants";
+import config from "../../../../configs/config.json";
 import ButtonLoader from "../../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const UpdateAdmissionManager = () => {
   const { id, id2 } = useParams();

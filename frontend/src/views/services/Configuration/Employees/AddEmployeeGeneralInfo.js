@@ -1,46 +1,37 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Upload, Modal } from "antd";
+import { Modal, Upload } from "antd";
+import React, { createRef, useState } from "react";
 
 import * as Icon from "react-feather";
 import { connect, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
+import Select from "react-select";
 import {
   Button,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  UncontrolledTooltip,
-  TabContent,
-  TabPane,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
-import { useHistory } from "react-router";
-import Select from "react-select";
-import { useParams } from "react-router-dom";
-
-import { useToasts } from "react-toast-notifications";
 import axios from "axios";
-
+import { useToasts } from "react-toast-notifications";
 import get from "../../../../helpers/get";
-import { rootUrl } from "../../../../constants/constants";
-
 import CoverPicturesWall from "./EmployeeCoverImage";
-
+import config from "../../../../configs/config.json";
 import ButtonForFunction from "../../Components/ButtonForFunction";
-import post from "../../../../helpers/post";
 import ButtonLoader from "../../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const EmployeeGeneralInfo = (props) => {
   const { id } = useParams();

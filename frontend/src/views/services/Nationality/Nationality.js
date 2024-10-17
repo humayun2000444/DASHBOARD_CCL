@@ -302,22 +302,6 @@ const Nationality = () => {
                           </span>
                         </Col>
                         <Col md="8">
-                          {/* <div className="row"> */}
-                          {/* <span className="mb-2">Upload Document</span> */}
-
-                          {/* {applicationObject?.document ? (
-                            <div className="col-md-3">
-                              <Image
-                                width={104}
-                                height={104}
-                                src={
-                                  rootUrl + applicationObject?.document?.thumbnailUrl
-                                }
-                              />
-                            </div>
-                          ) : null} */}
-
-                          {/* <div className="col-md-3"> */}
                           <Upload
                             accept=".xlsx, .xls"
                             listType="picture-card"

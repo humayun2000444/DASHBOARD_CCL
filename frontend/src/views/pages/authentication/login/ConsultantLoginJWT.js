@@ -1,14 +1,10 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
-import Checkbox from "../../../../components/core/checkbox/CheckboxesVuexy"
-import { Mail, Lock, Check } from "react-feather"
+import React from "react";
+import { Check } from "react-feather";
+import { Link } from "react-router-dom";
+import { Button, CardBody, Form, FormGroup, Input, Label } from "reactstrap";
+import Checkbox from "../../../../components/core/checkbox/CheckboxesVuexy";
 // import { loginWithJWT } from "../../../../redux/actions/auth/loginActions"
-import { connect } from "react-redux"
-import { history } from "../../../../history"
-import axios from "axios"
-
-import { rootUrl } from "../../../ReusableFunction/Api/ApiFunc"
+import { connect } from "react-redux";
 
 class ConsultantLoginJWT extends React.Component {
   state = {
@@ -18,11 +14,17 @@ class ConsultantLoginJWT extends React.Component {
     error: "",
     emailerror: "",
     passwordError: "",
-  }
+  };
 
-  handleLogin = e => {
-    e.preventDefault()
-    var loggedInUser = {id: 0, email: '', name: '', image: 'gbhgyhgv', loggedInWith: 'jwt'}
+  handleLogin = (e) => {
+    e.preventDefault();
+    var loggedInUser = {
+      id: 0,
+      email: "",
+      name: "",
+      image: "gbhgyhgv",
+      loggedInWith: "jwt",
+    };
     // axios
     //   .post(`${rootUrl}/Account/Login`, {
     //     Email: this.state.email,
@@ -32,7 +34,7 @@ class ConsultantLoginJWT extends React.Component {
     //     if (response.data) {
     //       if(response.data.isSuccess == true){
     //         this.setState({error: ''});
-    //   
+    //
     //         const AuthStr = 'Bearer ' + response.data.message;
     //         history.push("/")
     //         window.location.reload();
@@ -47,48 +49,54 @@ class ConsultantLoginJWT extends React.Component {
     //         }else{
     //           this.setState({error: 'Something Went Wrong! please try again', emailerror: '', passwordError: ''})
     //         }
-            
+
     //       }
 
-          
     //     }
     //   })
     //   .catch()
-  }
+  };
   render() {
     return (
       <React.Fragment>
         <CardBody className="pt-1">
           <Form action="/" onSubmit={this.handleLogin}>
-            <FormGroup className="form-label-group position-relative has-icon-left" >
+            <FormGroup className="form-label-group position-relative has-icon-left">
               <Input
                 type="email"
                 placeholder="Email"
                 value={this.state.email}
-                onChange={e => this.setState({ email: e.target.value, emailerror: '' })}
+                onChange={(e) =>
+                  this.setState({ email: e.target.value, emailerror: "" })
+                }
                 style={{ height: "calc(1.5em + 1.3rem + 2px)" }}
                 required
               />
-              <div className="form-control-position">
-                
-              </div>
-              <Label style={{ fontSize: "14px", top:"-29px" }}>Email</Label>
-              {this.state.emailerror && <span className="text-danger">{this.state.emailerror}</span>}
+              <div className="form-control-position"></div>
+              <Label style={{ fontSize: "14px", top: "-29px" }}>Email</Label>
+              {this.state.emailerror && (
+                <span className="text-danger">{this.state.emailerror}</span>
+              )}
             </FormGroup>
-            <FormGroup className="form-label-group position-relative has-icon-left" style={{ marginTop: "30px" }}>
+            <FormGroup
+              className="form-label-group position-relative has-icon-left"
+              style={{ marginTop: "30px" }}
+            >
               <Input
                 type="password"
                 placeholder="Password"
                 value={this.state.password}
-                onChange={e => this.setState({ password: e.target.value, passwordError: '' })}
+                onChange={(e) =>
+                  this.setState({ password: e.target.value, passwordError: "" })
+                }
                 style={{ height: "calc(1.5em + 1.3rem + 2px)" }}
                 required
               />
-              <div className="form-control-position">
-          
-              </div>
+              <div className="form-control-position"></div>
               <Label style={{ fontSize: "14px", top: "-29px" }}>Password</Label>
-              {this.state.passwordError && <span className="text-danger">{this.state.passwordError}</span>}
+              {this.state.passwordError && (
+                <span className="text-danger">{this.state.passwordError}</span>
+              )}
             </FormGroup>
             <FormGroup className="d-flex justify-content-between align-items-center">
               <Checkbox
@@ -97,29 +105,33 @@ class ConsultantLoginJWT extends React.Component {
                 label="Remember me"
                 defaultChecked={false}
                 onChange={this.handleRemember}
-                
               />
               <div className="float-right">
                 <Link to="/pages/forgot-password">Forgot Password?</Link>
               </div>
             </FormGroup>
             <div className="d-flex justify-content-between">
-
-            <Button.Ripple className="uapp-submit-btn" color="primary" type="submit">
+              <Button.Ripple
+                className="uapp-submit-btn"
+                color="primary"
+                type="submit"
+              >
                 Login
               </Button.Ripple>
-              <Link to="/pages/consultantRegister">Create a Consultant Account</Link>
+              <Link to="/pages/consultantRegister">
+                Create a Consultant Account
+              </Link>
             </div>
             {/* {this.state.error && <span className="text-danger">{this.state.error}</span>} */}
           </Form>
         </CardBody>
       </React.Fragment>
-    )
+    );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    values: state.auth.login
-  }
-}
-export default connect(mapStateToProps)(ConsultantLoginJWT)
+    values: state.auth.login,
+  };
+};
+export default connect(mapStateToProps)(ConsultantLoginJWT);

@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Image } from "antd";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
   Col,
-  FormGroup,
   Form,
+  FormGroup,
   Input,
 } from "reactstrap";
-import get from "../../../../helpers/get";
 import put from "../../../../helpers/put";
-import ManagerImage from "../BranchManager/BranchManagerImage";
-import { useToasts } from "react-toast-notifications";
-import { Image } from "antd";
 
-import { rootUrl } from "../../../../constants/constants";
-import { Upload, Modal } from "antd";
+import { Modal, Upload } from "antd";
 import * as Icon from "react-feather";
 import Select from "react-select";
 import ButtonLoader from "../../Components/ButtonLoader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const BranchManagerInformation = () => {
   const { branchId, managerId } = useParams();

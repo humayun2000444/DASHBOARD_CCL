@@ -16,9 +16,13 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
 import get from "../../../../helpers/get";
 import Select from "react-select";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const Branch = () => {
   const { id } = useParams();

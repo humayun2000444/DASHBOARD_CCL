@@ -1,27 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Card, CardBody, Table } from "reactstrap";
+import { Drawer } from "antd";
+import React, { useRef, useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import { Card, CardBody, Table } from "reactstrap";
+import Assets from "../../../../../assets/img/Asset 12Icon.svg";
+import capture from "../../../../../assets/img/capture.PNG";
+import downloadBtn from "../../../../../assets/img/downloadBtn.svg";
+import gift from "../../../../../assets/img/gift.PNG";
+import images1 from "../../../../../assets/img/images1.svg";
+import user from "../../../../../assets/img/Uapp_fav.png";
 import user1 from "../../../../../assets/img/user1.svg";
 import user2 from "../../../../../assets/img/user2.svg";
-import capture from "../../../../../assets/img/capture.PNG";
-import images1 from "../../../../../assets/img/images1.svg";
-import "../../../../../assets/scss/pages/dashboard-analytics.scss";
-import { Drawer } from "antd";
-import plusicon from "../../../../../assets/img/plusicon.svg";
 import Vectorbeat from "../../../../../assets/img/Vectorbeat.svg";
-import gift from "../../../../../assets/img/gift.PNG";
-import cuser1 from "../../../../../assets/img/cuser1.svg";
-import user from "../../../../../assets/img/Uapp_fav.png";
-import down from "../../../../../assets/img/down.svg";
-import camera2 from "../../../../../assets/img/camera2.svg";
-import downloadBtn from "../../../../../assets/img/downloadBtn.svg";
-import Assets from "../../../../../assets/img/Asset 12Icon.svg";
-import eyeBtn from "../../../../../assets/img/eyeBtn.svg";
-import Chart from "react-apexcharts";
-import get from "../../../../../helpers/get";
-import { rootUrl } from "../../../../../constants/constants";
-import ReactToPrint from "react-to-print";
-import * as Icon from "react-feather";
+import "../../../../../assets/scss/pages/dashboard-analytics.scss";
+// import { rootUrl } from "../../../../../constants/constants";
+import config from "../../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AccountOfficer = () => {
   const currentUser = JSON?.parse(localStorage.getItem("current_user"));

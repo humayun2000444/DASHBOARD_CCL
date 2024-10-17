@@ -10,10 +10,14 @@ import {
   Form,
   Input,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
 import { userTypes } from "../../../constants/userTypeConstant";
 import get from "../../../helpers/get";
 import post from "../../../helpers/post";
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const MessageHistoryCardApplicationDetailsPage = (props) => {
   const userType = localStorage.getItem("userType");

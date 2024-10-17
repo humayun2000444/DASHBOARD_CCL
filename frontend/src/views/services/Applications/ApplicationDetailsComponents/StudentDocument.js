@@ -1,48 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory, useLocation } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Modal as AntdModal, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import {
   Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  CardHeader,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
+  Form,
+  FormGroup,
   Input,
-  Row,
-  Table,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
-  FormGroup,
-  Form,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
+  ModalHeader,
 } from "reactstrap";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-import * as Icon from "react-feather";
-import { Upload, Modal as AntdModal } from "antd";
 
-import get from "../../../../helpers/get";
 import Select from "react-select";
-import { rootUrl } from "../../../../constants/constants";
-import remove from "../../../../helpers/remove";
 import { useToasts } from "react-toast-notifications";
-import post from "../../../../helpers/post";
-import ButtonForFunction from "../../Components/ButtonForFunction";
 import { userTypes } from "../../../../constants/userTypeConstant";
+import get from "../../../../helpers/get";
+import post from "../../../../helpers/post";
+import remove from "../../../../helpers/remove";
+import ButtonForFunction from "../../Components/ButtonForFunction";
 
-import put from "../../../../helpers/put";
+import config from "../../../../configs/config.json";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
+import put from "../../../../helpers/put";
 import ButtonLoader from "../../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const StudentDocument = ({ stdId }) => {
   const [uploadedDocuData, setUploadedDocuData] = useState([]);
@@ -457,6 +444,7 @@ const StudentDocument = ({ stdId }) => {
                       href={rootUrl + docu?.studentDocumentFile?.fileUrl}
                       target="_blank"
                       download
+                      rel="noreferrer"
                     >
                       <i
                         style={{ fontSize: "50px" }}

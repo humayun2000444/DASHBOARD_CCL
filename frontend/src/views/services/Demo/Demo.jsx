@@ -1,16 +1,6 @@
-import axios from "axios";
-import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { UncontrolledTooltip, Button, Card, FormGroup } from "reactstrap";
-import get from "../../../helpers/get";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import post from "../../../helpers/post";
-import { StoreCommentData } from "../../../redux/actions/SMS/DemoActions/DemoActions";
-import { commentDataReducer } from "../../../redux/reducers/SMS/DemoReducers";
-import { roleDataReducer } from "../../../redux/reducers/SMS/RoleReducer";
-import rootUrl from "../../../constants/constants";
 import { Select } from "antd";
 
 const Demo = () => {

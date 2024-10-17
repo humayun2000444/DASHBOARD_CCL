@@ -6,31 +6,22 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
+  Col,
   Form,
   FormGroup,
-  Col,
   Input,
-  Button,
 } from "reactstrap";
 
 import get from "../../../../helpers/get";
 
-import { Image } from "antd";
-
-import { Upload, Modal } from "antd";
+import { Modal, Upload } from "antd";
 import * as Icon from "react-feather";
 
-import put from "../../../../helpers/put";
 import { useToasts } from "react-toast-notifications";
-import { rootUrl } from "../../../../constants/constants";
+import put from "../../../../helpers/put";
 
-import ButtonForFunction from "../../Components/ButtonForFunction";
 import { userTypes } from "../../../../constants/userTypeConstant";
+import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
 
 const StudentPersonalForm = () => {

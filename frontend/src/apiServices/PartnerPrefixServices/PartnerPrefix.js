@@ -1,5 +1,7 @@
 import axios from "axios";
-import { root } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const {root } = config;
 
 const partnerPrefixServices = {
   fetchPartnerPrefixByEmail: async (id, token) => {

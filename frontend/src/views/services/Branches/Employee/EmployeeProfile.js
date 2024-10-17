@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
-  Form,
-  FormGroup,
   CardBody,
   CardHeader,
   Col,
+  FormGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Row,
   Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "reactstrap";
-import get from "../../../../helpers/get";
-import ReactToPrint from "react-to-print";
-import { rootUrl } from "../../../../constants/constants";
+import config from "../../../../configs/config.json";
 import put from "../../../../helpers/put";
-import { useToasts } from "react-toast-notifications";
 
-import { Image } from "antd";
 import { Upload } from "antd";
 import * as Icon from "react-feather";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const EmployeeProfile = () => {
   const [modalOpen, setModalOpen] = useState(false);

@@ -1,35 +1,39 @@
-import React, { useEffect, useState } from "react";
+import { Image, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  Modal,
-  Button,
-  Input,
   Col,
   Form,
   FormGroup,
+  Input,
+  Modal,
 } from "reactstrap";
 import loader from "../../../assets/img/load.gif";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
 
 // import { permissionList } from '../../../../constants/AuthorizationConstant';
 
 // import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
+import { useHistory } from "react-router";
 import Select from "react-select";
-import { useHistory, useLocation, useParams } from "react-router";
 
-import get from "../../../helpers/get";
 import { useToasts } from "react-toast-notifications";
 import { userTypes } from "../../../constants/userTypeConstant";
+import get from "../../../helpers/get";
 
-import CustomButtonRipple from "../Components/CustomButtonRipple";
 import post from "../../../helpers/post";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
 
-import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddNewAdmissionOfficerPage = () => {
   const [loading, setLoading] = useState(true);

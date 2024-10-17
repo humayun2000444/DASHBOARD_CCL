@@ -1,5 +1,7 @@
 import axios from "axios";
-import { root2 } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const { root2 } = config;
 
 const userDashboardServices = {
   fetchTotalCallForUser: async (token, callerIdNumber, domainName) => {

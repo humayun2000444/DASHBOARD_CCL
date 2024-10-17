@@ -1,37 +1,31 @@
 import Axios from "axios";
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
-import { useToasts } from "react-toast-notifications";
-import get from "../../../helpers/get";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import put from "../../../helpers/put";
 import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddUniversityFinancial = (props) => {
   const [activetab, setActivetab] = useState("3");

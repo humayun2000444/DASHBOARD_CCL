@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory, useLocation } from "react-router-dom";
+import { Modal as AntdModal, Upload } from "antd";
+import Axios from "axios";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   ButtonGroup,
@@ -7,41 +12,36 @@ import {
   CardBody,
   CardHeader,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
-  Row,
-  Table,
   Form,
   FormGroup,
+  Input,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
 } from "reactstrap";
-import Axios from "axios";
-import * as Icon from "react-feather";
-import { Upload, Modal as AntdModal } from "antd";
-import uapploader from "../../../assets/img/Uapp_fav.png";
 import uapploader2 from "../../../assets/img/Asset 12Icon.svg";
-import get from "../../../helpers/get";
-import Select from "react-select";
-import { rootUrl } from "../../../constants/constants";
 import profileImage from "../../../assets/img/profile/user-uploads/user-07.jpg";
+import uapploader from "../../../assets/img/Uapp_fav.png";
+// import { rootUrl } from "../../../constants/constants";
 import { userTypes } from "../../../constants/userTypeConstant";
-import { Image } from "antd";
-import { useToasts } from "react-toast-notifications";
+import get from "../../../helpers/get";
 
-import EditDivButton from "../Components/EditDivButton";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
-import remove from "../../../helpers/remove";
-import ButtonForFunction from "../Components/ButtonForFunction";
+import config from "../../../configs/config.json";
+import { permissionList } from "../../../constants/AuthorizationConstant";
 import post from "../../../helpers/post";
 import put from "../../../helpers/put";
-import { permissionList } from "../../../constants/AuthorizationConstant";
+import remove from "../../../helpers/remove";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+import EditDivButton from "../Components/EditDivButton";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 // import Pagination from "../../services/Pagination/Pagination.jsx";
 
 // const userData = [{name: "Jubair", id:6, isChecked:false}, {name: "Rahul", id:2, isChecked:true}, {name: "Abir", id:3, isChecked:false}, {name: "Nahid", id:4, isChecked:true}];
@@ -2714,6 +2714,7 @@ const UniversityDetails = () => {
                               <a
                                 href={rootUrl + temp?.templateFile?.fileUrl}
                                 target="_blank"
+                                rel="noreferrer"
                                 // download
                               >
                                 Download

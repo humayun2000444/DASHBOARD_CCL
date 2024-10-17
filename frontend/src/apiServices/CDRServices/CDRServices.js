@@ -1,5 +1,7 @@
 import axios from "axios";
-import { root, root2 } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const { root, root2 } = config;
 
 const CDRServices = {
   fetchAllCDRData: async () => {

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Card, CardBody } from "reactstrap";
 import DidPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
-import toast from "react-hot-toast";
 
 const DidAllNumbers = () => {
   const [tableData, setTableData] = useState([]);
@@ -35,13 +35,15 @@ const DidAllNumbers = () => {
 
   return (
     <div>
-      <Card className="mt-3">
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
-          <div className="border-bottom mb-4">
-            <h4 className="pb-3">Did Pool</h4>
-          </div>
-
-          <div className="mt-3">
+          <div>
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>

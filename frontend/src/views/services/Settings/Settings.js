@@ -1,12 +1,16 @@
-import Password from "antd/lib/input/Password";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { Button, Card, CardBody } from "reactstrap";
 import Uapp_fav from "../../../assets/img/Uapp_fav.png";
-import { rootUrl } from "../../../constants/constants";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import put from "../../../helpers/put";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState(1);

@@ -5,9 +5,8 @@ import Typography from "@mui/material/Typography";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import retailPartnerServices from "../../../apiServices/RetailPartner/RetailPartnerServices";
-import FileUploader from "../Distributors/FileUploader.jsx";
 import DidPoolServices from "../../../apiServices/DIDPoolServices/DidPoolServices";
+import FileUploader from "../Distributors/FileUploader.jsx";
 
 const ImportCSVModal = ({ open, handleClose, setModalOpen }) => {
   // State to store the uploaded files
@@ -33,13 +32,14 @@ const ImportCSVModal = ({ open, handleClose, setModalOpen }) => {
     formData.append("file", file);
 
     try {
-      const response = await DidPoolServices.importDidPoolFromFile(
-        formData
-      );
+      const response = await DidPoolServices.importDidPoolFromFile(formData);
+    
       // Optionally, show a toaster message for success
       toast.success("File uploaded successfully!");
       setModalOpen(false);
     } catch (error) {
+      toast.error("Error uploading file!");
+      setModalOpen(false);
       console.error("Error uploading file:", error);
       // Optionally, handle the error with toaster or other feedback
     }

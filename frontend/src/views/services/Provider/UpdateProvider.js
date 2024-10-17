@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
+import { Image, Modal, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
   Col,
   FormGroup,
   Input,
-  Row,
   UncontrolledTooltip,
 } from "reactstrap";
-import get from "../../../helpers/get";
-import put from "../../../helpers/put";
-import Select from "react-select";
-import ProviderLogo from "./ProviderLogo";
-import { useSelector } from "react-redux";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import { Image } from "antd";
-import { Upload, Modal } from "antd";
-import * as Icon from "react-feather";
-import { rootUrl } from "../../../constants/constants";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
+import put from "../../../helpers/put";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
 
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 const UpdateProvider = () => {
   const { id } = useParams();
   const [providerInfo, setProviderInfo] = useState({});

@@ -1,51 +1,50 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router";
+import Select from "react-select";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  Button,
-  Input,
   Col,
-  Row,
-  Table,
   Dropdown,
-  Form,
-  FormGroup,
-  DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  FormGroup,
+  Input,
   Modal,
   ModalBody,
   ModalFooter,
+  Row,
+  Table,
 } from "reactstrap";
-import Select from "react-select";
-import Pagination from "../../services/Pagination/Pagination.jsx";
-import { useHistory, useLocation, useParams } from "react-router";
 import uapploader from "../../../assets/img/Uapp_fav.png";
+// import { rootUrl } from "../../../constants/constants.js";
 import get from "../../../helpers/get.js";
-import { rootUrl } from "../../../constants/constants.js";
-import { StoreUniversityStateData } from "../../../redux/actions/SMS/UniversityAction/UniversityStateAction.js";
-import { Link } from "react-router-dom";
 import remove from "../../../helpers/remove.js";
-import { StoreUniversityListData } from "../../../redux/actions/SMS/UniversityAction/UniversityListAction";
+import Pagination from "../../services/Pagination/Pagination.jsx";
 
-import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
-import * as XLSX from "xlsx/xlsx.mjs";
 import ReactToPrint from "react-to-print";
+import { useToasts } from "react-toast-notifications";
+import * as XLSX from "xlsx/xlsx.mjs";
+import { permissionList } from "../../../constants/AuthorizationConstant.js";
+import { userTypes } from "../../../constants/userTypeConstant.js";
+import put from "../../../helpers/put.js";
 import ButtonForFunction from "../Components/ButtonForFunction.js";
+import ButtonLoader from "../Components/ButtonLoader.js";
 import LinkSpanButton from "../Components/LinkSpanButton.js";
 import SpanButton from "../Components/SpanButton.js";
-import LinkButton from "../Components/LinkButton.js";
-import { userTypes } from "../../../constants/userTypeConstant.js";
-import { Axios } from "axios";
-import Loader from "../Search/Loader/Loader.js";
-import { useToasts } from "react-toast-notifications";
-import { permissionList } from "../../../constants/AuthorizationConstant.js";
-import ButtonLoader from "../Components/ButtonLoader.js";
 import ToggleSwitch from "../Components/ToggleSwitch.js";
-import put from "../../../helpers/put.js";
+import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
+import Loader from "../Search/Loader/Loader.js";
+
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const UniversityList = (props) => {
   const dispatch = useDispatch();

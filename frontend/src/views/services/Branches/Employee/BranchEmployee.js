@@ -1,10 +1,11 @@
+import { Image } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
 import { useToasts } from "react-toast-notifications";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
@@ -12,22 +13,17 @@ import {
   Form,
   FormGroup,
   Input,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  Table,
-  TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
-import Select from "react-select";
-import { Image } from "antd";
 
-import get from "../../../../helpers/get";
-import BranchProfileImage from "./BranchProfileImage";
-import BranchCoverImage from "./BranchCoverimage";
 import { useSelector } from "react-redux";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
+import get from "../../../../helpers/get";
+import BranchCoverImage from "./BranchCoverimage";
+import BranchProfileImage from "./BranchProfileImage";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const Branch = () => {
   const AuthStr = localStorage.getItem("token");

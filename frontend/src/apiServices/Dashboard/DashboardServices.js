@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { root2 } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const { root2 } = config;
 
 const BASE_URL_USER = '8001/FREESWITCH/user/DashBoard';
 const BASE_URL_ADMIN = '8001/FREESWITCH/admin/DashBoard';

@@ -4,9 +4,14 @@ import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { CardBody, Form, FormGroup, Input } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
 import { history } from "../../../../history";
 import Calls from "../../../dashboard/WebRtc/Calls";
+
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 class Login extends React.Component {
   state = {

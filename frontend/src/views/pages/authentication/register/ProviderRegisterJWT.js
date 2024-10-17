@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Button,
-  Col,
-  CardBody,
-} from "reactstrap";
-import Checkbox from "../../../../components/core/checkbox/CheckboxesVuexy";
-import { Check } from "react-feather";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { signupWithJWT } from "../../../../redux/actions/auth/registerActions";
-import { history } from "../../../../history";
-import axios from "axios";
-import { rootUrl } from "../../../ReusableFunction/Api/ApiFunc";
-import { store } from "react-notifications-component";
 import { Link, useHistory } from "react-router-dom";
-import get from "../../../../helpers/get";
 import { useToasts } from "react-toast-notifications";
+import { CardBody, Form, FormGroup, Input, Label } from "reactstrap";
+import get from "../../../../helpers/get";
 import post from "../../../../helpers/post";
+import { signupWithJWT } from "../../../../redux/actions/auth/registerActions";
 
 const ProviderRegisterJWT = () => {
   const [type, setType] = useState([]);

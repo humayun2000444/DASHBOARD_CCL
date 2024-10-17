@@ -1,48 +1,44 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import { useHistory } from "react-router";
+import { Link, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  Button,
-  Input,
-  ModalHeader,
-  FormGroup,
   Col,
-  Row,
-  Table,
   Dropdown,
-  DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  FormGroup,
+  Input,
   Modal,
   ModalBody,
   ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
 } from "reactstrap";
-import { Link, useParams } from "react-router-dom";
-import Select from "react-select";
 import Pagination from "../../services/Pagination/Pagination.jsx";
-import { useHistory, useLocation } from "react-router";
-import { useToasts } from "react-toast-notifications";
 
-import get from "../../../helpers/get.js";
-import { rootUrl } from "../../../constants/constants.js";
 import { useState } from "react";
 
-import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
-import * as XLSX from "xlsx/xlsx.mjs";
 import ReactToPrint from "react-to-print";
-import remove from "../../../helpers/remove.js";
-import LinkButton from "../Components/LinkButton.js";
-import ButtonForFunction from "../Components/ButtonForFunction.js";
+import * as XLSX from "xlsx/xlsx.mjs";
 import { permissionList } from "../../../constants/AuthorizationConstant.js";
-import SpanButton from "../Components/SpanButton.js";
-import put from "../../../helpers/put.js";
-import load from "../../../assets/img/uappLoader.gif";
-import Loader from "../Search/Loader/Loader.js";
-import ButtonLoader from "../Components/ButtonLoader.js";
 import { userTypes } from "../../../constants/userTypeConstant.js";
+import put from "../../../helpers/put.js";
+import remove from "../../../helpers/remove.js";
+import ButtonForFunction from "../Components/ButtonForFunction.js";
+import ButtonLoader from "../Components/ButtonLoader.js";
+import LinkButton from "../Components/LinkButton.js";
+import SpanButton from "../Components/SpanButton.js";
 import ToggleSwitch from "../Components/ToggleSwitch.js";
+import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
+import Loader from "../Search/Loader/Loader.js";
 
 const ConsultantList = () => {
   const permissions = JSON.parse(localStorage.getItem("permissions"));

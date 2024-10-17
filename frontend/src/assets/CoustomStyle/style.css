@@ -18,10 +18,8 @@
   text-align: center;
 }
 body .custom-nav.content .coustom-wrapper.content-wrapper {
-  padding: calc(2.2rem - 0.4rem) 1.5rem 0 !important;
+  padding: 0;
   position: relative;
-  /* padding: 0;
-  margin-top: 5rem !important; */
 }
 [dir] .card {
   margin-bottom: 1.2rem !important;

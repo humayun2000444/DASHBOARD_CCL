@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import {
-  Card,
-  CardHeader,
-  Row,
-  Col,
-  CardBody,
-  Modal,
-  ModalHeader,
-  ModalBody,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
   FormGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
-import get from "../../../../helpers/get";
-import put from "../../../../helpers/put";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
-import ButtonLoader from "../../Components/ButtonLoader";
-import uapploader from "../../../../assets/img/Uapp_fav.png";
-import Loader from "../../Search/Loader/Loader";
 import bulb from "../../../../assets/img/bulb.png";
 import user from "../../../../assets/img/Uapp_fav.png";
+import { permissionList } from "../../../../constants/AuthorizationConstant";
+import put from "../../../../helpers/put";
+import ButtonLoader from "../../Components/ButtonLoader";
+import Loader from "../../Search/Loader/Loader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const BranchManagerNewProfile = () => {
   const branchManagerId = localStorage.getItem("referenceId");

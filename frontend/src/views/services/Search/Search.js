@@ -1,47 +1,40 @@
-import React, { useEffect, useState } from "react";
+import { Drawer } from "antd";
+import axios from "axios";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
   Card,
   CardBody,
-  CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Nav,
-  NavLink,
   NavItem,
-  UncontrolledTooltip,
+  NavLink,
 } from "reactstrap";
-import Select from "react-select";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import loader from "../../../assets/img/load.gif";
+import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
+import { userTypes } from "../../../constants/userTypeConstant";
 import get from "../../../helpers/get";
-import { rootUrl } from "../../../constants/constants";
+import post from "../../../helpers/post";
 import Pagination from "../../services/Pagination/Pagination";
-import LinkButton from "../Components/LinkButton";
+import ButtonLoader from "../Components/ButtonLoader";
 import ComponentButton from "../Components/ComponentButton";
 import CustomLinkButton from "../Components/CustomLinkButton";
-import { useToasts } from "react-toast-notifications";
-import post from "../../../helpers/post";
-import { userTypes } from "../../../constants/userTypeConstant";
-import loader from "../../../assets/img/load.gif";
-import axios from "axios";
-import { permissionList } from "../../../constants/AuthorizationConstant";
-import ButtonLoader from "../Components/ButtonLoader";
-import { Drawer } from "antd";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const Search = () => {
   const [studentInfo, setStudentInfo] = useState({});

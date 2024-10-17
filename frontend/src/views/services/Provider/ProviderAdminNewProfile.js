@@ -1,29 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import get from "../../../helpers/get";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
-  Card,
-  CardHeader,
-  Row,
-  Col,
-  CardBody,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  FormGroup,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  FormGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
-import { permissionList } from "../../../constants/AuthorizationConstant";
-import { Image, Upload } from "antd";
+// import { rootUrl } from "../../../constants/constants";
+import { Upload } from "antd";
 import * as Icon from "react-feather";
 import { useToasts } from "react-toast-notifications";
-import put from "../../../helpers/put";
-import ButtonLoader from "../Components/ButtonLoader";
-import { userTypes } from "../../../constants/userTypeConstant";
-import Loader from "../Search/Loader/Loader";
 import user from "../../../assets/img/Uapp_fav.png";
 import bulb from "../../../assets/img/bulb.png";
+import { permissionList } from "../../../constants/AuthorizationConstant";
+import { userTypes } from "../../../constants/userTypeConstant";
+import put from "../../../helpers/put";
+import ButtonLoader from "../Components/ButtonLoader";
+import Loader from "../Search/Loader/Loader";
+
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ProviderAdminNewProfile = () => {
   const providerAdminId = localStorage.getItem("referenceId");

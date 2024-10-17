@@ -1,45 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
 
-import put from "../../../helpers/put";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Nav,
   NavItem,
   NavLink,
-  ButtonGroup,
+  Table,
 } from "reactstrap";
-import Select from "react-select";
-import { rootUrl } from "../../../constants/constants";
-import get from "../../../helpers/get";
 import post from "../../../helpers/post";
-import { useToasts } from "react-toast-notifications";
+import put from "../../../helpers/put";
 import remove from "../../../helpers/remove";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import { userTypes } from "../../../constants/userTypeConstant";
+import ButtonLoader from "../Components/ButtonLoader";
 import CustomButtonRipple from "../Components/CustomButtonRipple";
 import PromotionalCommission from "./PromotionalCommission";
-import ButtonLoader from "../Components/ButtonLoader";
 
 const UpdateAssociateCommission = () => {
   const history = useHistory();

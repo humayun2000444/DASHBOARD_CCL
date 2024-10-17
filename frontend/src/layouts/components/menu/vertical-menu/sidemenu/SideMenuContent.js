@@ -1,16 +1,17 @@
 import classnames from "classnames";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import navigationConfig from "../../../../../configs/navigationConfig"
 import { ChevronRight } from "react-feather";
 import { Badge } from "reactstrap";
 import SideMenuGroup from "./SideMenuGroup";
 // import { FormattedMessage } from "react-intl"
+import { useCCLContext } from "../../../../../context/CClContext.jsx";
+import { getSelectedMenu } from "../../../../../context/reducer/actions";
 import { history } from "../../../../../history";
 
 const getInitialState = (authRoles) => {
   const username = localStorage.getItem("username");
-
   if (authRoles.name === "ROLE_BTRC") {
     return {
       menu: [
@@ -145,175 +146,6 @@ const getInitialState = (authRoles) => {
           displayOrder: 1,
           children: null,
         },
-        // {
-        //   id: 3,
-        //   title: "Clients",
-        //   navLink: "",
-        //   type: "collapse",
-        //   icon: "fas fa-cog",
-        //   parentId: null,
-        //   parentName: null,
-        //   displayOrder: 3,
-        //   children: [
-        //     {
-        //       id: 4,
-        //       title: "Retail clients",
-        //       navLink: "/retailClients",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 3,
-        //       parentName: null,
-        //       displayOrder: 4,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 5,
-        //       title: "Wholesale clients",
-        //       navLink: "/wholesaleClients",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 3,
-        //       parentName: null,
-        //       displayOrder: 5,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 6,
-        //       title: "Callshop clients",
-        //       navLink: "/callshopClients",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 3,
-        //       parentName: null,
-        //       displayOrder: 6,
-        //       children: null,
-        //     },
-        //   ],
-        // },
-        // {
-        //   id: 17,
-        //   title: "Billing (no route)",
-        //   navLink: "",
-        //   type: "collapse",
-        //   icon: "fas fa-users",
-        //   parentId: null,
-        //   parentName: null,
-        //   displayOrder: 17,
-        //   children: [
-        //     {
-        //       id: 18,
-        //       title: "Tariffs",
-        //       // navLink: "/tariffs",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 18,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 19,
-        //       title: "Bundles",
-        //       // navLink: "/bundles",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 19,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 20,
-        //       title: "Products",
-        //       // navLink: "/product",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 20,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 21,
-        //       title: "Plans",
-        //       // navLink: "/plans",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 21,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 22,
-        //       title: "Packages",
-        //       // navLink: "/packages",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 22,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 23,
-        //       title: "Invoice",
-        //       // navLink: "/invoice",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 23,
-        //       children: null,
-        //     },
-        //     {
-        //       id: 24,
-        //       title: "Vouchers",
-        //       // navLink: "/vouchers",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 17,
-        //       parentName: null,
-        //       displayOrder: 23,
-        //       children: null,
-        //     },
-        //   ],
-        // },
-        // {
-        //   id: 25,
-        //   title: "Calls routing",
-        //   navLink: "",
-        //   type: "collapse",
-        //   icon: "fas fa-user-tie",
-        //   parentId: null,
-        //   parentName: null,
-        //   displayOrder: 25,
-        //   children: [
-        //     {
-        //       id: 26,
-        //       title: "Routing plan",
-        //       navLink: "/routingPlan",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 25,
-        //       parentName: null,
-        //       displayOrder: 26,
-        //       children: null,
-        //     },
-
-        //     {
-        //       id: 28,
-        //       title: "Registers",
-        //       navLink: "/registers",
-        //       type: "item",
-        //       icon: "",
-        //       parentId: 25,
-        //       parentName: null,
-        //       displayOrder: 28,
-        //       children: null,
-        //     },
-        //   ],
-        // },
         {
           id: 2,
           title: "Partners",
@@ -563,278 +395,254 @@ const getInitialState = (authRoles) => {
   }
 };
 
-class SideMenuContent extends React.Component {
-  constructor(props) {
-    super(props);
+const SideMenuContent = (props, prevProps) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const initialState =
+    userInfo && userInfo.authRoles && userInfo.authRoles[0]
+      ? getInitialState(userInfo.authRoles[0])
+      : {
+          menu: [],
+          flag: true,
+          isHovered: false,
+          activeGroups: [],
+          currentActiveGroup: [],
+          tempArr: [],
+        };
 
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const initialState =
-      userInfo && userInfo.authRoles && userInfo.authRoles[0]
-        ? getInitialState(userInfo.authRoles[0])
-        : {
-            menu: [],
-            flag: true,
-            isHovered: false,
-            activeGroups: [],
-            currentActiveGroup: [],
-            tempArr: [],
-          };
+  const [menu, setMenu] = useState(initialState.menu);
+  const [activeGroups, setActiveGroups] = useState(initialState.activeGroups);
+  const [currentActiveGroup, setCurrentActiveGroup] = useState(
+    initialState.currentActiveGroup
+  );
+  const [tempArr, setTempArr] = useState(initialState.tempArr);
+  const [flag, setFlag] = useState(initialState.flag);
 
-    this.state = initialState;
+  const parentArr = []; // Initialize this according to your logic
+  let collapsedPath = null;
 
-    this.parentArr = [];
-    this.collapsedPath = null;
-    this.redirectUnauthorized = () => {
-      history.push("/misc/not-authorized");
-    };
-  }
+  const redirectUnauthorized = () => {
+    history.push("/misc/not-authorized");
+  };
 
-  handleGroupClick = (id, parent = null, type = "") => {
-    let open_group = this.state.activeGroups;
-    let active_group = this.state.currentActiveGroup;
-    let temp_arr = this.state.tempArr;
+  const { dispatch } = useCCLContext();
+  console.log();
+
+  useEffect(() => {
+    getSelectedMenu(
+      getInitialState(userInfo.authRoles[0]).menu[0].title,
+      dispatch
+    );
+  }, []);
+
+  const handleGroupClick = (id, parent = null, type = "") => {
+    let openGroup = [...activeGroups];
+    let activeGroup = [...currentActiveGroup];
+    let tempArrCopy = [...tempArr];
+
+    // Logic for handling group clicks
     if (type === "item" && parent === null) {
-      active_group = [];
-      temp_arr = [];
+      activeGroup = [];
+      tempArrCopy = [];
     } else if (type === "item" && parent !== null) {
-      active_group = [];
-      if (temp_arr.includes(parent)) {
-        temp_arr.splice(temp_arr.indexOf(parent) + 1, temp_arr.length);
+      activeGroup = [];
+      if (tempArrCopy.includes(parent)) {
+        tempArrCopy.splice(tempArrCopy.indexOf(parent) + 1, tempArrCopy.length);
       } else {
-        temp_arr = [];
-        temp_arr.push(parent);
+        tempArrCopy = [parent];
       }
-      active_group = temp_arr.slice(0);
+      activeGroup = [...tempArrCopy];
     } else if (type === "collapse" && parent === null) {
-      temp_arr = [];
-      temp_arr.push(id);
+      tempArrCopy = [id];
     } else if (type === "collapse" && parent !== null) {
-      if (active_group.includes(parent)) {
-        temp_arr = active_group.slice(0);
+      if (activeGroup.includes(parent)) {
+        tempArrCopy = [...activeGroup];
       }
-      if (temp_arr.includes(id)) {
-        temp_arr.splice(temp_arr.indexOf(id), temp_arr.length);
+      if (tempArrCopy.includes(id)) {
+        tempArrCopy.splice(tempArrCopy.indexOf(id), 1);
       } else {
-        temp_arr.push(id);
+        tempArrCopy.push(id);
       }
     } else {
-      temp_arr = [];
+      tempArrCopy = [];
     }
 
     if (type === "collapse") {
-      if (!open_group.includes(id)) {
-        let temp = open_group.filter((obj) => {
-          return active_group.indexOf(obj) === -1;
-        });
-        if (temp.length > 0 && !open_group.includes(parent)) {
-          open_group = open_group.filter((obj) => {
-            return !temp.includes(obj);
-          });
+      if (!openGroup.includes(id)) {
+        const temp = openGroup.filter((obj) => !activeGroup.includes(obj));
+        if (temp.length > 0 && !openGroup.includes(parent)) {
+          openGroup = openGroup.filter((obj) => !temp.includes(obj));
         }
-        if (open_group.includes(parent) && active_group.includes(parent)) {
-          open_group = active_group.slice(0);
+        if (openGroup.includes(parent) && activeGroup.includes(parent)) {
+          openGroup = [...activeGroup];
         }
-        if (!open_group.includes(id)) {
-          open_group.push(id);
-          active_group.push(id);
+        if (!openGroup.includes(id)) {
+          openGroup.push(id);
+          activeGroup.push(id);
         }
       } else {
-        open_group.splice(open_group.indexOf(id), 1);
+        openGroup.splice(openGroup.indexOf(id), 1);
       }
     }
     if (type === "item") {
-      open_group = active_group.slice(0);
+      openGroup = [...activeGroup];
     }
 
-    this.setState({
-      activeGroups: open_group,
-      tempArr: temp_arr,
-      currentActiveGroup: active_group,
-    });
+    setActiveGroups(openGroup);
+    setTempArr(tempArrCopy);
+    setCurrentActiveGroup(activeGroup);
   };
 
-  initRender = (parentArr) => {
-    this.setState({
-      activeGroups: parentArr.slice(0),
-      currentActiveGroup: parentArr.slice(0),
-      flag: false,
-    });
+  const initRender = (parentArr) => {
+    setActiveGroups([...parentArr]);
+    setCurrentActiveGroup([...parentArr]);
+    setFlag(false);
   };
 
-  componentDidMount() {
-    this.initRender(this.parentArr[0] ? this.parentArr[0] : []);
-  }
+  useEffect(() => {
+    initRender(parentArr[0] || []);
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.activePath !== this.props.activePath) {
-      if (this.collapsedMenuPaths !== null) {
-        this.props.collapsedMenuPaths(this.collapsedMenuPaths);
+  useEffect(() => {
+    if (props.activePath !== prevProps.activePath) {
+      if (collapsedPath !== null) {
+        props.collapsedMenuPaths(collapsedPath);
+      }
+      initRender(parentArr[0] || []);
+    }
+  }, [props.activePath]);
+
+  const renderMenuItems = () => {
+    return menu.map((item) => {
+      const CustomAnchorTag = item.type === "external-link" ? "a" : Link;
+
+      if (item.type === "groupHeader") {
+        return (
+          <li
+            className="navigation-header"
+            key={`group-header-${item.groupTitle}`}
+          >
+            <span>{item.groupTitle}</span>
+          </li>
+        );
       }
 
-      this.initRender(
-        this.parentArr[0] ? this.parentArr[this.parentArr.length - 1] : []
+      const renderItem = (
+        <li
+          className={classnames(
+            `nav-item uapp-nav-item ${
+              activeGroups[0] === item.id ? "open" : ""
+            }`,
+            {
+              "has-sub": item.type === "collapse",
+              open: activeGroups.includes(item.id),
+              "sidebar-group-active": currentActiveGroup.includes(item.id),
+              hover: props.hoverIndex === item.id,
+              active:
+                (props.activeItemState === item.navLink &&
+                  item.type === "item") ||
+                (item.parentOf &&
+                  item.parentOf.includes(props.activeItemState)),
+              disabled: item.disabled,
+            }
+          )}
+          key={item.id}
+          onClick={(e) => {
+            e.stopPropagation();
+            getSelectedMenu(item.title, dispatch);
+            if (item.type === "item") {
+              console.log(item.title);
+              props.handleActiveItem(item);
+              handleGroupClick(item.id, null, item.type);
+              if (props.deviceWidth <= 1200 && item.type === "item") {
+                props.toggleMenu();
+              }
+            } else {
+              handleGroupClick(item.id, null, item.type);
+            }
+          }}
+        >
+          <CustomAnchorTag
+            to={
+              item.filterBase ||
+              (item.navLink && item.type === "item" ? item.navLink : "")
+            }
+            href={item.type === "external-link" ? item.navLink : ""}
+            className={`d-flex ${
+              item.badgeText
+                ? "justify-content-between"
+                : "justify-content-start"
+            }`}
+            onMouseEnter={() => props.handleSidebarMouseEnter(item.id)}
+            onMouseLeave={() => props.handleSidebarMouseEnter(item.id)}
+            onClick={(e) => item.type === "collapse" && e.preventDefault()}
+            target={item.newTab ? "_blank" : undefined}
+          >
+            <div className="menu-text">
+              <i className={item.icon}></i>
+              <span className="menu-item menu-title">{item.title}</span>
+            </div>
+            {item.badge && (
+              <div className="menu-badge">
+                <Badge color={item.badge} className="mr-1" pill>
+                  {item.badgeText}
+                </Badge>
+              </div>
+            )}
+            {item.type === "collapse" && (
+              <ChevronRight className="menu-toggle-icon" size={13} />
+            )}
+          </CustomAnchorTag>
+          {item.type === "collapse" && (
+            <SideMenuGroup
+              group={item}
+              handleGroupClick={handleGroupClick}
+              activeGroup={activeGroups}
+              handleActiveItem={props.handleActiveItem}
+              activeItemState={props.activeItemState}
+              handleSidebarMouseEnter={props.handleSidebarMouseEnter}
+              activePath={props.activePath}
+              hoverIndex={props.hoverIndex}
+              initRender={initRender}
+              parentArr={parentArr}
+              currentActiveGroup={currentActiveGroup}
+              permission={props.permission}
+              currentUser={props.currentUser}
+              redirectUnauthorized={redirectUnauthorized}
+              collapsedMenuPaths={props.collapsedMenuPaths}
+              toggleMenu={props.toggleMenu}
+              deviceWidth={props.deviceWidth}
+            />
+          )}
+        </li>
       );
-    }
-  }
 
-  render() {
-    const navigationConfig = this.state.menu || [];
-    const menuItems =
-      navigationConfig.length > 0
-        ? navigationConfig.map((item) => {
-            const CustomAnchorTag = item.type === "external-link" ? `a` : Link;
-            if (item.type === "groupHeader") {
-              return (
-                <li
-                  className="navigation-header"
-                  key={`group-header-${item.groupTitle}`}
-                >
-                  <span>{item.groupTitle}</span>
-                </li>
-              );
-            }
+      if (item.navLink && item.collapsed) {
+        collapsedPath = item.navLink;
+        props.collapsedMenuPaths(item.navLink);
+      }
 
-            let renderItem = (
-              <li
-                className={classnames(
-                  `nav-item uapp-nav-item ${
-                    this.state.activeGroups[0] === item.id ? "open" : ""
-                  }`,
-                  {
-                    "has-sub": item.type === "collapse",
-                    open: this.state.activeGroups.includes(item.id),
-                    "sidebar-group-active":
-                      this.state.currentActiveGroup.includes(item.id),
-                    hover: this.props.hoverIndex === item.id,
-                    active:
-                      (this.props.activeItemState === item.navLink &&
-                        item.type === "item") ||
-                      (item.parentOf &&
-                        item.parentOf.includes(this.props.activeItemState)),
-                    disabled: item.disabled,
-                  }
-                )}
-                key={item.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (item.type === "item") {
-                    this.props.handleActiveItem(item.navLink);
-                    this.handleGroupClick(item.id, null, item.type);
-                    if (
-                      this.props.deviceWidth <= 1200 &&
-                      item.type === "item"
-                    ) {
-                      this.props.toggleMenu();
-                    }
-                  } else {
-                    this.handleGroupClick(item.id, null, item.type);
-                  }
-                }}
-              >
-                <CustomAnchorTag
-                  to={
-                    item.filterBase
-                      ? item.filterBase
-                      : item.navLink && item.type === "item"
-                      ? item.navLink
-                      : ""
-                  }
-                  href={item.type === "external-link" ? item.navLink : ""}
-                  className={`d-flex ${
-                    item.badgeText
-                      ? "justify-content-between"
-                      : "justify-content-start"
-                  }`}
-                  onMouseEnter={() => {
-                    this.props.handleSidebarMouseEnter(item.id);
-                  }}
-                  onMouseLeave={() => {
-                    this.props.handleSidebarMouseEnter(item.id);
-                  }}
-                  key={item.id}
-                  onClick={(e) => {
-                    return item.type === "collapse" ? e.preventDefault() : "";
-                  }}
-                  target={item.newTab ? "_blank" : undefined}
-                >
-                  <div className="menu-text">
-                    <i className={item.icon}></i>
-                    <span className="menu-item menu-title">{item.title}</span>
-                  </div>
-                  {item.badge ? (
-                    <div className="menu-badge">
-                      <Badge color={item.badge} className="mr-1" pill>
-                        {item.badgeText}
-                      </Badge>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {item.type === "collapse" ? (
-                    <ChevronRight className="menu-toggle-icon" size={13} />
-                  ) : (
-                    ""
-                  )}
-                </CustomAnchorTag>
-                {item.type === "collapse" ? (
-                  <SideMenuGroup
-                    group={item}
-                    handleGroupClick={this.handleGroupClick}
-                    activeGroup={this.state.activeGroups}
-                    handleActiveItem={this.props.handleActiveItem}
-                    activeItemState={this.props.activeItemState}
-                    handleSidebarMouseEnter={this.props.handleSidebarMouseEnter}
-                    activePath={this.props.activePath}
-                    hoverIndex={this.props.hoverIndex}
-                    initRender={this.initRender}
-                    parentArr={this.parentArr}
-                    triggerActive={undefined}
-                    currentActiveGroup={this.state.currentActiveGroup}
-                    permission={this.props.permission}
-                    currentUser={this.props.currentUser}
-                    redirectUnauthorized={this.redirectUnauthorized}
-                    collapsedMenuPaths={this.props.collapsedMenuPaths}
-                    toggleMenu={this.props.toggleMenu}
-                    deviceWidth={this.props.deviceWidth}
-                  />
-                ) : (
-                  ""
-                )}
-              </li>
-            );
+      if (
+        item.type === "collapse" ||
+        item.type === "external-link" ||
+        (item.type === "item" &&
+          item.permissions &&
+          item.permissions.includes(props.currentUser)) ||
+        item.permissions === undefined
+      ) {
+        return renderItem;
+      } else if (
+        item.type === "item" &&
+        item.navLink === props.activePath &&
+        !item.permissions.includes(props.currentUser)
+      ) {
+        return redirectUnauthorized();
+      }
 
-            if (
-              item.navLink &&
-              item.collapsed !== undefined &&
-              item.collapsed === true
-            ) {
-              this.collapsedPath = item.navLink;
-              this.props.collapsedMenuPaths(item.navLink);
-            }
+      return null;
+    });
+  };
 
-            if (
-              item.type === "collapse" ||
-              item.type === "external-link" ||
-              (item.type === "item" &&
-                item.permissions &&
-                item.permissions.includes(this.props.currentUser)) ||
-              item.permissions === undefined
-            ) {
-              return renderItem;
-            } else if (
-              item.type === "item" &&
-              item.navLink === this.props.activePath &&
-              !item.permissions.includes(this.props.currentUser)
-            ) {
-              return this.redirectUnauthorized();
-            }
-
-            return null;
-          })
-        : null;
-
-    return <React.Fragment>{menuItems}</React.Fragment>;
-  }
-}
+  return <React.Fragment>{renderMenuItems()}</React.Fragment>;
+};
 
 export default SideMenuContent;

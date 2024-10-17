@@ -1,36 +1,13 @@
-import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Table,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  ModalHeader,
-} from "reactstrap";
+import React, { useState } from "react";
 import Select from "react-select";
+import { Card, CardBody } from "reactstrap";
 
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
-import { Image, Modal as AntModal, Upload } from "antd";
-import * as Icon from "react-feather";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import ButtonLoader from "../Components/ButtonLoader";
-import ToggleSwitch from "../Components/ToggleSwitch";
-import Pagination from "../Pagination/Pagination";
-import { permissionList } from "../../../constants/AuthorizationConstant";
-import { rootUrl } from "../../../constants/constants";
 import get from "../../../helpers/get";
 import remove from "../../../helpers/remove";
-import put from "../../../helpers/put";
 import StarRatings from "../Components/StarRatings";
+import Pagination from "../Pagination/Pagination";
 
 const ConsultantRatingList = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(1);

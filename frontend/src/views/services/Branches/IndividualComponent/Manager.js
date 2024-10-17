@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
-import get from "../../../../helpers/get";
-import { Image } from "antd";
 import uapploader from "../../../../assets/img/Uapp_fav.png";
-import LinkButton from "../../Components/LinkButton";
+import config from "../../../../configs/config.json";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
+import LinkButton from "../../Components/LinkButton";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
+
 const Manager = (props) => {
   const [branchManager, setBranchManager] = useState({});
   const { id, success, setSuccess } = props;

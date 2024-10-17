@@ -135,36 +135,6 @@ const Department = (props) => {
     });
   };
 
-  // const handleUpdateSubmit = () => {
-  //   const id = localStorage.getItem('updatedep');
-  //   const subData = {
-  //     id: id,
-  //     name: department
-  //   }
-  //  const returnvalue = update(`${rootUrl}/Department/Update`,subData).then((action)=> {
-  //     setSuccess(!success);
-  //     setModalOpen(false)
-  //     addToast(action, {
-  //       appearance: action =='Department updated successfully.' ? 'success': 'error',
-  //       autoDismiss: true,
-  //     })
-  //     setdepartment('');
-  //    localStorage.removeItem('depName')
-
-  //   })
-
-  //   dispatch(UpdateDepartment(subData, (action) => {
-  //     setSuccess(!success);
-  //     setModalOpen(false)
-  //     addToast(action, {
-  //       appearance: action =='Department updated successfully.' ? 'success': 'error',
-  //       autoDismiss: true,
-  //     })
-  //     setdepartment('');
-  //    localStorage.removeItem('depName')
-  //   }))
-  // }
-
   const AddModalOpen = () => {
     setModalOpen(true);
     setdepartment("");

@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { connect } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
 import {
   Button,
   ButtonGroup,
@@ -8,39 +10,32 @@ import {
   CardHeader,
   Col,
   Dropdown,
-  DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Input,
-  Row,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Form,
   FormGroup,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
 } from "reactstrap";
 import get from "../../../helpers/get";
-import Select from "react-select";
-import { connect } from "react-redux";
-import Pagination from "../../services/Pagination/Pagination.jsx";
-import Axios from "axios";
-import { rootUrl } from "../../../constants/constants";
 
-import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
-import * as XLSX from "xlsx/xlsx.mjs";
 import ReactToPrint from "react-to-print";
-import post from "../../../helpers/post";
 import { useToasts } from "react-toast-notifications";
-import put from "../../../helpers/put";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
-import LinkButton from "../Components/LinkButton";
-import LinkSpanButton from "../Components/LinkSpanButton";
-import remove from "../../../helpers/remove";
+import * as XLSX from "xlsx/xlsx.mjs";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+import post from "../../../helpers/post";
+import put from "../../../helpers/put";
+import remove from "../../../helpers/remove";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+import LinkSpanButton from "../Components/LinkSpanButton";
+import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
 
 const CampusList = (props) => {
   const [campusList, setCampusList] = useState([]);

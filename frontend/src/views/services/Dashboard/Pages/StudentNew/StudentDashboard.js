@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  ButtonGroup,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-  Row,
-  Table,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-} from "reactstrap";
-import LinkButton from "../../../Components/LinkButton";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Button, Card, CardBody, Col, Row } from "reactstrap";
 
-import video from "../../../../../assets/video/video.mp4";
-import get from "../../../../../helpers/get";
-import { rootUrl } from "../../../../../constants/constants";
+// import { rootUrl } from "../../../../../constants/constants";
+import config from "../../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const StudentDashboard = () => {
   const [applicationinfo, setApplicationInfo] = useState([]);

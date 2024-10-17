@@ -114,16 +114,17 @@ import { Notifications } from "react-push-notification";
 
 import CallHandler from "./views/dashboard/WebRtc/CallHandler";
 import WebSocketManager from "./views/dashboard/WebRtc/WebSocketManager";
+import { CCLContextProvider } from "./context/CClContext";
 
 const App = (props) => {
   return (
-    <>
+    <CCLContextProvider>
       <WebSocketManager /> {/* Handles WebSocket connection */}
       <CallHandler /> {/* Handles call status and ringtone */}
       <Notifications />
       <Router />
       <Toaster />
-    </>
+    </CCLContextProvider>
   );
 };
 

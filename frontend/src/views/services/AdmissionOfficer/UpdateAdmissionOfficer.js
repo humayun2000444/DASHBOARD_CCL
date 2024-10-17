@@ -1,42 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { Image, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory, useParams } from "react-router-dom";
-import get from "../../../helpers/get";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
   Col,
-  Row,
-  Table,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Form,
   FormGroup,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
+  Input,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
-import Select from "react-select";
-import loader from "../../../assets/img/load.gif";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
-import ProviderDetails from "../Provider/ProviderDetails";
-import { useToasts } from "react-toast-notifications";
+import config from "../../../configs/config.json";
+import get from "../../../helpers/get";
 import put from "../../../helpers/put";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const UpdateAdmissionOfficer = () => {
   const { officerId, id } = useParams();

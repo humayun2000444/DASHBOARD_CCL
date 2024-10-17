@@ -1,7 +1,8 @@
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // import 'react-dropzone-uploader/dist/styles.css'
 import { connect, useSelector } from "react-redux";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
@@ -11,25 +12,26 @@ import {
   Form,
   FormGroup,
   Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Nav,
   NavItem,
   NavLink,
   TabContent,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "reactstrap";
-import { useToasts } from "react-toast-notifications";
 // import post from '../../../helpers/post';
-import { rootUrl } from "../../../constants/constants";
-import MediaPictures from "./UniversityMedia";
 import { useHistory, useParams } from "react-router-dom";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
-import get from "../../../helpers/get";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import remove from "../../../helpers/remove";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+import MediaPictures from "./UniversityMedia";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddUniversityGallery = () => {
   const [activetab, setActivetab] = useState("5");

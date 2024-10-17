@@ -1,6 +1,8 @@
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
@@ -10,20 +12,18 @@ import {
   Form,
   FormGroup,
   Input,
-  Nav,
-  NavItem,
-  NavLink,
   TabContent,
   TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
-import Select from "react-select";
-import { useToasts } from "react-toast-notifications";
 import get from "../../../../helpers/get";
 import put from "../../../../helpers/put";
 import ButtonForFunction from "../../Components/ButtonForFunction";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
 import ButtonLoader from "../../Components/ButtonLoader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const Branch = () => {
   const history = useHistory();

@@ -1,42 +1,46 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 
 import {
+  Button,
   Card,
   CardBody,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
   CardHeader,
   Col,
-  Row,
-  Table,
   Form,
   FormGroup,
-  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
 } from "reactstrap";
-import get from "../../../helpers/get";
 // import coverImage from '../../../../assets/img/profile/user-uploads/cover.jpg';
 import coverImage from "../../../assets/img/Asset 12Icon.svg";
 // import profileImage from '../../../../assets/img/profile/user-uploads/user-07.jpg';
+import { Upload } from "antd";
+import * as Icon from "react-feather";
 import ReactToPrint from "react-to-print";
-import { rootUrl } from "../../../constants/constants";
-import EditDivButton from "../Components/EditDivButton";
-import ButtonForFunction from "../Components/ButtonForFunction";
+import { useToasts } from "react-toast-notifications";
+import uapploader from "../../../assets/img/Uapp_fav.png";
+import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
 import { userTypes } from "../../../constants/userTypeConstant";
 import post from "../../../helpers/post";
-import { useToasts } from "react-toast-notifications";
-import remove from "../../../helpers/remove";
 import put from "../../../helpers/put";
-import uapploader from "../../../assets/img/Uapp_fav.png";
-import { Upload, Image } from "antd";
-import * as Icon from "react-feather";
-import { permissionList } from "../../../constants/AuthorizationConstant";
+import remove from "../../../helpers/remove";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
-import Loader from "../Search/Loader/Loader";
+import EditDivButton from "../Components/EditDivButton";
 import ToggleSwitch2 from "../Components/ToggleSwitch2";
+import Loader from "../Search/Loader/Loader";
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const StudentProfile = () => {
   const userType = localStorage.getItem("userType");

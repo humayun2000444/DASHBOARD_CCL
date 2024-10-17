@@ -1,5 +1,7 @@
 import axios from "axios";
-import { root } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const { root } = config;
 
 const DID_POOL_API_BASE_URL = `${root}8001/FREESWITCH/`;
 

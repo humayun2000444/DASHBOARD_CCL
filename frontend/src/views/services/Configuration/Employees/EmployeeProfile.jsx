@@ -1,46 +1,37 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
   Col,
+  FormGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Row,
   Table,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
 } from "reactstrap";
 
 import { useToasts } from "react-toast-notifications";
 
-import get from "../../../../helpers/get";
+import { Upload } from "antd";
+import * as Icon from "react-feather";
 import ReactToPrint from "react-to-print";
-import { rootUrl } from "../../../../constants/constants";
-import EditDivButton from "../../Components/EditDivButton";
+import uapploader2 from "../../../../assets/img/Asset 12Icon.svg";
+import uapploader from "../../../../assets/img/Uapp_fav.png";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
 import put from "../../../../helpers/put";
-import uapploader from "../../../../assets/img/Uapp_fav.png";
-import uapploader2 from "../../../../assets/img/Asset 12Icon.svg";
-import { Upload, Image } from "antd";
-import * as Icon from "react-feather";
 import ButtonLoader from "../../Components/ButtonLoader";
+import EditDivButton from "../../Components/EditDivButton";
 import Loader from "../../Search/Loader/Loader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const EmployeeProfile = () => {
   const { id } = useParams();

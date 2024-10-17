@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { Image, Modal, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
   Nav,
   NavItem,
   NavLink,
-  TabContent,
-  TabPane,
-  Form,
-  FormGroup,
-  Col,
-  Input,
-  Button,
-  Label,
 } from "reactstrap";
-import Select from "react-select";
-import { useToasts } from "react-toast-notifications";
-import get from "../../../helpers/get";
-import { Upload, Modal } from "antd";
-import * as Icon from "react-feather";
-import { Image } from "antd";
 
+import config from "../../../configs/config.json";
 import put from "../../../helpers/put";
-import { rootUrl } from "../../../constants/constants";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import { userTypes } from "../../../constants/userTypeConstant";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 const AssociateInformation = () => {
   const { addToast } = useToasts();
   const { consultantRegisterId } = useParams();

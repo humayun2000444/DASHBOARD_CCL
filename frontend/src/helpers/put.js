@@ -1,8 +1,10 @@
 import Axios from "axios";
-
-import history from "./history";
-import { rootUrl } from "../constants/constants";
+import config from "../configs/config.json";
 import { expireDateHandler } from "./checkExpireDate";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AuthStr = localStorage.getItem("token");
 async function put(url, body = {}, authToken = "") {
@@ -10,7 +12,7 @@ async function put(url, body = {}, authToken = "") {
     expireDateHandler();
     const res = await Axios.put(`${rootUrl}${url}`, body, {
       headers: {
-        "authorization": AuthStr,
+        authorization: AuthStr,
       },
     });
     return await res;
@@ -18,7 +20,7 @@ async function put(url, body = {}, authToken = "") {
     return error;
     // if (error.response.status === 404) {
     //   history.push("/404");
-      
+
     // }
     // else if(error.response.status === 400){
     //   history.push('/400')

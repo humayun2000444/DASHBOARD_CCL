@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import Pagination from "../../services/Pagination/Pagination.jsx";
 import {
   Button,
   ButtonGroup,
@@ -17,23 +16,25 @@ import {
   Row,
   Table,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
-import get from "../../../helpers/get";
-import remove from "../../../helpers/remove.js";
-import { useToasts } from "react-toast-notifications";
-import { Image } from "antd";
-import { Upload } from "antd";
+import Pagination from "../../services/Pagination/Pagination.jsx";
+// import { rootUrl } from "../../../constants/constants";
+import { Image, Upload } from "antd";
 import * as Icon from "react-feather";
-import LinkButton from "../Components/LinkButton.js";
-import Form from "../../core/country/pages/form.js";
 import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import uapploader from "../../../assets/img/Uapp_fav.png";
-import put from "../../../helpers/put.js";
-import ButtonForFunction from "../Components/ButtonForFunction.js";
+import config from "../../../configs/config.json";
 import { permissionList } from "../../../constants/AuthorizationConstant.js";
-import LinkSpanButton from "../Components/LinkSpanButton.js";
-import ToggleSwitch from "../Components/ToggleSwitch.js";
+import put from "../../../helpers/put.js";
+import remove from "../../../helpers/remove.js";
+import ButtonForFunction from "../Components/ButtonForFunction.js";
 import ButtonLoader from "../Components/ButtonLoader.js";
+import LinkButton from "../Components/LinkButton.js";
+import ToggleSwitch from "../Components/ToggleSwitch.js";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ProviderDetails = () => {
   const { id } = useParams();

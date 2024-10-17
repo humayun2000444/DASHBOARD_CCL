@@ -1,41 +1,40 @@
 import Axios from "axios";
-import React, { useState, createRef, useEffect } from "react";
+import React, { createRef, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import Select from "react-select";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Nav,
   NavItem,
   NavLink,
+  Row,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
 import { useToasts } from "react-toast-notifications";
+// import { rootUrl } from "../../../../constants/constants";
 import get from "../../../../helpers/get";
-import { rootUrl } from "../../../../constants/constants";
 import put from "../../../../helpers/put";
 import remove from "../../../../helpers/remove";
 import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 const AddUniversityCampus = (props) => {
   const [universityCampusList, setuniversityCampusList] = useState([]);
   const [universityCampusObject, setuniversityCampusObject] = useState({});

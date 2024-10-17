@@ -1,31 +1,27 @@
+import { Modal, Upload } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
+import { ToastContainer } from "react-toastify";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
   Col,
+  Form,
   FormGroup,
   Input,
-  Form,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Button,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
 import get from "../../../../helpers/get";
-import ManagerImage from "./ManagerImage";
-import { ToastContainer, toast } from "react-toastify";
-import Select from "react-select";
-import { useToasts } from "react-toast-notifications";
-import { Upload, Modal } from "antd";
-import * as Icon from "react-feather";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const BranchManager = () => {
   const { branchId } = useParams();

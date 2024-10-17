@@ -1,19 +1,19 @@
-import React, { PureComponent } from "react";
 import classnames from "classnames";
-import Customizer from "../components/core/customizer/Customizer";
-import Sidebar from "./components/menu/vertical-menu/Sidebar";
-import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
+import Customizer from "../components/core/customizer/Customizer";
 import {
-  changeMode,
-  collapseSidebar,
-  changeNavbarColor,
-  changeNavbarType,
   changeFooterType,
   changeMenuColor,
+  changeMode,
+  changeNavbarColor,
+  changeNavbarType,
+  collapseSidebar,
   hideScrollToTop
 } from "../redux/actions/customizer/index";
+import Footer from "./components/footer/Footer";
+import Sidebar from "./components/menu/vertical-menu/Sidebar";
+import Navbar from "./components/navbar/Navbar";
 
 class VerticalLayout extends PureComponent {
   state = {
@@ -291,7 +291,7 @@ class VerticalLayout extends PureComponent {
           onClick = {this.handleAppOverlayClick}
         >
           <Navbar {...navbarProps} />
-          <div className="content-wrapper coustom-wrapper">{this.props.children}</div>
+          <div className="content-wrapper coustom-wrapper" style={{padding:"0"}}>{this.props.children}</div>
         </div>
 
         <Footer {...footerProps} />

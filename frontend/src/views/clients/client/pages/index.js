@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../../../redux/actions/clients/client/client";
 import {
-  TableContainer,
+  Button,
+  ButtonGroup,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
   withStyles,
-  ButtonGroup,
-  Button,
 } from "@material-ui/core";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../../../redux/actions/clients/client/client";
 
-import EditIcon from "@material-ui/icons/Edit";
+import { TablePagination } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { useToasts } from "react-toast-notifications";
 import ClientCreate from "./form";
-import { TablePagination } from "@material-ui/core";
 
 const styles = (theme) => ({
   root: {

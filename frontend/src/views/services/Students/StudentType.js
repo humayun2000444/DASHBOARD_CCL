@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
@@ -12,24 +13,15 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalFooter,
   ModalHeader,
   Table,
 } from "reactstrap";
-import { useToasts } from "react-toast-notifications";
-import { useDispatch } from "react-redux";
-import {
-  CreateDepartment,
-  DeleteDepartment,
-  GetDepartments,
-  UpdateDepartment,
-} from "../../../redux/actions/SMS/UniversitySubject/DepartmentAction";
 import get from "../../../helpers/get";
 import post from "../../../helpers/post";
+import { UpdateDepartment } from "../../../redux/actions/SMS/UniversitySubject/DepartmentAction";
 
-import remove from "../../../helpers/remove";
 import put from "../../../helpers/put";
-import ButtonForFunction from "../Components/ButtonForFunction";
+import remove from "../../../helpers/remove";
 
 const StudentType = () => {
   const history = useHistory();
@@ -130,17 +122,6 @@ const StudentType = () => {
       id: id,
       name: department,
     };
-    //  const returnvalue = update(`${rootUrl}/Department/Update`,subData).then((action)=> {
-    //     setSuccess(!success);
-    //     setModalOpen(false)
-    //     addToast(action, {
-    //       appearance: action =='Department updated successfully.' ? 'success': 'error',
-    //       autoDismiss: true,
-    //     })
-    //     setdepartment('');
-    //    localStorage.removeItem('depName')
-
-    //   })
 
     dispatch(
       UpdateDepartment(subData, (action) => {

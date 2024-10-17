@@ -1,5 +1,10 @@
 import axios from "axios";
-import { rootUrl } from "../../constants/constants";
+import config from "../../configs/config.json";
+
+const {root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`
+
 
 const permissionServices = {
   fetchPermissions: async () => {

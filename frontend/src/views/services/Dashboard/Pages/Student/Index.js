@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
-import plusicon from "../../../../../assets/img/plusicon.svg";
-import Vectorbeat from "../../../../../assets/img/Vectorbeat.svg";
-import banner from "../../../../../assets/img/banner.svg";
-import arrowright from "../../../../../assets/img/arrowright.svg";
-import tick from "../../../../../assets/img/tick.svg";
-import { Button, Card, CardBody, Col, Row } from "reactstrap";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import post from "../../../../../helpers/post";
 import { useToasts } from "react-toast-notifications";
-import get from "../../../../../helpers/get";
-import axios from "axios";
-import { rootUrl } from "../../../../../constants/constants";
+import { Button, Card, CardBody } from "reactstrap";
+import arrowright from "../../../../../assets/img/arrowright.svg";
+import banner from "../../../../../assets/img/banner.svg";
+import tick from "../../../../../assets/img/tick.svg";
+import Vectorbeat from "../../../../../assets/img/Vectorbeat.svg";
 
 const Student = () => {
   const currentUser = JSON?.parse(localStorage.getItem("current_user"));

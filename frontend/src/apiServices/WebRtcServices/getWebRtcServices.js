@@ -1,7 +1,7 @@
 import axios from "axios";
-import {root} from "../../constants/constants";
+import config from "../../configs/config.json";
 
-// const url = "https://iptsp.cosmocom.net:8001/FREESWITCH/";
+const { root } = config;
 
 const getWebRtcServices = {
   fetchAllContacts: async (payload) => {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
@@ -7,24 +7,19 @@ import {
   CardBody,
   CardHeader,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
   Row,
   Table,
-  Form,
-  FormGroup,
 } from "reactstrap";
-import get from "../../../helpers/get";
-import Select from "react-select";
-import { rootUrl } from "../../../constants/constants";
 import profileImage from "../../../assets/img/profile/user-uploads/user-07.jpg";
-import EditDivButton from "../Components/EditDivButton";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import { userTypes } from "../../../constants/userTypeConstant";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
+import { userTypes } from "../../../constants/userTypeConstant";
+import EditDivButton from "../Components/EditDivButton";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const SubjectProfile = () => {
   const [subjectData, setSubjectData] = useState({});

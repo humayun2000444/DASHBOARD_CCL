@@ -1,51 +1,38 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useState } from "react";
 // import 'react-dropzone-uploader/dist/styles.css'
-import { connect, useSelector } from "react-redux";
-import Select from "react-select";
+import Axios from "axios";
 import { useHistory, useLocation, useParams } from "react-router";
+import Select from "react-select";
 import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
+  Label,
 } from "reactstrap";
-import Axios from "axios";
 
-import { rootUrl } from "../../../../constants/constants";
+// import { rootUrl } from "../../../../constants/constants";
 import get from "../../../../helpers/get";
 // import PicturesWall from "./UniversityLogo";
 // import CoverPicturesWall from "./UniversityCover";
-import put from "../../../../helpers/put";
 import { useToasts } from "react-toast-notifications";
 import ButtonForFunction from "../../Components/ButtonForFunction";
 
+import { Modal as AntdModal, Upload } from "antd";
 import * as Icon from "react-feather";
-import { Upload, Modal as AntdModal } from "antd";
 
 import { Image } from "antd";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
 import { userTypes } from "../../../../constants/userTypeConstant";
 import ButtonLoader from "../../Components/ButtonLoader";
 // import { userTypes } from "../../../constants/userTypeConstant";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const UniversityForm = () => {
   // const univerSityCountries = props.univerSityCountryList[0];

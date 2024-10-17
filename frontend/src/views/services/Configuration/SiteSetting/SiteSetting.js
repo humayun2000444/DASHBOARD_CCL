@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  ButtonGroup,
-  Button,
-  Col,
-  Row,
-  Table,
-} from "reactstrap";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Button, Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 
-import { useHistory, useLocation } from "react-router";
-import { Form, FormGroup, Input } from "reactstrap";
+import { useHistory } from "react-router";
 import { useToasts } from "react-toast-notifications";
-
-import get from "../../../../helpers/get.js";
+import { Form, FormGroup } from "reactstrap";
 
 import { Link } from "react-router-dom";
-import FavIconFile from "./FavIconFile.js";
-import LogoFile from "./LogoFile.js";
-import { rootUrl } from "../../../../constants/constants.js";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const EmployeeList = (props) => {
   const history = useHistory();

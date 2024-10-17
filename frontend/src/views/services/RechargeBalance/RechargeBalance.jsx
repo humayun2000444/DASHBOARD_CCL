@@ -33,11 +33,15 @@ const RechargeBalance = () => {
   ];
   return (
     <div>
-      <Card className="mt-3">
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
-          <h3 className="">Recharge Balance</h3>
-
-          <div className="mt-3">
+          <div>
             <Table id="table-to-xls" className="table-sm table-bordered">
               <TableHead className="thead-uapp-bg">
                 <TableRow style={{ textAlign: "center" }}>

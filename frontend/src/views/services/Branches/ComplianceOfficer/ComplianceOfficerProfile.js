@@ -1,33 +1,29 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
-  ButtonGroup,
   Card,
   CardBody,
-  CardHeader,
   Col,
-  Form,
   FormGroup,
-  Input,
   Modal,
   ModalBody,
-  ModalFooter,
   ModalHeader,
-  Row,
-  Table,
 } from "reactstrap";
-import get from "../../../../helpers/get";
-import { useToasts } from "react-toast-notifications";
-import put from "../../../../helpers/put";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
-import { rootUrl } from "../../../../constants/constants";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
-import ButtonLoader from "../../Components/ButtonLoader";
+import branch from "../../../../assets/img/branch.jpg";
 import bulb from "../../../../assets/img/bulb.png";
 import user from "../../../../assets/img/Uapp_fav.png";
-import branch from "../../../../assets/img/branch.jpg";
+import config from "../../../../configs/config.json";
+import { permissionList } from "../../../../constants/AuthorizationConstant";
+import put from "../../../../helpers/put";
+import ButtonLoader from "../../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ComplianceOfficerProfile = () => {
   const [managerData, setManagerData] = useState({});

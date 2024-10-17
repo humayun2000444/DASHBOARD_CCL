@@ -1,5 +1,5 @@
 import axios from "axios";
-// import {apiUrl} from "../../../../configs/config.json"
+import {apiUrl} from "../../../../configs/config.json"
 
 
 // const apiEndpoint = apiUrl+ "country/";

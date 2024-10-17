@@ -1,45 +1,46 @@
+import { Modal, Upload } from "antd";
 import React, { createRef, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { useDispatch } from 'react-redux';
-import { Upload, Modal } from 'antd';
+import { connect, useDispatch, useSelector } from "react-redux";
 
-import * as Icon from 'react-feather';
-import { Image } from 'antd';
+import { Image } from "antd";
+import * as Icon from "react-feather";
+import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
+import Select from "react-select";
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
   Form,
   FormGroup,
   Input,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  TabContent,
-  TabPane,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
-import { useHistory } from "react-router";
-import Select from "react-select";
-import { useParams } from "react-router-dom";
 
-import { useToasts } from "react-toast-notifications";
 import Axios from "axios";
+import { useToasts } from "react-toast-notifications";
 
-import get from "../../../../helpers/get";
-import { rootUrl } from "../../../../constants/constants";
-import ProfilePicturesWall from "./EmployeeProfileImage";
-import CoverPicturesWall from "./EmployeeCoverImage";
-import ButtonForFunction from "../../Components/ButtonForFunction";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
+import get from "../../../../helpers/get";
+import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
+import CoverPicturesWall from "./EmployeeCoverImage";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const EmployeeGeneralInfo = (props) => {
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState({});
-
 
   const myForm = createRef();
   const history = useHistory();
@@ -49,25 +50,23 @@ const EmployeeGeneralInfo = (props) => {
   const [employeeValue, setEmployeeValue] = useState(0);
   const [employeeError, setEmployeeError] = useState("");
   const [nationality, setNationality] = useState([]);
-  const [nationalityType, setNationalityType] = useState(
-    "Select Nationality"
-  );
+  const [nationalityType, setNationalityType] = useState("Select Nationality");
   const [nationalityValue, setNationalityValue] = useState(0);
   const [nationalityError, setNationalityError] = useState("");
   const { addToast } = useToasts();
   const [files, setFiles] = useState([]);
   const [exactFile, setExactFile] = useState({});
   const [dropzoneError, setDropzoneError] = useState("");
-  const [buttonStatus,setButtonStatus] = useState(false);
-  const [error,setError] = useState('');
-  const [error2,setError2] = useState('');
+  const [buttonStatus, setButtonStatus] = useState(false);
+  const [error, setError] = useState("");
+  const [error2, setError2] = useState("");
 
   const [branch, setBranch] = useState([]);
   const [branchLabel, setBranchLabel] = useState("Select Branch");
   const [branchValue, setBranchValue] = useState(0);
-  const [progress,setProgress] = useState(false);
+  const [progress, setProgress] = useState(false);
 
-  const permissions = JSON.parse(localStorage.getItem('permissions'));
+  const permissions = JSON.parse(localStorage.getItem("permissions"));
 
   const result = useSelector(
     (state) => state.employeeProfileImageReducer.employeeProfileImage
@@ -79,8 +78,9 @@ const EmployeeGeneralInfo = (props) => {
 
   useEffect(() => {
     get(`Employee/Details/${id}`).then((res) => {
-      
-      setBranchLabel(res?.branch?.name != null ? res?.branch?.name : 'Select Branch')
+      setBranchLabel(
+        res?.branch?.name != null ? res?.branch?.name : "Select Branch"
+      );
       setBranchValue(res?.branch?.id != null ? res?.branch?.id : 0);
       setEmployeeType(res.employeeType.name);
       setEmployeeValue(res.employeeType.id);
@@ -99,10 +99,9 @@ const EmployeeGeneralInfo = (props) => {
     });
 
     get("BranchDD/index").then((res) => {
-      // 
+      //
       setBranch(res);
     });
-
   }, [id]);
 
   const branchOptions = branch?.map((b) => ({
@@ -111,7 +110,6 @@ const EmployeeGeneralInfo = (props) => {
   }));
 
   const selectBranch = (label, value) => {
-
     setBranchLabel(label);
     setBranchValue(value);
   };
@@ -130,8 +128,6 @@ const EmployeeGeneralInfo = (props) => {
     //     setDropzoneError('');
   };
 
-
-
   const employeeTypeName = employeeList?.map((emp) => ({
     label: emp.name,
     value: emp.id,
@@ -142,31 +138,26 @@ const EmployeeGeneralInfo = (props) => {
   }));
 
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
   const [FileList, setFileList] = useState([]);
 
   const dispatch = useDispatch();
-  
-
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   }
-  
- 
- 
-  const  handleCancel = () => {
-  
-      setPreviewVisible(false);
+
+  const handleCancel = () => {
+    setPreviewVisible(false);
   };
 
-  const handlePreview = async file => {
+  const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -179,64 +170,50 @@ const EmployeeGeneralInfo = (props) => {
 
     setPreviewImage(file.url || file.preview);
     setPreviewVisible(true);
-    setPreviewTitle(file.name ||  file.url.substring(file.url.lastIndexOf('/') + 1) );
-
-
-
-
-
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
   };
 
- const handleChange = ({ fileList }) => {
-  
-  if(fileList.length > 0 && fileList[0]?.type !== 'image/jpeg' && fileList[0]?.type !== 'image/jpg' && fileList[0]?.type !== 'image/png'){
-    setFileList([]);
-    setError('Only jpeg, jpg, png image is allowed');
-  }
-  else{
-    setFileList(fileList);
-    setError('');
-  }
-     
-    
-    
- };
+  const handleChange = ({ fileList }) => {
+    if (
+      fileList.length > 0 &&
+      fileList[0]?.type !== "image/jpeg" &&
+      fileList[0]?.type !== "image/jpg" &&
+      fileList[0]?.type !== "image/png"
+    ) {
+      setFileList([]);
+      setError("Only jpeg, jpg, png image is allowed");
+    } else {
+      setFileList(fileList);
+      setError("");
+    }
+  };
 
-
-
-
-   // Image js code end
-   const AuthStr = localStorage.getItem("token");
+  // Image js code end
+  const AuthStr = localStorage.getItem("token");
 
   // submitting form
   const handleSubmit = (event) => {
     event.preventDefault();
- 
+
     const subData = new FormData(event.target);
     subData.append("profileImage", FileList[0]?.originFileObj);
     subData.append("coverImage", result1[0]?.originFileObj);
     //  watch form data values
     for (var value of subData.values()) {
-         
-     }
-    
-
+    }
 
     if (employeeValue == 0) {
       setEmployeeError("Staff Type is Required");
-    } 
-    else if (nationalityValue == 0) {
+    } else if (nationalityValue == 0) {
       setNationalityError("Nationality is Required");
-    }
-
-   
-     
-     else {
+    } else {
       setProgress(true);
       setButtonStatus(true);
       Axios.put(`${rootUrl}Employee/Update`, subData, {
         headers: {
-          'authorization': AuthStr,
+          authorization: AuthStr,
         },
       }).then((res) => {
         setProgress(false);
@@ -260,12 +237,11 @@ const EmployeeGeneralInfo = (props) => {
           //   //   state: { detail : uID},
           //     id: uID
           // })
-          
+
           history.push(`/staffContactInfo/${id}`);
         }
       });
     }
-    
   };
 
   // select Employee Type
@@ -315,7 +291,6 @@ const EmployeeGeneralInfo = (props) => {
               </NavLink>
             </NavItem>
             <NavItem>
-              
               <NavLink active={activetab === "2"} onClick={() => toggle("2")}>
                 Contact Information
               </NavLink>
@@ -336,7 +311,9 @@ const EmployeeGeneralInfo = (props) => {
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>Staff Type <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      Staff Type <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Select
@@ -348,10 +325,8 @@ const EmployeeGeneralInfo = (props) => {
                       name="employeeTypeId"
                       id="employeeTypeId"
                     />
-                   
-                      <span className="text-danger">{employeeError}</span>
-                    
-                    
+
+                    <span className="text-danger">{employeeError}</span>
                   </Col>
                 </FormGroup>
 
@@ -374,7 +349,9 @@ const EmployeeGeneralInfo = (props) => {
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>Select Nationality <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      Select Nationality <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Select
@@ -389,16 +366,16 @@ const EmployeeGeneralInfo = (props) => {
                       name="nationalityId"
                       id="nationalityId"
                     />
-               
-                      <span className="text-danger">{nationalityError}</span>
-              
-                    
+
+                    <span className="text-danger">{nationalityError}</span>
                   </Col>
                 </FormGroup>
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>First Name <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      First Name <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Input
@@ -408,13 +385,14 @@ const EmployeeGeneralInfo = (props) => {
                       defaultValue={userInfo?.firstName}
                       required
                     />
-                   
                   </Col>
                 </FormGroup>
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>Last Name <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      Last Name <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Input
@@ -424,13 +402,14 @@ const EmployeeGeneralInfo = (props) => {
                       defaultValue={userInfo.lastName}
                       required
                     />
-                    
                   </Col>
                 </FormGroup>
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>Email Address <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      Email Address <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Input
@@ -440,13 +419,14 @@ const EmployeeGeneralInfo = (props) => {
                       defaultValue={userInfo?.email}
                       required
                     />
-                    
                   </Col>
                 </FormGroup>
 
                 <FormGroup row className="has-icon-left position-relative">
                   <Col md="2">
-                    <span>Phone Number <span className="text-danger">*</span>{" "}</span>
+                    <span>
+                      Phone Number <span className="text-danger">*</span>{" "}
+                    </span>
                   </Col>
                   <Col md="6">
                     <Input
@@ -456,7 +436,6 @@ const EmployeeGeneralInfo = (props) => {
                       defaultValue={userInfo?.phoneNumber}
                       required
                     />
-                   
                   </Col>
                 </FormGroup>
 
@@ -465,59 +444,54 @@ const EmployeeGeneralInfo = (props) => {
                     <span>Profile Image</span>
                   </Col>
                   <Col md="6">
-                   <div className="d-flex">
-                   {
-                      userInfo?.profileImageMedia?.fileUrl !== null ?
-                    <div className="mr-2">
-                    
+                    <div className="d-flex">
+                      {userInfo?.profileImageMedia?.fileUrl !== null ? (
+                        <div className="mr-2">
+                          <Image
+                            width={104}
+                            height={104}
+                            src={rootUrl + userInfo?.profileImageMedia?.fileUrl}
+                          />
+                        </div>
+                      ) : null}
 
-                      <Image
-                      width={104} height={104}
-                      src={rootUrl+userInfo?.profileImageMedia?.fileUrl}
-                    />
-                   
-                    
+                      <div className="ms-2">
+                        <Upload
+                          listType="picture-card"
+                          multiple={false}
+                          fileList={FileList}
+                          onPreview={handlePreview}
+                          onChange={handleChange}
+                          beforeUpload={(file) => {
+                            return false;
+                          }}
+                        >
+                          {FileList.length < 1 ? (
+                            <div
+                              className="text-danger"
+                              style={{ marginTop: 8 }}
+                            >
+                              <Icon.Upload />
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </Upload>
+                        <Modal
+                          visible={previewVisible}
+                          title={previewTitle}
+                          footer={null}
+                          onCancel={handleCancel}
+                        >
+                          <img
+                            alt="example"
+                            style={{ width: "100%" }}
+                            src={previewImage}
+                          />
+                        </Modal>
+                        <span className="text-danger d-block">{error}</span>
+                      </div>
                     </div>
-
-                    :
-                    null
-                    }
-                 
-                   
-                 <div className="ms-2">
-
-                 <Upload
-                
-                listType="picture-card"
-                multiple={false}
-                fileList={FileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                beforeUpload={(file)=>{
-
-           
-                      
-                    
-                      return false;
-                  }}
-                >
-                    {FileList.length < 1 ?  <div className='text-danger' style={{ marginTop: 8 }}><Icon.Upload/></div>: ''}
-                </Upload>
-                <Modal
-                  visible={previewVisible}
-                  title={previewTitle}
-                  footer={null}
-                  onCancel={handleCancel}
-                >
-                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                </Modal>
-                <span className="text-danger d-block">{error}</span>
-
-
-                 </div>
-                 
-                 </div>
-                 
                   </Col>
                 </FormGroup>
                 <FormGroup row className="has-icon-left position-relative">
@@ -526,53 +500,43 @@ const EmployeeGeneralInfo = (props) => {
                   </Col>
                   <Col md="6">
                     <div className="d-flex">
-                   <div className="mr-2">
-                   {
-                      userInfo?.coverImageMedia?.fileUrl !== null ?
-                      <Image
-                      width={104} height={104}
-                      src={rootUrl+userInfo?.coverImageMedia?.fileUrl}
-                    />
-                    :
-                    null
-                    }
-                   </div>
-                  <div className="ms-0">
-                  <CoverPicturesWall
-                  error2={error2}
-                  setError2={setError2}
-                  />
-                  <span className="text-danger">{error2}</span>
-                  </div>
+                      <div className="mr-2">
+                        {userInfo?.coverImageMedia?.fileUrl !== null ? (
+                          <Image
+                            width={104}
+                            height={104}
+                            src={rootUrl + userInfo?.coverImageMedia?.fileUrl}
+                          />
+                        ) : null}
+                      </div>
+                      <div className="ms-0">
+                        <CoverPicturesWall
+                          error2={error2}
+                          setError2={setError2}
+                        />
+                        <span className="text-danger">{error2}</span>
+                      </div>
                     </div>
-                   
-                   
                   </Col>
                 </FormGroup>
 
-              
-
-                <FormGroup row
+                <FormGroup
+                  row
                   className="has-icon-left position-relative"
                   style={{ display: "flex", justifyContent: "end" }}
                 >
-                
-                
-                 <Col md="5">
-                   {
-                    permissions?.includes(permissionList?.Update_Staff_info) ? 
-
-                    <ButtonForFunction
-                    type={"submit"}
-                    className={"mr-1 mt-3 badge-primary"}
-                    name={progress? <ButtonLoader/> : 'Submit'}
-                    disable={buttonStatus}
-                   />
-                   :
-                   null
-                   }
-                 </Col>
-
+                  <Col md="5">
+                    {permissions?.includes(
+                      permissionList?.Update_Staff_info
+                    ) ? (
+                      <ButtonForFunction
+                        type={"submit"}
+                        className={"mr-1 mt-3 badge-primary"}
+                        name={progress ? <ButtonLoader /> : "Submit"}
+                        disable={buttonStatus}
+                      />
+                    ) : null}
+                  </Col>
                 </FormGroup>
               </Form>
             </TabPane>
@@ -581,10 +545,12 @@ const EmployeeGeneralInfo = (props) => {
                     </TabPane> */}
           </TabContent>
           <div className="d-flex justify-content-end">
-            <Button color="warning" onClick={()=>history.push(`/staffContactInfo/${id}`)}>
+            <Button
+              color="warning"
+              onClick={() => history.push(`/staffContactInfo/${id}`)}
+            >
               Next Page
             </Button>
-
           </div>
         </CardBody>
       </Card>

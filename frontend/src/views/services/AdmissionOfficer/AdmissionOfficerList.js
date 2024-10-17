@@ -1,60 +1,55 @@
-import React, { useEffect, useState, Component, useRef } from "react";
+import { Image, Upload } from "antd";
+import React, { useRef, useState } from "react";
+import * as Icon from "react-feather";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
   Col,
-  Row,
-  Table,
   Dropdown,
-  DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Form,
   FormGroup,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Table,
 } from "reactstrap";
 import loader from "../../../assets/img/load.gif";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
 
 // import { permissionList } from '../../../../constants/AuthorizationConstant';
 import { permissionList } from "../../../constants/AuthorizationConstant";
 
-import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import * as XLSX from "xlsx/xlsx.mjs";
+import ReactTableConvertToXl from "../ReactTableConvertToXl/ReactTableConvertToXl";
 // import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import ReactToPrint from "react-to-print";
 
-import Select from "react-select";
 import { useHistory, useLocation, useParams } from "react-router";
-import { Link } from "react-router-dom";
-import get from "../../../helpers/get";
+import Select from "react-select";
 import { useToasts } from "react-toast-notifications";
+import get from "../../../helpers/get";
 import remove from "../../../helpers/remove";
 import Pagination from "../../services/Pagination/Pagination.jsx";
 
-import ButtonForFunction from "../Components/ButtonForFunction";
-import LinkButton from "../Components/LinkButton";
+import config from "../../../configs/config.json";
 import { userTypes } from "../../../constants/userTypeConstant";
-import put from "../../../helpers/put";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
 import post from "../../../helpers/post";
-import ToggleSwitch from "../Components/ToggleSwitch";
-import { rootUrl } from "../../../constants/constants";
+import put from "../../../helpers/put";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+import ToggleSwitch from "../Components/ToggleSwitch";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AdmissionOfficerList = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

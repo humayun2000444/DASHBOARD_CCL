@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
 import { useToasts } from "react-toast-notifications";
 
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
+  Col,
   Form,
   FormGroup,
-  Col,
   Input,
-  Button,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
 import get from "../../../helpers/get";
 import post from "../../../helpers/post";
 import ButtonForFunction from "../Components/ButtonForFunction";

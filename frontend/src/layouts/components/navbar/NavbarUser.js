@@ -1,24 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  Media,
-  Badge,
-} from "reactstrap";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import axios from "axios";
+import React from "react";
 import * as Icon from "react-feather";
-import { useAuth0 } from "../../../authServices/auth0/auth0Service";
-import { history } from "../../../history";
-import { studentLogOutJwtAction } from "../../../redux/actions/SMS/AuthAction/AuthAction";
-import { logOut, rootUrl } from "../../../constants/constants";
-import { userTypes } from "../../../constants/userTypeConstant";
-import { HubConnectionBuilder } from "@microsoft/signalr";
-import { Link } from "react-router-dom";
-import get from "../../../helpers/get";
+import {
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from "reactstrap";
 import user from "../../../assets/img/CCL_SiteIcon.png";
+import config from "../../../configs/config.json";
+import { userTypes } from "../../../constants/userTypeConstant";
+import { history } from "../../../history";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const handleNavigation = (e, path) => {
   e.preventDefault();
@@ -380,11 +376,12 @@ class NavbarUser extends React.PureComponent {
   //  latestChat.current = chat;
 
   countFunction = () => {
-    axios.get(`${rootUrl}Notification/UserNotificationCount`, {
-      headers: {
-        authorization: AuthStr,
-      },
-    })
+    axios
+      .get(`${rootUrl}Notification/UserNotificationCount`, {
+        headers: {
+          authorization: AuthStr,
+        },
+      })
       .then((res) => {
         this.setState({ notificationCount: res?.data });
       });
@@ -507,7 +504,6 @@ class NavbarUser extends React.PureComponent {
 
         <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
           <DropdownToggle tag="a" className="nav-link dropdown-user-link">
-
             <span data-tour="user">
               <img
                 src={
@@ -525,10 +521,12 @@ class NavbarUser extends React.PureComponent {
               <span className="user-name text-bold-600">
                 {userInfo?.displayName} Syed Easin
               </span>
-              <span className="user-status">{userInfo?.roleName}Software Engineer</span>
+              <span className="user-status">
+                {userInfo?.roleName}Software Engineer
+              </span>
             </div>
           </DropdownToggle>
-          <UserDropdown switch={this?.state?.canSwitch}/>
+          <UserDropdown switch={this?.state?.canSwitch} />
         </UncontrolledDropdown>
       </ul>
     );

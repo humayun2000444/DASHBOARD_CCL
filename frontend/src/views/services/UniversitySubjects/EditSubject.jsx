@@ -1,36 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router";
 import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
-import { rootUrl } from "../../../constants/constants";
-import get from "../../../helpers/get";
 import put from "../../../helpers/put";
-import { useToasts } from "react-toast-notifications";
 import CustomButtonRipple from "../Components/CustomButtonRipple";
 
 const EditSubject = () => {

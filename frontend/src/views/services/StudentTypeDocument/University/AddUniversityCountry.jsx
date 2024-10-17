@@ -1,51 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { useToasts } from "react-toast-notifications";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Table,
-  ButtonGroup,
 } from "reactstrap";
-// import { EditorState, convertToRaw } from 'draft-js';
-// import { Editor } from 'react-draft-wysiwyg';
-// import draftToHtml from 'draftjs-to-html';
-// import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { useToasts } from "react-toast-notifications";
-import { useDispatch } from "react-redux";
 
-import { StoreUniversityCountryData } from "../../../redux/actions/SMS/UniversityAction/UniversityCountryAction";
-import get from "../../../helpers/get";
+import { permissionList } from "../../../constants/AuthorizationConstant";
 import post from "../../../helpers/post";
 import put from "../../../helpers/put";
 import remove from "../../../helpers/remove";
-import UniversityList from "./UniversityList";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import { permissionList } from "../../../constants/AuthorizationConstant";
+import ButtonLoader from "../Components/ButtonLoader";
 import LinkSpanButton from "../Components/LinkSpanButton";
 import Loader from "../Search/Loader/Loader";
-import ButtonLoader from "../Components/ButtonLoader";
 const AddUniversityCountry = (props) => {
   const univerSityCountries = props.univerSityCountryList[0];
-
   const [universityCountry, setUniversityCountry] = useState("");
-  //   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  //   const [rawContent,setRawContent] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
@@ -64,38 +48,9 @@ const AddUniversityCountry = (props) => {
 
   const permissions = JSON.parse(localStorage.getItem("permissions"));
 
-  //  const onEditorStateChange = (editorState) => {
-  //     setEditorState(editorState)
-  //     // setRawContent(convertToRaw(editorState.getCurrentContent()).blocks[0].text);
-  //     setRawContent(draftToHtml(convertToRaw(editorState.getCurrentContent())))
-  //   };
-
-  // useEffect(() => {
-  //   const returnValue = get(`UniversityCountry/Index`)
-  //     .then((action) => {
-  //       dispatch(StoreUniversityCountryData(action));
-  //       setLoading(false);
-  //     })
-  //     .catch();
-
-  //   // const returnValue = get(`${rootUrl}/UniversityCountry/Index`).then(res => {
-  //   //   dispatch(StoreUniversityCountryData(res))
-
-  //   // })
-  // }, [success]);
-
-  // useEffect(() => {
-  //   window.addEventListener('error')
-  // }, [])
-
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const subdata = new FormData(event.target);
-
-    // const subdata = {
-    //   name: universityCountry
-    // }
 
     if (!updateState?.id) {
       setUpdateState({});
@@ -204,46 +159,6 @@ const AddUniversityCountry = (props) => {
               </div>
             </CardHeader>
           </Card>
-
-          {/* <Card>
-
-                <CardBody>
-
-                <Form>
-
-                  <FormGroup row className="has-icon-left position-relative">
-
-
-                    <Col md="2">
-                      <span>University Description</span>
-                    </Col>
-
-                  
-                    <Col md="12">
-
-                    <Editor
-                    
-                        editorState={editorState}
-                        wrapperClassName="demo-wrapper"
-                        editorClassName="demo-editor"
-                        onEditorStateChange={onEditorStateChange}
-                        toolbarClassName="toolbar-class"
-                    />
-                    <textarea
-                        disabled
-                        value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-                        />
-
-                    </Col>
-
-                  </FormGroup>
-
-
-                  </Form>
-
-                </CardBody>
-
-            </Card> */}
 
           <Card>
             <CardHeader>

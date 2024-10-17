@@ -1,44 +1,41 @@
 // UserProfile.jsx
-import React from 'react';
-import { Box, Typography, Grid, Avatar, Button } from '@mui/material';
-import ProfileOverview from './ProfileOverview.jsx';
-import ProfileDetails from './ProfileDetails.jsx';
-import CompanyLogoSection from './CompanyLogoSection.jsx';
+import { Avatar } from "@mui/material";
+import React from "react";
 
 const UserProfile = () => {
   const styles = {
     root: {
-      padding: '16px',
+      padding: "16px",
     },
     coverImage: {
-      height: '200px',
+      height: "200px",
       // backgroundImage: 'url("../\assets\\img\\pages\\vuesax-login-bg.jpg")',
       backgroundColor: "#222",
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      marginBottom: '20px',
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      marginBottom: "20px",
     },
     profileContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: '20px',
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "20px",
     },
     avatar: {
-      width: '100px',
-      height: '100px',
-      marginRight: '20px',
+      width: "100px",
+      height: "100px",
+      marginRight: "20px",
     },
     header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '20px',
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "20px",
     },
     profileContent: {
-      marginBottom: '20px',
+      marginBottom: "20px",
     },
     button: {
-      margin: '0 8px',
+      margin: "0 8px",
     },
   };
 
@@ -116,10 +113,12 @@ const UserProfile = () => {
             }}
           >
             <h5>Personal Information</h5>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-            }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <Avatar
                 style={styles.avatar}
                 alt="Profile Picture"

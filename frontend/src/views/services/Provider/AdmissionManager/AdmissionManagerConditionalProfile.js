@@ -1,5 +1,9 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { Image, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   ButtonGroup,
@@ -14,21 +18,21 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Row,
   Table,
 } from "reactstrap";
-import Select from "react-select";
+import { permissionList } from "../../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../../constants/constants";
 import get from "../../../../helpers/get";
-import { useToasts } from "react-toast-notifications";
-import ButtonForFunction from "../../Components/ButtonForFunction";
-import CustomButtonRipple from "../../Components/CustomButtonRipple";
 import post from "../../../../helpers/post";
 import put from "../../../../helpers/put";
 import remove from "../../../../helpers/remove";
-import { permissionList } from "../../../../constants/AuthorizationConstant";
-import { rootUrl } from "../../../../constants/constants";
-import { Image, Upload } from "antd";
-import * as Icon from "react-feather";
+import ButtonForFunction from "../../Components/ButtonForFunction";
+import CustomButtonRipple from "../../Components/CustomButtonRipple";
+import config from "../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AdmissionManagerConditionalProfile = () => {
   const { managerId } = useParams();

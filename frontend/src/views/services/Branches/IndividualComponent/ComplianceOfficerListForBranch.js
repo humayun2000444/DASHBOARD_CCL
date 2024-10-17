@@ -1,34 +1,38 @@
+import { Modal as AntModal, Image, Upload } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import get from "../../../../helpers/get";
-import Pagination from "../../Pagination/Pagination";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   ButtonGroup,
   Card,
   CardBody,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Table,
   Col,
   Form,
   FormGroup,
   Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
   ModalHeader,
+  Table,
 } from "reactstrap";
-import Select from "react-select";
+import config from "../../../../configs/config.json";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
-import ButtonForFunction from "../../Components/ButtonForFunction";
-import { useHistory } from "react-router-dom";
-import ButtonLoader from "../../Components/ButtonLoader";
-import remove from "../../../../helpers/remove";
-import { useToasts } from "react-toast-notifications";
-import { Image, Modal as AntModal, Upload } from "antd";
-import * as Icon from "react-feather";
+import get from "../../../../helpers/get";
 import put from "../../../../helpers/put";
-import { rootUrl } from "../../../../constants/constants";
+import remove from "../../../../helpers/remove";
+import ButtonForFunction from "../../Components/ButtonForFunction";
+import ButtonLoader from "../../Components/ButtonLoader";
 import ToggleSwitch from "../../Components/ToggleSwitch";
+import Pagination from "../../Pagination/Pagination";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ComplianceOfficerListForBranch = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(1);

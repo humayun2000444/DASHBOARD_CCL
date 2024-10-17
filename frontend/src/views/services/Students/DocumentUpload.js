@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Modal as AntdModal, Upload } from "antd";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
 import { useHistory, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Button,
   Card,
@@ -7,37 +12,31 @@ import {
   CardHeader,
   Col,
   Form,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   FormGroup,
   Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Nav,
   NavItem,
   NavLink,
-  TabContent,
-  TabPane,
-  Label,
 } from "reactstrap";
-import Select from "react-select";
-import StudentProfileImage from "./StudentProfileImage";
-import * as Icon from "react-feather";
 import get from "../../../helpers/get";
-import { useToasts } from "react-toast-notifications";
-import { Upload, Modal as AntdModal } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
 
-import { Image } from "antd";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import post from "../../../helpers/post";
-import { rootUrl } from "../../../constants/constants";
-import remove from "../../../helpers/remove";
-import ButtonLoader from "../Components/ButtonLoader";
-import { userTypes } from "../../../constants/userTypeConstant";
-import put from "../../../helpers/put";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
+import { userTypes } from "../../../constants/userTypeConstant";
+import post from "../../../helpers/post";
+import put from "../../../helpers/put";
+import remove from "../../../helpers/remove";
+import ButtonForFunction from "../Components/ButtonForFunction";
+import ButtonLoader from "../Components/ButtonLoader";
+import config from "../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const DocumentUpload = () => {
   const { applicationStudentId } = useParams();
@@ -639,6 +638,7 @@ const DocumentUpload = () => {
                             href={rootUrl + docu?.studentDocumentFile?.fileUrl}
                             target="_blank"
                             download
+                            rel="noreferrer"
                           >
                             <i
                               style={{ fontSize: "50px" }}

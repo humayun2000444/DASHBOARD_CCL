@@ -5,19 +5,23 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Col,
   Form,
   FormGroup,
   Input,
-  Col,
 } from "reactstrap";
-import { rootUrl } from "../../../../constants/constants";
+// import { rootUrl } from "../../../../constants/constants";
 import { useToasts } from "react-toast-notifications";
+import config from "../../../../configs/config.json";
 import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
 
-const UniversityFinancialForm = () => {
+const { root } = config;
 
-  const [buttonStatus,setButtonStatus] = useState(false);
+const rootUrl = `${root}8001/AUTHENTICATION/`;
+
+const UniversityFinancialForm = () => {
+  const [buttonStatus, setButtonStatus] = useState(false);
   const [progress, setProgress] = useState(false);
 
   const { addToast } = useToasts();
@@ -46,43 +50,41 @@ const UniversityFinancialForm = () => {
     for (var value of subdata.values()) {
     }
 
-      setButtonStatus(true);
-      setProgress(true);
-      Axios.post(`${rootUrl}FinancialInformation/Create`, subdata, {
-        headers: {
-          "authorization": AuthStr,
-        },
-      }).then((res) => {
-        setButtonStatus(false);
-        setProgress(false);
-        const uniID = res.data.result.universityId;
+    setButtonStatus(true);
+    setProgress(true);
+    Axios.post(`${rootUrl}FinancialInformation/Create`, subdata, {
+      headers: {
+        authorization: AuthStr,
+      },
+    }).then((res) => {
+      setButtonStatus(false);
+      setProgress(false);
+      const uniID = res.data.result.universityId;
 
-        if (res.status === 200 && res.data.isSuccess === true) {
-          addToast(res?.data?.message, {
-            appearance: "success",
-            autoDismiss: true,
-          });
-          history.push({
-              pathname: `/createUniversityFeatures/${univerId}`,
-              id: uniID
-          })
-        } else {
-          addToast(res?.data?.message, {
-            appearance: "success",
-            autoDismiss: true,
-          });
-        }
-      });
-    
+      if (res.status === 200 && res.data.isSuccess === true) {
+        addToast(res?.data?.message, {
+          appearance: "success",
+          autoDismiss: true,
+        });
+        history.push({
+          pathname: `/createUniversityFeatures/${univerId}`,
+          id: uniID,
+        });
+      } else {
+        addToast(res?.data?.message, {
+          appearance: "success",
+          autoDismiss: true,
+        });
+      }
+    });
   };
 
   const redirectToNext = () => {
     history.push(`/createUniversityFeatures/${univerId}`);
-  }
-  
+  };
 
-    return (
-        <div>
+  return (
+    <div>
       <Card className="uapp-card-bg">
         <CardHeader className="page-header">
           <h3 className="text-white">University Financial Information</h3>
@@ -98,8 +100,8 @@ const UniversityFinancialForm = () => {
 
       <Card>
         <CardBody>
-              <Form ref={myForm} onSubmit={handleSubmit} className="mt-4">
-                {/* <div className="hedding-titel d-flex justify-content-between mb-4">
+          <Form ref={myForm} onSubmit={handleSubmit} className="mt-4">
+            {/* <div className="hedding-titel d-flex justify-content-between mb-4">
                   <div>
                     <h5>
                       {" "}
@@ -110,134 +112,130 @@ const UniversityFinancialForm = () => {
                   </div>
                 </div> */}
 
-                <FormGroup row className="has-icon-left position-relative">
-                  <Input
-                    type="hidden"
-                    id="UniversityId"
-                    name="UniversityId"
-                    value={univerId}
-                  />
-                  {/* <Input type="hidden" id="UniversityId" name="UniversityId" value={localStorage.getItem("editUniId")} /> */}
-                </FormGroup>
+            <FormGroup row className="has-icon-left position-relative">
+              <Input
+                type="hidden"
+                id="UniversityId"
+                name="UniversityId"
+                value={univerId}
+              />
+              {/* <Input type="hidden" id="UniversityId" name="UniversityId" value={localStorage.getItem("editUniId")} /> */}
+            </FormGroup>
 
-                <FormGroup row className="has-icon-left position-relative">
-                  <Col md="2">
-                    <span>
-                      Avg. Tution Fee <span className="text-danger">*</span>{" "}
-                    </span>
-                  </Col>
-                  <Col md="6">
-                    <Input
-                      type="number"
-                      min="0"
-                      name="AvarageTutionFee"
-                      id="AvarageTutionFee"
-                      placeholder="Avarage Tution Fee"
-                      required
-                    />
-                    {/* <div className="form-control-position">
+            <FormGroup row className="has-icon-left position-relative">
+              <Col md="2">
+                <span>
+                  Avg. Tution Fee <span className="text-danger">*</span>{" "}
+                </span>
+              </Col>
+              <Col md="6">
+                <Input
+                  type="number"
+                  min="0"
+                  name="AvarageTutionFee"
+                  id="AvarageTutionFee"
+                  placeholder="Avarage Tution Fee"
+                  required
+                />
+                {/* <div className="form-control-position">
                                         <User size={15} />
                                     </div> */}
-                  </Col>
-                </FormGroup>
+              </Col>
+            </FormGroup>
 
-                <FormGroup row className="has-icon-left position-relative">
-                  <Col md="2">
-                    <span>
-                      Avg. Living Cost <span className="text-danger">*</span>{" "}
-                    </span>
-                  </Col>
-                  <Col md="6">
-                    <Input
-                      type="number"
-                      min="0"
-                      name="AvarageLivingCost"
-                      id="AvarageLivingCost"
-                      placeholder="Avarage Living Cost"
-                      required
-                    />
-                    {/* <div className="form-control-position">
+            <FormGroup row className="has-icon-left position-relative">
+              <Col md="2">
+                <span>
+                  Avg. Living Cost <span className="text-danger">*</span>{" "}
+                </span>
+              </Col>
+              <Col md="6">
+                <Input
+                  type="number"
+                  min="0"
+                  name="AvarageLivingCost"
+                  id="AvarageLivingCost"
+                  placeholder="Avarage Living Cost"
+                  required
+                />
+                {/* <div className="form-control-position">
                                         <User size={15} />
                                     </div> */}
-                  </Col>
-                </FormGroup>
+              </Col>
+            </FormGroup>
 
-                <FormGroup row className="has-icon-left position-relative">
-                  <Col md="2">
-                    <span>
-                      Avg. Application Fee{" "}
-                      <span className="text-danger">*</span>{" "}
-                    </span>
-                  </Col>
-                  <Col md="6">
-                    <Input
-                      type="number"
-                      min="0"
-                      name="AvarageApplicationFee"
-                      id="AvarageApplicationFee"
-                      placeholder="Avarage Application Fee"
-                      required
-                    />
-                    {/* <div className="form-control-position">
+            <FormGroup row className="has-icon-left position-relative">
+              <Col md="2">
+                <span>
+                  Avg. Application Fee <span className="text-danger">*</span>{" "}
+                </span>
+              </Col>
+              <Col md="6">
+                <Input
+                  type="number"
+                  min="0"
+                  name="AvarageApplicationFee"
+                  id="AvarageApplicationFee"
+                  placeholder="Avarage Application Fee"
+                  required
+                />
+                {/* <div className="form-control-position">
                                         <User size={15} />
                                     </div> */}
-                  </Col>
-                </FormGroup>
+              </Col>
+            </FormGroup>
 
-                <FormGroup row className="has-icon-left position-relative">
-                  <Col md="2">
-                    <span>
-                      Est. Total Cost <span className="text-danger">*</span>{" "}
-                    </span>
-                  </Col>
-                  <Col md="6">
-                    <Input
-                      type="number"
-                      min="0"
-                      name="EstimatedTotalCost"
-                      id="EstimatedTotalCost"
-                      placeholder="Estimated Total Cost"
-                      required
-                    />
-                    {/* <div className="form-control-position">
+            <FormGroup row className="has-icon-left position-relative">
+              <Col md="2">
+                <span>
+                  Est. Total Cost <span className="text-danger">*</span>{" "}
+                </span>
+              </Col>
+              <Col md="6">
+                <Input
+                  type="number"
+                  min="0"
+                  name="EstimatedTotalCost"
+                  id="EstimatedTotalCost"
+                  placeholder="Estimated Total Cost"
+                  required
+                />
+                {/* <div className="form-control-position">
                                         <User size={15} />
                                     </div> */}
-                  </Col>
-                </FormGroup>
+              </Col>
+            </FormGroup>
 
-                <div className='row mt-5'>
-                        <div className='col-md-8 d-flex justify-content-end'>
+            <div className="row mt-5">
+              <div className="col-md-8 d-flex justify-content-end">
+                <ButtonForFunction
+                  func={redirectToNext}
+                  className={"mt-3 badge-primary"}
+                  name={"Skip & Next"}
+                  // disable={buttonStatus}
+                  permission={6}
+                />
 
-                    <ButtonForFunction
-                      func={redirectToNext}
-                      className={"mt-3 badge-primary"}
-                      name={"Skip & Next"}
-                      // disable={buttonStatus}
-                      permission={6}
-                    />
+                <ButtonForFunction
+                  type={"submit"}
+                  className={"ml-lg-2 ml-sm-1 mt-3 badge-primary"}
+                  name={progress ? <ButtonLoader /> : "Save & Next"}
+                  disable={buttonStatus}
+                  permission={6}
+                />
+              </div>
+            </div>
+          </Form>
 
-                    <ButtonForFunction
-                      type={"submit"}
-                      className={"ml-lg-2 ml-sm-1 mt-3 badge-primary"}
-                      name={progress? <ButtonLoader/> :"Save & Next"}
-                      disable={buttonStatus}
-                      permission={6}
-                    />
-                  </div>
-                </div>
-
-              </Form>
-
-              {/* <div className="d-flex justify-content-between">
+          {/* <div className="d-flex justify-content-between">
                 <Button color="warning" onClick={goFront}>
                   Next Page
                 </Button>
               </div> */}
-            
         </CardBody>
       </Card>
     </div>
-    );
+  );
 };
 
 export default UniversityFinancialForm;

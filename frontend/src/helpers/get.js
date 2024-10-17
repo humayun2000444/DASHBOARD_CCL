@@ -1,38 +1,29 @@
-import Axios from 'axios'
+import Axios from "axios";
+import { expireDateHandler } from "./checkExpireDate";
+import config from "../configs/config.json";
 
-import history from './history'
-import { rootUrl } from '../constants/constants'
-import { expireDateHandler } from './checkExpireDate';
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`
 
 const AuthStr = localStorage.getItem("token");
 
-async function get(url, authToken = ""){
-
-    
-   
-   try {
+async function get(url, authToken = "") {
+  try {
     expireDateHandler();
-    const res = await Axios.get(`${rootUrl}${url}`,{
-
+    const res = await Axios.get(`${rootUrl}${url}`, {
       headers: {
-        'authorization': AuthStr
-      }
-    })
-    return await res?.data?.result
-   }
-    catch (error) {
+        authorization: AuthStr,
+      },
+    });
+    return await res?.data?.result;
+  } catch (error) {
+    // if(error?.response?.status  === 404){
+    //     history.push('/404')
+    // }
 
-        // if(error?.response?.status  === 404){
-        //     history.push('/404')
-        // }
-
-        
-
-        throw error
-   }
-   
+    throw error;
+  }
 }
 
-export default get
-
-
+export default get;

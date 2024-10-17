@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import React, { useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router";
 import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
 import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
   Nav,
   NavItem,
   NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
-import Axios from "axios";
-import { rootUrl } from "../../../constants/constants";
-import { useHistory, useParams, useLocation } from "react-router";
-import { useToasts } from "react-toast-notifications";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
 import ButtonForFunction from "../Components/ButtonForFunction";
-import get from "../../../helpers/get";
 import ButtonLoader from "../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AddSubjectRequirements = () => {
   const [activetab, setActivetab] = useState("4");

@@ -1,42 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
-import Checkbox from "../../../../components/core/checkbox/CheckboxesVuexy";
-import { Check } from "react-feather";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { signupWithJWT } from "../../../../redux/actions/auth/registerActions";
-import { history } from "../../../../history";
-import axios from "axios";
-import { rootUrl } from "../../../ReusableFunction/Api/ApiFunc";
-import { store } from "react-notifications-component";
 import { Link, useHistory } from "react-router-dom";
-import Select from "react-select";
+import { useToasts } from "react-toast-notifications";
+import { CardBody, Form, FormGroup, Input, Label } from "reactstrap";
 import get from "../../../../helpers/get";
 import post from "../../../../helpers/post";
-import { useToasts } from "react-toast-notifications";
+import { signupWithJWT } from "../../../../redux/actions/auth/registerActions";
 
 const StudentRegisterJWT = () => {
   const [students, setStudents] = useState([]);

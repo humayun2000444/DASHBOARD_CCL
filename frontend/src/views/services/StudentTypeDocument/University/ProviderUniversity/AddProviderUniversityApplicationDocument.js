@@ -1,51 +1,35 @@
-import Axios from "axios";
-import React, { useState, createRef, useEffect } from "react";
-import { connect } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router";
-import MediaPictures from "./UniversityMedia";
+import React, { useState } from "react";
+import { useHistory, useParams } from "react-router";
 import Select from "react-select";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Nav,
   NavItem,
   NavLink,
-  ButtonGroup,
+  TabContent,
+  Table,
+  TabPane,
 } from "reactstrap";
 import get from "../../../../helpers/get";
 
-import * as Icon from "react-feather";
-import { Upload, Modal as AntdModal } from "antd";
-
-import { Image } from "antd";
-
-import CustomButtonRipple from "../../Components/CustomButtonRipple";
-import post from "../../../../helpers/post";
 import { useToasts } from "react-toast-notifications";
-import ButtonForFunction from "../../Components/ButtonForFunction";
-import LinkSpanButton from "../../Components/LinkSpanButton";
-import { rootUrl } from "../../../../constants/constants";
-import remove from "../../../../helpers/remove";
-import put from "../../../../helpers/put";
 import { permissionList } from "../../../../constants/AuthorizationConstant";
+import post from "../../../../helpers/post";
+import put from "../../../../helpers/put";
+import remove from "../../../../helpers/remove";
+import ButtonForFunction from "../../Components/ButtonForFunction";
 import ButtonLoader from "../../Components/ButtonLoader";
 
 const AddProviderUniversityApplicationDocument = () => {

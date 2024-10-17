@@ -1,39 +1,37 @@
-import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import React, { useState } from "react";
 import Select from "react-select";
 import {
+  Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Col,
   Form,
   FormGroup,
-  Label,
   Input,
-  FormText,
-  Col,
-  Row,
-  InputGroup,
-  Table,
-  TabContent,
-  TabPane,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Nav,
   NavItem,
   NavLink,
-  ButtonGroup,
+  TabContent,
+  Table,
+  TabPane,
 } from "reactstrap";
-import Axios from "axios";
-import { rootUrl } from "../../../../../constants/constants";
+// import { rootUrl } from "../../../../../constants/constants";
 import { useHistory, useParams } from "react-router";
 import { useToasts } from "react-toast-notifications";
-import ButtonForFunction from "../../../Components/ButtonForFunction";
-import get from "../../../../../helpers/get";
+import config from "../../../../../configs/config.json";
 import remove from "../../../../../helpers/remove";
+import ButtonForFunction from "../../../Components/ButtonForFunction";
 import ButtonLoader from "../../../Components/ButtonLoader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const CopyUniversitySubjectDeliveryPattern = () => {
   const [activetab, setActivetab] = useState("3");

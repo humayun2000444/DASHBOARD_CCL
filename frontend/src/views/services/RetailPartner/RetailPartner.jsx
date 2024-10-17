@@ -119,21 +119,23 @@ const RetailPartner = () => {
         setModalOpen={setModalOpen}
       />
 
-      <Card>
+      <Card
+        style={{
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
+        }}
+      >
         <CardBody>
-          <div className="border-bottom mb-4">
-            <h4 className="pb-3">SIP Accounts</h4>
-          </div>
-          <div className="mt-4 container-fluid">
+          <div className="container-fluid">
             <div className="row mb-3">
-              <div className="col-md-4">
-                <h6>Find Partner:</h6>
+              <div className="col-md-4" style={{ padding: "0" }}>
                 <Form style={{ display: "flex", alignItems: "center" }}>
                   <Form.Control
                     placeholder="Search..."
                     style={{ marginRight: "10px" }}
                   />
-                  <Button style={{ padding: "7px 30px" }} type="submit">
+                  <Button style={{ padding: "6px 30px" }} type="submit">
                     Find
                   </Button>
                 </Form>

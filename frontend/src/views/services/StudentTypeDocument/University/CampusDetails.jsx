@@ -1,38 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory, useLocation } from "react-router-dom";
+import { Modal as AntdModal, Upload } from "antd";
+import Axios from "axios";
+import React, { useState } from "react";
+import * as Icon from "react-feather";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import {
-  Card,
-  CardBody,
-  Input,
-  CardHeader,
-  Label,
-  Col,
-  Row,
-  Table,
-  Form,
-  FormGroup,
   Button,
   ButtonGroup,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
+  Row,
+  Table,
 } from "reactstrap";
-import Axios from "axios";
-import { useToasts } from "react-toast-notifications";
-import * as Icon from "react-feather";
-import { Upload, Modal as AntdModal } from "antd";
 
-import { Image } from "antd";
-import get from "../../../helpers/get";
 import Select from "react-select";
-import { rootUrl } from "../../../constants/constants";
-import CustomButtonRipple from "../Components/CustomButtonRipple";
-import remove from "../../../helpers/remove";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
+import { userTypes } from "../../../constants/userTypeConstant";
 import post from "../../../helpers/post";
 import put from "../../../helpers/put";
-import { userTypes } from "../../../constants/userTypeConstant";
+import remove from "../../../helpers/remove";
 import ButtonLoader from "../Components/ButtonLoader";
+import CustomButtonRipple from "../Components/CustomButtonRipple";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const CampusDetails = () => {
   const { id } = useParams();

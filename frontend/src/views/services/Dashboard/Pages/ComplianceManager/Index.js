@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Card, CardBody, Table } from "reactstrap";
-import user1 from "../../../../../assets/img/user1.svg";
-import user2 from "../../../../../assets/img/user2.svg";
-import capture from "../../../../../assets/img/capture.PNG";
-import images1 from "../../../../../assets/img/images1.svg";
-import "../../../../../assets/scss/pages/dashboard-analytics.scss";
-import { Drawer } from "antd";
-import plusicon from "../../../../../assets/img/plusicon.svg";
-import Vectorbeat from "../../../../../assets/img/Vectorbeat.svg";
-import gift from "../../../../../assets/img/gift.PNG";
-import cuser1 from "../../../../../assets/img/cuser1.svg";
 import user from "../../../../../assets/img/Uapp_fav.png";
-import get from "../../../../../helpers/get";
-import { rootUrl } from "../../../../../constants/constants";
-import { Link, useHistory } from "react-router-dom";
+import Vectorbeat from "../../../../../assets/img/Vectorbeat.svg";
+import "../../../../../assets/scss/pages/dashboard-analytics.scss";
+// import { rootUrl } from "../../../../../constants/constants";
+import config from "../../../../../configs/config.json";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const ComplianceManager = () => {
   const currentUser = JSON?.parse(localStorage.getItem("current_user"));

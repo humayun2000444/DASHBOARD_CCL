@@ -1,7 +1,11 @@
 import axios from "axios";
-import { root2, root } from "../../constants/constants"; // Assuming root2 is the base API URL
+// import { root2, root } from "../../constants/constants"; // Assuming root2 is the base API URL
+import config from "../../configs/config.json";
+
+const { root, root2 } = config;
 
 const url = `${root2}5070/admin/DashBoard/`;
+
 const adminDashboardServices = {
   // Fetch Total Calls for Admin
   fetchTotalCallForAdmin: async (token, payload) => {

@@ -1,52 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Image } from "antd";
 import { Upload } from "antd";
+import React, { useState } from "react";
 import * as Icon from "react-feather";
-import uapploader from "../../../assets/img/Uapp_fav.png";
-import uapploader2 from "../../../assets/img/Asset 12Icon.svg";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
 import { useToasts } from "react-toast-notifications";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  ButtonGroup,
-  CardTitle,
-  Button,
+  Col,
+  FormGroup,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
+  ModalHeader,
   Row,
   Table,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
 } from "reactstrap";
+import uapploader2 from "../../../assets/img/Asset 12Icon.svg";
+import uapploader from "../../../assets/img/Uapp_fav.png";
 
 import { useHistory, useLocation } from "react-router";
 // import coverImage from '../../../../assets/img/profile/user-uploads/cover.jpg'
 // import profileImage from '../../../../assets/img/profile/user-uploads/user-07.jpg'
-import coverImage from "../../../assets/img/profile/user-uploads/cover.jpg";
 import profileImage from "../../../assets/img/profile/user-uploads/user-07.jpg";
-import get from "../../../helpers/get";
-import { rootUrl } from "../../../constants/constants";
-import put from "../../../helpers/put";
-import EditDivButton from "../Components/EditDivButton";
-import LinkButton from "../Components/LinkButton";
-import ButtonForFunction from "../Components/ButtonForFunction";
-import { userTypes } from "../../../constants/userTypeConstant";
 import { permissionList } from "../../../constants/AuthorizationConstant";
+// import { rootUrl } from "../../../constants/constants";
+import config from "../../../configs/config.json";
+import { userTypes } from "../../../constants/userTypeConstant";
+import put from "../../../helpers/put";
+import ButtonForFunction from "../Components/ButtonForFunction";
 import ButtonLoader from "../Components/ButtonLoader";
+import LinkButton from "../Components/LinkButton";
 import Loader from "../Search/Loader/Loader";
+
+const { root } = config;
+
+const rootUrl = `${root}8001/AUTHENTICATION/`;
 
 const AssociateProfile = () => {
   const location = useLocation();
@@ -1249,6 +1240,7 @@ const AssociateProfile = () => {
                                               ?.fileUrl
                                           }
                                           target="_blank"
+                                          rel="noreferrer"
                                           // download
                                         >
                                           Download
@@ -1292,6 +1284,7 @@ const AssociateProfile = () => {
                                               ?.fileUrl
                                           }
                                           target="_blank"
+                                          rel="noreferrer"
                                           // download
                                         >
                                           Download
@@ -1336,6 +1329,7 @@ const AssociateProfile = () => {
                                               ?.proofOfRightToWorkMedia?.fileUrl
                                           }
                                           target="_blank"
+                                          rel="noreferrer"
                                           // download
                                         >
                                           Download
@@ -1411,6 +1405,7 @@ const AssociateProfile = () => {
                                   consultantData?.idOrPassportMedia?.fileUrl
                                 }
                                 target="_blank"
+                                rel="noreferrer"
                                 // download
                               >
                                 clicking here.
@@ -1493,6 +1488,7 @@ const AssociateProfile = () => {
                                   consultantData?.proofOfAddressMedia?.fileUrl
                                 }
                                 target="_blank"
+                                rel="noreferrer"
                                 // download
                               >
                                 clicking here.
@@ -1578,6 +1574,7 @@ const AssociateProfile = () => {
                                     ?.fileUrl
                                 }
                                 target="_blank"
+                                rel="noreferrer"
                                 // download
                               >
                                 clicking here.
