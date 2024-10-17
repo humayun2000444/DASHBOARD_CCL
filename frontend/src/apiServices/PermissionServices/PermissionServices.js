@@ -12,8 +12,16 @@ const permissionServices = {
       const response = await axios.post(`${rootUrl}auth/getPermissions`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching roles:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching permission:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -26,7 +34,16 @@ const permissionServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching permission by ID:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -43,7 +60,16 @@ const permissionServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error adding user:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching create permission:", errorEx);
+
+      throw errorEx;
     }
   },
   deletePermission: async (id, token) => {
@@ -58,7 +84,16 @@ const permissionServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error adding user:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching deleting permission:", errorEx);
+
+      throw errorEx;
     }
   },
 };

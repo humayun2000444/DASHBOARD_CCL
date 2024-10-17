@@ -7,8 +7,16 @@ const getCclTdmTraffic = {
       const response = await axios.post(url + "get-btcl-calls");
       return response.data;
     } catch (error) {
-      console.error("Error fetching roles:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Btcl Calls:", errorEx);
+
+      throw errorEx;
     }
   },
 };

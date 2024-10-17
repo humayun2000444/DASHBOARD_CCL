@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { root2, root } from "../../constants/constants"; // Assuming root2 is the base API URL
 import config from "../../configs/config.json";
 
 const { root, root2 } = config;
@@ -17,8 +16,16 @@ const adminDashboardServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching Total calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Total calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -32,8 +39,16 @@ const adminDashboardServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching Outgoing calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Outgoing calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -47,8 +62,16 @@ const adminDashboardServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching Incoming calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Incoming calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -62,8 +85,16 @@ const adminDashboardServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching Missed calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Missed calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -76,8 +107,16 @@ const adminDashboardServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Total calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Total calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -90,8 +129,16 @@ const adminDashboardServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Incoming calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Outgoing calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -104,8 +151,16 @@ const adminDashboardServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Outgoing calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Incoming calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -118,8 +173,16 @@ const adminDashboardServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Missed calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Missed calls:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -138,8 +201,16 @@ const adminDashboardServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching  Parner Details:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching User detail:", errorEx);
+
+      throw errorEx;
     }
   },
 };

@@ -20,8 +20,16 @@ const userDashboardServices = {
       );
       return response.data; // Return the fetched data
     } catch (error) {
-      console.error("Error fetching Total calls:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching total calls:", errorEx);
+
+      throw errorEx;
     }
   },
 };

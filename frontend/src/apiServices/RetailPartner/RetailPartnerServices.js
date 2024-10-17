@@ -11,8 +11,16 @@ const retailPartnerServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching Retail partners:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching Retail parents", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -24,7 +32,16 @@ const retailPartnerServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error adding Retail Partner:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error create Retail Partner:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -36,7 +53,16 @@ const retailPartnerServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error Deleting retail Partner:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error Deleting retail Partner:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -48,7 +74,16 @@ const retailPartnerServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error Updating Retail Partner:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error Updating retail Partner:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -65,7 +100,16 @@ const retailPartnerServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error Uploading Retail Partner:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching retail partner form file:", errorEx);
+
+      throw errorEx;
     }
   },
 };

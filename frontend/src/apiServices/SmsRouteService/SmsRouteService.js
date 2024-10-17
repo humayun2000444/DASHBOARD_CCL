@@ -11,8 +11,16 @@ const smsRouteServices = {
       const response = await axios.post(`${SMS_ROUTE_API_BASE_URL}get-routes`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching roles:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching routes:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -31,8 +39,16 @@ const smsRouteServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching partner by ID:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching route by ID:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -49,7 +65,16 @@ const smsRouteServices = {
       );
       return response.data;
     } catch (error) {
-      console.log("Error adding user:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching create route:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -71,8 +96,16 @@ const smsRouteServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error updating partner:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching upadate route:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -91,8 +124,16 @@ const smsRouteServices = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error deleting partner:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching deleting route:", errorEx);
+
+      throw errorEx;
     }
   },
 };

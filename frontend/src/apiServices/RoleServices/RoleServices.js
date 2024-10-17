@@ -11,8 +11,16 @@ const roleServices = {
       const response = await axios.post(`${rootUrl}auth/getRoles`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching roles:", error);
-      throw error;
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching roles:", errorEx);
+
+      throw errorEx;
     }
   },
 
@@ -25,20 +33,34 @@ const roleServices = {
       });
       return response.data;
     } catch (error) {
-      console.error("Error:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching role by ID:", errorEx);
+
+      throw errorEx;
     }
   },
 
   createRole: async (data) => {
     try {
-      const response = await axios.post(`${rootUrl}auth/createRole`, data, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-      });
+      const response = await axios.post(`${rootUrl}auth/createRole`, data, {});
       return response.data;
     } catch (error) {
-      console.log("Error adding user:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching create role:", errorEx);
+
+      throw errorEx;
     }
   },
   deleteRole: async (id, token) => {
@@ -50,7 +72,16 @@ const roleServices = {
       });
       return response.data;
     } catch (error) {
-      console.log("Error adding user:", error);
+      const response = error.response || { data: { error: error.message } };
+      const { status: code, statusText: text, data } = response;
+      const errorEx = {
+        code,
+        message: (typeof data === "string" ? data : data.error) || text,
+      };
+
+      console.error("Error fetching deleting role:", errorEx);
+
+      throw errorEx;
     }
   },
 };
